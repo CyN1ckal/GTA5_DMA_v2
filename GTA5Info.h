@@ -29,4 +29,6 @@ private:
 	static bool m_FindWorldPtr(DMA* dma);
 	static bool m_FindGodBitsOffset(DMA* dma);
 	static bool m_FindHealthOffset(DMA* dma);
+	static bool m_FindWeaponInventoryOffset(DMA* dma);
+	static bool m_FindAmmoModifierOffset(DMA* dma);
 };

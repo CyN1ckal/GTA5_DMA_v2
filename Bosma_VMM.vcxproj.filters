@@ -25,15 +25,18 @@
     <Filter Include="Dependencies\ImGui">
       <UniqueIdentifier>{3550c848-05a5-4704-bffe-d04f1a172656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{74d16ad3-1e97-43ea-bc34-3f85d335d25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Pattern Scan">
+      <UniqueIdentifier>{4caca461-773c-4cbd-8fb1-6348b3960f12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GTA5Info.cpp">
@@ -69,12 +72,12 @@
     <ClCompile Include="MyImGui.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="MultiScan.cpp">
+      <Filter>Utils\Pattern Scan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MultiScan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Patterns.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Offsets.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiScan.h">
+      <Filter>Utils\Pattern Scan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -43,6 +43,8 @@ bool GTA5::FindOffsets(DMA* dma)
 
 	m_FindGodBitsOffset(dma);
 	m_FindHealthOffset(dma);
+	m_FindAmmoModifierOffset(dma);
+	m_FindWeaponInventoryOffset(dma);
 
 	m_Scan.Close();
 
@@ -199,6 +201,54 @@ bool GTA5::m_FindHealthOffset(DMA* dma)
 	Offsets::MaxHealth = Offsets::CurrentHealth + sizeof(float);
 
 	std::println("[+] Offsets::CurrentHealth {0:X}\n[+] Offsets::MaxHealth {1:X}", Offsets::CurrentHealth, Offsets::MaxHealth);
+
+	return 1;
+}
+
+bool GTA5::m_FindWeaponInventoryOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponInventoryPattern;
+	pi.Mask = Patterns::WeaponInventoryMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponInventoryOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindHealthOffset Disassemble");
+
+	Offsets::WeaponInventory = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::WeaponInventory {0:X}", Offsets::WeaponInventory);
+
+	return 1;
+}
+
+bool GTA5::m_FindAmmoModifierOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::AmmoModifierPattern;
+	pi.Mask = Patterns::AmmoModifierMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindAmmoModifierOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindAmmoModifierOffset Disassemble");
+
+	Offsets::AmmoModifier = Instruction.operands[0].mem.disp.value;
+
+	std::println("[+] Offsets::AmmoModifier {0:X}", Offsets::AmmoModifier);
 
 	return 1;
 }

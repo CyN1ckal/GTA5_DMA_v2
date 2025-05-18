@@ -24,6 +24,7 @@ int main() {
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error: " << e.what() << std::endl;
+		dma.Close();
 		system("pause");
 		return 0;
 	}

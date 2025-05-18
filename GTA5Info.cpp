@@ -26,20 +26,67 @@ bool GTA5::m_FindWorldPtr(DMA* dma)
 		return 0;
 	}
 
-	uintptr_t WorldPtr = Instruction.operands[1].mem.disp.value + RuntimeAddress + Instruction.info.length;
+	m_WorldPtr = Instruction.operands[1].mem.disp.value + RuntimeAddress + Instruction.info.length;
 
-	std::println("[+] Found WorldPtr. {0:X}", WorldPtr);
+	std::println("[+] m_WorldPtr {0:X}", m_WorldPtr);
 
 	return 1;
 }
 
 bool GTA5::FindPointers(DMA* dma)
 {
-	m_Scan.Initialize(dma->m_vmh,dma->m_PID,dma->m_ProcessName);
+	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
 
 	m_FindWorldPtr(dma);
 
 	m_Scan.Close();
+
+	return 1;
+}
+
+bool GTA5::UpdateLocalPlayer(DMA* dma)
+{
+	if (!m_WorldAddr)
+		return 0;
+
+	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	DWORD BytesRead = 0x0;
+
+	uintptr_t LocalPlayerPtr = m_WorldAddr + 0x8;
+	uintptr_t LocalPlayerAddress = 0x0;
+	VMMDLL_Scatter_PrepareEx(vmsh, LocalPlayerPtr, sizeof(uintptr_t), (BYTE*)&LocalPlayerAddress, &BytesRead);
+	VMMDLL_Scatter_Execute(vmsh);
+
+	if (BytesRead == sizeof(uintptr_t))
+		m_LocalPEDAddr = LocalPlayerAddress;
+
+	VMMDLL_Scatter_CloseHandle(vmsh);
+
+	std::println("[+] m_LocalPEDAddr {0:X}", m_LocalPEDAddr);
+
+	return 1;
+}
+
+bool GTA5::UpdateWorldAddress(DMA* dma)
+{
+	if (!m_WorldPtr)
+		return 0;
+
+	DWORD BytesRead = 0x0;
+
+	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	uintptr_t WorldAddress = 0x0;
+	VMMDLL_Scatter_PrepareEx(vmsh, m_WorldPtr, sizeof(uintptr_t), (BYTE*)&WorldAddress, &BytesRead);
+	VMMDLL_Scatter_Execute(vmsh);
+
+	if (BytesRead == sizeof(uintptr_t))
+		m_WorldAddr = WorldAddress;
+
+	VMMDLL_Scatter_CloseHandle(vmsh);
+
+	std::println("[+] m_WorldAddr {0:X}", m_WorldAddr);
 
 	return 1;
 }

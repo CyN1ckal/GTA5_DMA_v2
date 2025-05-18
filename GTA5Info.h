@@ -13,10 +13,12 @@ public:
 
 	static inline uintptr_t m_WorldAddr = 0x0;
 	static inline uintptr_t m_LocalPEDAddr = 0x0;
+	static inline uintptr_t m_LocalPED_WeaponInventoryAddr = 0x0;
 
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
 	static inline uint32_t m_LocalPED_GodModeBits = 0x0;
+	static inline uint32_t m_LocalPED_AmmoModifierBits = 0x0;
 
 public:
 	static bool FindOffsets(DMA* dma);

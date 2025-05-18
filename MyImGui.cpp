@@ -24,6 +24,7 @@ bool MyImGui::FeaturesWindow()
 	ImGui::Begin("Features");
 
 	ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
+	ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
 
 	ImGui::End();
 

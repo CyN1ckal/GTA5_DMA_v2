@@ -4,6 +4,8 @@
 
 #include <bitset>
 
+#include "Offsets.h"
+
 bool GodMode::OnFrame(DMA* dma)
 {
 	if (!GTA5::m_LocalPEDAddr)
@@ -21,7 +23,7 @@ bool GodMode::OnFrame(DMA* dma)
 
 	DWORD BytesRead = 0x0;
 
-	uintptr_t GodModeBitsAddress = GTA5::m_LocalPEDAddr + 0x188;
+	uintptr_t GodModeBitsAddress = GTA5::m_LocalPEDAddr + Offsets::GodBits;
 	uint32_t GodModeBits = 0x0;
 	VMMDLL_Scatter_PrepareEx(vmsh, GodModeBitsAddress, sizeof(uint32_t), (BYTE*)&GodModeBits, &BytesRead);
 	VMMDLL_Scatter_Execute(vmsh);

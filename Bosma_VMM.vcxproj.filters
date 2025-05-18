@@ -75,6 +75,9 @@
     <ClCompile Include="MultiScan.cpp">
       <Filter>Utils\Pattern Scan</Filter>
     </ClCompile>
+    <ClCompile Include="InfiniteAmmo.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="MultiScan.h">
       <Filter>Utils\Pattern Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="InfiniteAmmo.h">
+      <Filter>Features</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -113,11 +113,13 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	DWORD HealthBytes = 0x0;
 	DWORD GodBytes = 0x0;
+	DWORD WeaponInventoryBytes = 0x0;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
 	uintptr_t GodModeBitsAddress = m_LocalPEDAddr + Offsets::GodBits;
 	uintptr_t CurrentHealthAddress = m_LocalPEDAddr + Offsets::CurrentHealth;
+	uintptr_t WeaponInventoryPtr = m_LocalPEDAddr + Offsets::WeaponInventory;
 
 	struct Health
 	{
@@ -127,9 +129,11 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	Health health;
 	uint32_t GodModeBits = 0x0;
+	uintptr_t WeaponInventoryAddr = 0x0;
 
 	VMMDLL_Scatter_PrepareEx(vmsh, CurrentHealthAddress, sizeof(float) * 2, (BYTE*)&health, &HealthBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, GodModeBitsAddress, sizeof(uint32_t), (BYTE*)&GodModeBits, &GodBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, WeaponInventoryPtr, sizeof(uintptr_t), (BYTE*)&WeaponInventoryAddr, &WeaponInventoryBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
@@ -144,6 +148,25 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 		m_LocalPED_GodModeBits = GodModeBits;
 	}
 
+	if (WeaponInventoryBytes == sizeof(uintptr_t))
+	{
+		m_LocalPED_WeaponInventoryAddr = WeaponInventoryAddr;
+	}
+
+	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	DWORD AmmoModifierBytes = 0x0;
+	uint32_t AmmoModifierBits = 0x0;
+	uintptr_t AmmoModifierAddress = m_LocalPED_WeaponInventoryAddr + Offsets::AmmoModifier;
+	VMMDLL_Scatter_PrepareEx(vmsh, AmmoModifierAddress, sizeof(uint32_t), (BYTE*)&AmmoModifierBits, &AmmoModifierBytes);
+
+	VMMDLL_Scatter_Execute(vmsh);
+
+	if (AmmoModifierBytes == sizeof(uint32_t))
+	{
+		m_LocalPED_AmmoModifierBits = AmmoModifierBits;
+	}
+
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
 	return 1;
@@ -152,6 +175,7 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 bool GTA5::FeatureLoop(DMA* dma)
 {
 	GodMode::OnFrame(dma);
+	InfiniteAmmo::OnFrame(dma);
 
 	return 1;
 }

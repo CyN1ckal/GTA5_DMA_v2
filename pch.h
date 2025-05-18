@@ -13,3 +13,5 @@
 #include "imgui_impl_win32.h"
 
 #include "vmmdll.h"
+
+#include "Offsets.h"

@@ -65,7 +65,12 @@ bool GTA5::UpdateLocalPlayerAddr(DMA* dma)
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
-	std::println("[+] m_LocalPEDAddr {0:X}", m_LocalPEDAddr);
+	static uintptr_t PreviousLocalPedAddr = 0x0;
+	if(PreviousLocalPedAddr != m_LocalPEDAddr)
+	{
+		std::println("[+] m_LocalPEDAddr {0:X}", m_LocalPEDAddr);
+		PreviousLocalPedAddr = m_LocalPEDAddr;
+	}
 
 	return 1;
 }

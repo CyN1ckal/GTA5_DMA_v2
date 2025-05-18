@@ -17,12 +17,16 @@ public:
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
 
+	static inline bool m_GodMode = false;
+
 public:
 	static bool FindPointers(DMA* dma);
 	static bool UpdateWorldAddress(DMA* dma);
 	static bool UpdateLocalPlayerAddr(DMA* dma);
 	static bool UpdateLocalPlayerInfo(DMA* dma);
+	static bool FeatureLoop(DMA* dma);
 
 private:
 	static bool m_FindWorldPtr(DMA* dma);
+	static bool m_LocalPlayerGodMode(DMA* dma);
 };

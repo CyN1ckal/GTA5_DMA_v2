@@ -23,15 +23,17 @@ int main() {
 	GTA5::UpdateLocalPlayerAddr(&dma);
 
 	s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, &dma);
+	s.every(std::chrono::milliseconds(7), GTA5::FeatureLoop, &dma);
 
-	///* pseudo code */
-	////s.every(std::chrono::seconds(5), UpdatePedestrianList);
-	////s.every(std::chrono::milliseconds(7), UpdateLocalPlayer);
-	////s.every(std::chrono::milliseconds(7), UpdatePedistrians);
+	/* pseudo code */
+	//s.every(std::chrono::seconds(5), UpdatePedestrianList);
+	//s.every(std::chrono::milliseconds(7), UpdateLocalPlayer);
+	//s.every(std::chrono::milliseconds(7), UpdatePedistrians);
 
 	while (g_Alive)
 	{
 		if (GetAsyncKeyState(VK_END)) g_Alive = false;
+		if (GetAsyncKeyState(VK_INSERT)) GTA5::m_GodMode = !GTA5::m_GodMode;
 		std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 

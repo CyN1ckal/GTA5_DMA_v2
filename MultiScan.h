@@ -32,11 +32,23 @@ public:
 class MultiScan
 {
 public:
+
+	// Initialize will find the first executable section in the given module and copy it into a local buffer
 	bool Initialize(VMM_HANDLE vmh, DWORD PID, std::string ModuleName);
+
+	// Scan will return the full runtime address of the pattern
 	uintptr_t Scan(PatternInfo pi);
+
+	// ScanOffset will return the offset of the pattern from the start of the module
 	uintptr_t ScanOffset(PatternInfo pi);
+
+	// ScanSectionOffset will return the offset of the pattern from the start of the section
 	uintptr_t ScanSectionOffset(PatternInfo pi);
+
+	// Close will free the buffer
 	bool Close();
+
+	// GetBuffer gets the buffer pointer
 	BYTE* GetBuffer();
 
 private:

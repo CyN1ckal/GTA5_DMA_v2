@@ -28,16 +28,14 @@ bool GTA5::m_FindWorldPtr(DMA* dma)
 
 	uintptr_t WorldPtr = Instruction.operands[1].mem.disp.value + RuntimeAddress + Instruction.info.length;
 
-	std::println("Displacement: {0:X}", Instruction.operands[1].mem.disp.value);
-	std::println("Length: {0:X}", Instruction.info.length);
-	std::println("WorldPtr: {0:X}", WorldPtr);
+	std::println("[+] Found WorldPtr. {0:X}", WorldPtr);
 
 	return 1;
 }
 
 bool GTA5::FindPointers(DMA* dma)
 {
-	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
+	m_Scan.Initialize(dma->m_vmh,dma->m_PID,dma->m_ProcessName);
 
 	m_FindWorldPtr(dma);
 

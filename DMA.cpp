@@ -25,7 +25,7 @@ bool DMA::Start(const std::string& ProcessName)
 	m_GetPID();
 	m_GetBaseAddress();
 
-	std::println("{0:s} with PID {1:d} found @ {2:X}", ProcessName.c_str(), m_PID, m_BaseAddress);
+	std::println("{0:s} with PID {1:d} found @ {2:X}", m_ProcessName.c_str(), m_PID, m_BaseAddress);
 
 	return 1;
 }

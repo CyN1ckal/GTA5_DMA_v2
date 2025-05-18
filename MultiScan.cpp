@@ -46,81 +46,9 @@ uintptr_t ScanBufferForPattern(PatternInfo pi, BYTE* Buffer, DWORD BufferSize)
 	}
 
 	if (!bFound)
-	{
-		//std::println("[-] Pattern Not Found!");
 		return 0;
-	}
 
 	uintptr_t Return = CurrentAddress - Buffer;
-	//std::println("[-] Pattern Found @ {0:X}", Return);
-
-	return Return;
-}
-
-uintptr_t SinglePatternScan(VMM_HANDLE vmh, DWORD PID, PatternInfo pi)
-{
-	std::println("[+] Scanning for pattern...");
-
-	uintptr_t Return = 0x0;
-	uintptr_t ModuleBase = VMMDLL_ProcessGetModuleBaseU(vmh, PID, pi.ModuleName.c_str());
-	if (!ModuleBase)
-	{
-		std::println("[-] Failed to get module base for {}!", pi.ModuleName.c_str());
-		return 0;
-	}
-
-	DWORD cSections = 0;
-	auto result = VMMDLL_ProcessGetSectionsU(vmh, PID, pi.ModuleName.c_str(), NULL, 0, &cSections);
-
-	auto SectionHeader = std::make_unique<IMAGE_SECTION_HEADER[]>(cSections);
-	if (!cSections)
-	{
-		std::println("[-] No sections in module {}!", pi.ModuleName.c_str());
-		return 0;
-	}
-
-	result = VMMDLL_ProcessGetSectionsU(vmh, PID, pi.ModuleName.c_str(), SectionHeader.get(), cSections, &cSections);
-
-	for (int i = 0; i < cSections; i++) {
-
-		if (SectionHeader[i].Characteristics & IMAGE_SCN_MEM_EXECUTE)
-		{
-			std::println("[-] Section Name: {0:s} @ {1:X} {2:X}", reinterpret_cast<char*>(&SectionHeader[i].Name), ModuleBase + SectionHeader[i].VirtualAddress, SectionHeader[i].SizeOfRawData);
-
-			auto SectionData = std::make_unique<BYTE[]>(SectionHeader[i].SizeOfRawData);
-
-			DWORD TotalBytesRead = 0x0;
-			DWORD BytesRead = 0;
-
-			VMMDLL_MemReadEx(vmh, PID, ModuleBase + SectionHeader[i].VirtualAddress, SectionData.get(), SectionHeader[i].SizeOfRawData, &BytesRead, VMMDLL_FLAG_NOCACHE);
-
-			TotalBytesRead += BytesRead;
-
-			while (TotalBytesRead < SectionHeader[i].SizeOfRawData)
-			{
-				VMMDLL_MemReadEx(vmh, PID, ModuleBase + SectionHeader[i].VirtualAddress + BytesRead, SectionData.get() + BytesRead, SectionHeader[i].SizeOfRawData - TotalBytesRead, &BytesRead, VMMDLL_FLAG_NOCACHE);
-				TotalBytesRead += BytesRead;
-			}
-
-			if (TotalBytesRead < SectionHeader[i].SizeOfRawData)
-			{
-				std::println("[!] ERROR! Only {0:X} bytes out of {1:X} bytes read", TotalBytesRead, SectionHeader[i].SizeOfRawData);
-			}
-			else
-			{
-				std::println("[-] Read {0:X} bytes from section data.", TotalBytesRead);
-			}
-
-			uintptr_t Offset = ScanBufferForPattern(pi, SectionData.get(), TotalBytesRead);
-
-			if (!Offset)
-			{
-				return 0;
-			}
-
-			Return = ModuleBase + SectionHeader[i].VirtualAddress + Offset;
-		}
-	}
 
 	return Return;
 }
@@ -247,7 +175,7 @@ uintptr_t MultiScan::ScanOffset(PatternInfo pi)
 };
 
 /*
-  brief: Return the offset of the pattern from the start of the executable memory region
+  brief: Return the offset of the pattern from the start of the module
 */
 uintptr_t MultiScan::ScanSectionOffset(PatternInfo pi)
 {
@@ -266,6 +194,7 @@ uintptr_t MultiScan::ScanSectionOffset(PatternInfo pi)
 	}
 
 	return Return;
+
 };
 
 bool MultiScan::Close()

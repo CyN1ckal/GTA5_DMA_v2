@@ -15,9 +15,7 @@ int main() {
 	GTA5::FindPointers(&dma);
 
 	//unsigned int max_n_threads = 1;
-
 	//Bosma::Scheduler s(max_n_threads);
-
 	//s.every(std::chrono::milliseconds(7), GTA5::FindPointers);
 
 	///* pseudo code */

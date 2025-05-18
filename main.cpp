@@ -20,9 +20,9 @@ int main() {
 	Bosma::Scheduler s(max_n_threads);
 
 	GTA5::UpdateWorldAddress(&dma);
-	GTA5::UpdateLocalPlayer(&dma);
+	GTA5::UpdateLocalPlayerAddr(&dma);
 
-	//s.every(std::chrono::milliseconds(50), GTA5::UpdateLocalPlayer);
+	s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, &dma);
 
 	///* pseudo code */
 	////s.every(std::chrono::seconds(5), UpdatePedestrianList);
@@ -36,8 +36,6 @@ int main() {
 	}
 
 	dma.Close();
-
-	system("pause");
 
 	return 1;
 }

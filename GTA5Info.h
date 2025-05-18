@@ -14,12 +14,15 @@ public:
 	static inline uintptr_t m_WorldAddr = 0x0;
 	static inline uintptr_t m_LocalPEDAddr = 0x0;
 
+	static inline float m_LocalPED_CurrentHealth = 0.0f;
+	static inline float m_LocalPED_MaxHealth = 0.0f;
+
 public:
 	static bool FindPointers(DMA* dma);
 	static bool UpdateWorldAddress(DMA* dma);
-	static bool UpdateLocalPlayer(DMA* dma);
+	static bool UpdateLocalPlayerAddr(DMA* dma);
+	static bool UpdateLocalPlayerInfo(DMA* dma);
 
 private:
 	static bool m_FindWorldPtr(DMA* dma);
-
 };

@@ -198,7 +198,7 @@ bool GTA5::m_FindHealthOffset(DMA* dma)
 	Offsets::CurrentHealth = Instruction.operands[0].mem.disp.value;
 	Offsets::MaxHealth = Offsets::CurrentHealth + sizeof(float);
 
-	std::println("[+] Offsets::CurrentHealth {0:X}\n+] Offsets::MaxHealth {1:X}", Offsets::CurrentHealth, Offsets::MaxHealth);
+	std::println("[+] Offsets::CurrentHealth {0:X}\n[+] Offsets::MaxHealth {1:X}", Offsets::CurrentHealth, Offsets::MaxHealth);
 
 	return 1;
 }

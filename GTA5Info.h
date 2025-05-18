@@ -19,7 +19,7 @@ public:
 	static inline uint32_t m_LocalPED_GodModeBits = 0x0;
 
 public:
-	static bool FindPointers(DMA* dma);
+	static bool FindOffsets(DMA* dma);
 	static bool UpdateWorldAddress(DMA* dma);
 	static bool UpdateLocalPlayerAddr(DMA* dma);
 	static bool UpdateLocalPlayerInfo(DMA* dma);
@@ -27,4 +27,6 @@ public:
 
 private:
 	static bool m_FindWorldPtr(DMA* dma);
+	static bool m_FindGodBitsOffset(DMA* dma);
+	static bool m_FindHealthOffset(DMA* dma);
 };

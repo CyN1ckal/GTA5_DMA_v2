@@ -240,6 +240,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="MultiScan.h" />
     <ClInclude Include="MyImGui.h" />
+    <ClInclude Include="Offsets.h" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

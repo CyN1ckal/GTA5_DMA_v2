@@ -13,14 +13,20 @@
 bool g_Alive = true;
 
 int main() {
-
-	MyImGui::Initialize();
-
 	DMA dma;
 
 	dma.Start("GTA5_Enhanced.exe");
 
-	GTA5::FindPointers(&dma);
+	try
+	{
+		GTA5::FindOffsets(&dma);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+		system("pause");
+		return 0;
+	}
 
 	{ /* Bosma::Scheduler uses scope deletion */
 		unsigned int max_n_threads = 1;
@@ -32,6 +38,8 @@ int main() {
 		s.every(std::chrono::seconds(10), GTA5::UpdateLocalPlayerAddr, &dma);
 		s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, &dma);
 		s.every(std::chrono::milliseconds(7), GTA5::FeatureLoop, &dma);
+
+		MyImGui::Initialize();
 
 		while (g_Alive)
 		{

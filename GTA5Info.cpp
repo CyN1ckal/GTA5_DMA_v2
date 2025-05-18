@@ -7,7 +7,7 @@
 #include "Zydis/Zydis.h"
 
 #include "Features.h"
-
+#include "Offsets.h"
 bool GTA5::m_FindWorldPtr(DMA* dma)
 {
 	PatternInfo pi;
@@ -35,11 +35,14 @@ bool GTA5::m_FindWorldPtr(DMA* dma)
 	return 1;
 }
 
-bool GTA5::FindPointers(DMA* dma)
+bool GTA5::FindOffsets(DMA* dma)
 {
 	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
 
 	m_FindWorldPtr(dma);
+
+	m_FindGodBitsOffset(dma);
+	m_FindHealthOffset(dma);
 
 	m_Scan.Close();
 
@@ -66,7 +69,7 @@ bool GTA5::UpdateLocalPlayerAddr(DMA* dma)
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
 	static uintptr_t PreviousLocalPedAddr = 0x0;
-	if(PreviousLocalPedAddr != m_LocalPEDAddr)
+	if (PreviousLocalPedAddr != m_LocalPEDAddr)
 	{
 		std::println("[+] m_LocalPEDAddr {0:X}", m_LocalPEDAddr);
 		PreviousLocalPedAddr = m_LocalPEDAddr;
@@ -111,9 +114,8 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
-	uintptr_t GodModeBitsAddress = m_LocalPEDAddr + 0x188;
-	uintptr_t CurrentHealthAddress = m_LocalPEDAddr + 0x280;
-	uintptr_t MaxHealthAddress = m_LocalPEDAddr + 0x284;
+	uintptr_t GodModeBitsAddress = m_LocalPEDAddr + Offsets::GodBits;
+	uintptr_t CurrentHealthAddress = m_LocalPEDAddr + Offsets::CurrentHealth;
 
 	struct Health
 	{
@@ -142,16 +144,61 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
-	//std::println("[+] Local Health {0:.2f} / {1:.2f}", m_LocalPED_CurrentHealth, m_LocalPED_MaxHealth);
-
 	return 1;
 }
-
-
 
 bool GTA5::FeatureLoop(DMA* dma)
 {
 	GodMode::OnFrame(dma);
+
+	return 1;
+}
+
+bool GTA5::m_FindGodBitsOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::GodBitsPattern;
+	pi.Mask = Patterns::GodBitsMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindGodBitsOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindGodBitsOffset Disassemble");
+
+	Offsets::GodBits = Instruction.operands[0].mem.disp.value;
+
+	std::println("[+] Offsets::GodBits {0:X}", Offsets::GodBits);
+
+	return 1;
+}
+
+bool GTA5::m_FindHealthOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::HealthPattern;
+	pi.Mask = Patterns::HealthMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindHealthOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindHealthOffset Disassemble");
+
+	Offsets::CurrentHealth = Instruction.operands[0].mem.disp.value;
+	Offsets::MaxHealth = Offsets::CurrentHealth + sizeof(float);
+
+	std::println("[+] Offsets::CurrentHealth {0:X}\n+] Offsets::MaxHealth {1:X}", Offsets::CurrentHealth, Offsets::MaxHealth);
 
 	return 1;
 }

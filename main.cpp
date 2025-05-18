@@ -6,6 +6,8 @@
 
 #include "GTA5Info.h"
 
+#include "Features.h"
+
 bool g_Alive = true;
 
 int main() {
@@ -33,7 +35,7 @@ int main() {
 	while (g_Alive)
 	{
 		if (GetAsyncKeyState(VK_END)) g_Alive = false;
-		if (GetAsyncKeyState(VK_INSERT)) GTA5::m_GodMode = !GTA5::m_GodMode;
+		if (GetAsyncKeyState(VK_INSERT)) GodMode::m_GodMode = !GodMode::m_GodMode;
 		std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 

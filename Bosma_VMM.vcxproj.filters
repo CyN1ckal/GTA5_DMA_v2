@@ -13,32 +13,35 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{0544063e-d2b0-44a9-90da-a09cea7b9d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features">
+      <UniqueIdentifier>{4838024f-280e-4e1d-8bef-da8dd3e32fad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DMA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GTA5Info.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MultiScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GTA5Info.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="DMA.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GodMode.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DMA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GTA5Info.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MultiScan.h">
@@ -46,6 +49,18 @@
     </ClInclude>
     <ClInclude Include="Patterns.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GTA5Info.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="DMA.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GodMode.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Features.h">
+      <Filter>Features</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

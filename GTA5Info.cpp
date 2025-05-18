@@ -106,10 +106,12 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 		return 0;
 	}
 
-	DWORD BytesRead = 0x0;
+	DWORD HealthBytes = 0x0;
+	DWORD GodBytes = 0x0;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
+	uintptr_t GodModeBitsAddress = m_LocalPEDAddr + 0x188;
 	uintptr_t CurrentHealthAddress = m_LocalPEDAddr + 0x280;
 	uintptr_t MaxHealthAddress = m_LocalPEDAddr + 0x284;
 
@@ -120,14 +122,22 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	};
 
 	Health health;
+	uint32_t GodModeBits = 0x0;
 
-	VMMDLL_Scatter_PrepareEx(vmsh, CurrentHealthAddress, sizeof(float) * 2, (BYTE*)&health, &BytesRead);
+	VMMDLL_Scatter_PrepareEx(vmsh, CurrentHealthAddress, sizeof(float) * 2, (BYTE*)&health, &HealthBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, GodModeBitsAddress, sizeof(uint32_t), (BYTE*)&GodModeBits, &GodBytes);
+
 	VMMDLL_Scatter_Execute(vmsh);
 
-	if (BytesRead == sizeof(float) * 2)
+	if (HealthBytes == sizeof(float) * 2)
 	{
 		m_LocalPED_CurrentHealth = health.CurrentHealth;
 		m_LocalPED_MaxHealth = health.MaxHealth;
+	}
+
+	if (GodBytes == sizeof(uint32_t))
+	{
+		m_LocalPED_GodModeBits = GodModeBits;
 	}
 
 	VMMDLL_Scatter_CloseHandle(vmsh);

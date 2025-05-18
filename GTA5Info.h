@@ -16,6 +16,7 @@ public:
 
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
+	static inline uint32_t m_LocalPED_GodModeBits = 0x0;
 
 public:
 	static bool FindPointers(DMA* dma);

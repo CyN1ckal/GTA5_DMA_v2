@@ -9,9 +9,12 @@ bool GodMode::OnFrame(DMA* dma)
 	if (!GTA5::m_LocalPEDAddr)
 		return 0;
 
-	static bool PreviousGodMode = false;
+	std::bitset<32> CurrentGodBits(GTA5::m_LocalPED_GodModeBits);
+	
+	if (m_GodMode && CurrentGodBits.test(4) && CurrentGodBits.test(8))
+		return 0;
 
-	if (m_GodMode == PreviousGodMode)
+	if (!m_GodMode && !CurrentGodBits.test(4) && !CurrentGodBits.test(8))
 		return 0;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
@@ -45,9 +48,7 @@ bool GodMode::OnFrame(DMA* dma)
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
-	PreviousGodMode = m_GodMode;
-
-	std::println("[+] GodMode togged {0:d}", m_GodMode);
+	std::println("[+] GodMode updated {0:d}", m_GodMode);
 
 	return 1;
 }

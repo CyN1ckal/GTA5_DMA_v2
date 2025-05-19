@@ -29,6 +29,8 @@ bool MyImGui::FeaturesWindow()
 
 	ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
 
+	ImGui::Checkbox("Vehicle God Mode", &VehicleGodMode::m_VehicleGodMode);
+
 	ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
 
 	ImGui::Checkbox("Never Wanted", &NeverWanted::m_NeverWanted);

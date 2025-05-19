@@ -15,10 +15,12 @@ public:
 	static inline uintptr_t m_LocalPEDAddr = 0x0;
 	static inline uintptr_t m_LocalPED_WeaponInventoryAddr = 0x0;
 	static inline uintptr_t m_LocalPED_PlayerInfoAddr = 0x0;
+	static inline uintptr_t m_LocalPED_VehicleAddr = 0x0;
 
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
 	static inline uint32_t m_LocalPED_GodModeBits = 0x0;
+	static inline uint32_t m_LocalPED_VehicleGodModeBits = 0x0;
 	static inline uint32_t m_LocalPED_AmmoModifierBits = 0x0;
 	static inline int32_t m_LocalPED_WantedLevel = 0x0;
 
@@ -37,4 +39,5 @@ private:
 	static bool m_FindAmmoModifierOffset(DMA* dma);
 	static bool m_FindPlayerInfoOffset(DMA* dma);
 	static bool m_FindWantedLevelOffset(DMA* dma);
+	static bool m_FindVehicleGodBitsOffset(DMA* dma);
 };

@@ -46,14 +46,17 @@
     <Filter Include="Features\Fuser">
       <UniqueIdentifier>{629eedb0-2d4a-472c-a9c1-f7e3dff15938}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Features\God Mode">
-      <UniqueIdentifier>{fc79e3ad-de4f-429f-b3ee-2f2fa78ccb06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Features\Infinite Ammo">
       <UniqueIdentifier>{dd04f1af-8c64-4cf3-9928-fca64eeed7c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Features\Never Wanted">
       <UniqueIdentifier>{d6cede5a-7daf-4862-9da2-5383619a7b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\Player God Mode">
+      <UniqueIdentifier>{fc79e3ad-de4f-429f-b3ee-2f2fa78ccb06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\Vehicle God Mode">
+      <UniqueIdentifier>{e9044955-7931-4f79-85f7-65715bb9027a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,13 +103,16 @@
       <Filter>Features\Fuser</Filter>
     </ClCompile>
     <ClCompile Include="GodMode.cpp">
-      <Filter>Features\God Mode</Filter>
+      <Filter>Features\Player God Mode</Filter>
     </ClCompile>
     <ClCompile Include="InfiniteAmmo.cpp">
       <Filter>Features\Infinite Ammo</Filter>
     </ClCompile>
     <ClCompile Include="NeverWanted.cpp">
       <Filter>Features\Never Wanted</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleGodMode.cpp">
+      <Filter>Features\Vehicle God Mode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,13 +174,16 @@
       <Filter>Features\Fuser</Filter>
     </ClInclude>
     <ClInclude Include="GodMode.h">
-      <Filter>Features\God Mode</Filter>
+      <Filter>Features\Player God Mode</Filter>
     </ClInclude>
     <ClInclude Include="InfiniteAmmo.h">
       <Filter>Features\Infinite Ammo</Filter>
     </ClInclude>
     <ClInclude Include="NeverWanted.h">
       <Filter>Features\Never Wanted</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleGodMode.h">
+      <Filter>Features\Vehicle God Mode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -247,6 +247,7 @@
     </ClCompile>
     <ClCompile Include="NeverWanted.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="VehicleGodMode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DMA.h" />
@@ -271,6 +272,7 @@
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="VehicleGodMode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

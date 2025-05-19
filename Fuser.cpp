@@ -38,7 +38,10 @@ bool Fuser::OnFrame()
 	std::vector<std::string> InfoStrings;
 
 	if (GodMode::m_GodMode)
-		InfoStrings.push_back("God Mode");
+		InfoStrings.push_back("Player God Mode");
+
+	if (VehicleGodMode::m_VehicleGodMode)
+		InfoStrings.push_back("Vehicle God Mode");
 
 	if (InfiniteAmmo::m_InfiniteAmmo)
 		InfoStrings.push_back("Infinite Ammo");

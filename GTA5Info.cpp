@@ -560,16 +560,9 @@ bool GTA5::m_FindBlipIDOffset(DMA* dma)
 	return 1;
 }
 
-static const int MaxBlips = 500;
+static const int MaxBlips = 2000;
 std::array<DWORD, MaxBlips> BlipPositionBytes{ 0 };
 std::array<DWORD, MaxBlips> BlipIDBytes{ 0 };
-
-bool Func(BlipInfo b)
-{
-
-
-	return 1;
-}
 
 bool GTA5::UpdateBlips(DMA* dma)
 {

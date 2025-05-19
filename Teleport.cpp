@@ -16,13 +16,19 @@ bool Teleport::OnFrame(DMA* dma)
 
 		Vector3 Position = GTA5::GetWaypointLocation();
 
-		if (Position.z != 0.0f)
+		if (Position.x == 0.0f)
 		{
-			if (Position.z == 20)
-				Position.x = -255;
-
-			SetPlayerLocation(dma, Position);
+			std::println("[+] No Waypoint Found");
+			m_RequestedTeleport = false;
+			return 0;
 		}
+
+		if (Position.z == 20.0f)
+			Position.z = -255.0f;
+		else
+			Position.z += 2.0f;
+
+		SetPlayerLocation(dma, Position);
 
 		m_RequestedTeleport = false;
 	}

@@ -40,6 +40,9 @@
     <Filter Include="Core\GTA5">
       <UniqueIdentifier>{d9de8806-b027-453d-8451-b3c7e0975ea3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\GUI\Fonts">
+      <UniqueIdentifier>{839f74de-5b05-4e2d-a04a-0947de8be704}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Dependencies\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Fuser.cpp">
+      <Filter>Features</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,15 @@
     </ClInclude>
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Fuser.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="IBMPlexMono-Bold.h">
+      <Filter>Core\GUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Core\GUI\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

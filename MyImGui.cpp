@@ -6,6 +6,8 @@
 
 #include "Features.h"
 
+#include "Fonts.h"
+
 extern bool g_Alive;
 
 bool MyImGui::OnFrame()
@@ -13,6 +15,8 @@ bool MyImGui::OnFrame()
 	OnFrameStart();
 
 	FeaturesWindow();
+
+	Fuser::OnFrame();
 
 	OnFrameEnd();
 
@@ -26,6 +30,14 @@ bool MyImGui::FeaturesWindow()
 	ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
 
 	ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
+
+	ImGui::Checkbox("Fuser", &Fuser::m_Fuser);
+	if (Fuser::m_Fuser)
+	{
+		ImGui::InputInt("Monitor", &Fuser::m_MonitorIndex);
+		ImGui::InputInt("Width", &Fuser::m_Width);
+		ImGui::InputInt("Height	", &Fuser::m_Height);
+	}
 
 	ImGui::End();
 
@@ -58,6 +70,9 @@ bool MyImGui::Initialize()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+
+	m_pIBMPlexMono_16 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 16);
+	m_pIBMPlexMono_24 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 24);
 
 	ImGui::StyleColorsDark();
 

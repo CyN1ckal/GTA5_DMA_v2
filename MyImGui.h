@@ -26,6 +26,10 @@ public: /* Interface */
 	static bool Close();
 	static bool OnFrame();
 
+public: /* Fonts */
+	static inline ImFont* m_pIBMPlexMono_16 = nullptr;
+	static inline ImFont* m_pIBMPlexMono_24 = nullptr;
+
 private: /* ImGui Windows */
 	static bool FeaturesWindow();
 

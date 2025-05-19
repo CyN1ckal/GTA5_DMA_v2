@@ -3,6 +3,7 @@
 #include <iostream>
 #include <print>
 #include <cstdint>
+#include <vector>
 
 #include <Windows.h>
 

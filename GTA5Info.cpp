@@ -7,7 +7,9 @@
 #include "Zydis/Zydis.h"
 
 #include "Features.h"
+
 #include "Offsets.h"
+
 bool GTA5::m_FindWorldPtr(DMA* dma)
 {
 	PatternInfo pi;
@@ -46,6 +48,7 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindAmmoModifierOffset(dma);
 	m_FindWeaponInventoryOffset(dma);
 	m_FindPlayerInfoOffset(dma);
+	m_FindWantedLevelOffset(dma);
 
 	m_Scan.Close();
 
@@ -115,12 +118,14 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	DWORD HealthBytes = 0x0;
 	DWORD GodBytes = 0x0;
 	DWORD WeaponInventoryBytes = 0x0;
+	DWORD PlayerInfoBytes = 0x0;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
 	uintptr_t GodModeBitsAddress = m_LocalPEDAddr + Offsets::GodBits;
 	uintptr_t CurrentHealthAddress = m_LocalPEDAddr + Offsets::CurrentHealth;
 	uintptr_t WeaponInventoryPtr = m_LocalPEDAddr + Offsets::WeaponInventory;
+	uintptr_t PlayerInfoPtr = m_LocalPEDAddr + Offsets::PlayerInfo;
 
 	struct Health
 	{
@@ -131,10 +136,12 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	Health health;
 	uint32_t GodModeBits = 0x0;
 	uintptr_t WeaponInventoryAddr = 0x0;
+	uintptr_t PlayerInfoAddr = 0x0;
 
 	VMMDLL_Scatter_PrepareEx(vmsh, CurrentHealthAddress, sizeof(float) * 2, (BYTE*)&health, &HealthBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, GodModeBitsAddress, sizeof(uint32_t), (BYTE*)&GodModeBits, &GodBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, WeaponInventoryPtr, sizeof(uintptr_t), (BYTE*)&WeaponInventoryAddr, &WeaponInventoryBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, PlayerInfoPtr, sizeof(uintptr_t), (BYTE*)&PlayerInfoAddr, &PlayerInfoBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
@@ -153,19 +160,36 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	{
 		m_LocalPED_WeaponInventoryAddr = WeaponInventoryAddr;
 	}
+	
+	if (PlayerInfoBytes == sizeof(uintptr_t))
+	{
+		m_LocalPED_PlayerInfoAddr = PlayerInfoAddr;
+	}
 
 	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
 	DWORD AmmoModifierBytes = 0x0;
+	DWORD WantedLevelBytes = 0x0;
+
 	uint32_t AmmoModifierBits = 0x0;
+	int32_t WantedLevel = 0x0;
+
 	uintptr_t AmmoModifierAddress = m_LocalPED_WeaponInventoryAddr + Offsets::AmmoModifier;
+	uintptr_t WantedLevelAddress = m_LocalPED_PlayerInfoAddr + Offsets::WantedLevel;
+
 	VMMDLL_Scatter_PrepareEx(vmsh, AmmoModifierAddress, sizeof(uint32_t), (BYTE*)&AmmoModifierBits, &AmmoModifierBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, WantedLevelAddress, sizeof(int32_t), (BYTE*)&WantedLevel, &WantedLevelBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
 	if (AmmoModifierBytes == sizeof(uint32_t))
 	{
 		m_LocalPED_AmmoModifierBits = AmmoModifierBits;
+	}
+
+	if (WantedLevelBytes == sizeof(int32_t))
+	{
+		m_LocalPED_WantedLevel = WantedLevel;
 	}
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
@@ -177,6 +201,7 @@ bool GTA5::FeatureLoop(DMA* dma)
 {
 	GodMode::OnFrame(dma);
 	InfiniteAmmo::OnFrame(dma);
+	NeverWanted::OnFrame(dma);
 
 	return 1;
 }
@@ -298,6 +323,30 @@ bool GTA5::m_FindPlayerInfoOffset(DMA* dma)
 	Offsets::PlayerInfo = Instruction.operands[0].mem.disp.value;
 
 	std::println("[+] Offsets::PlayerInfo {0:X}", Offsets::PlayerInfo);
+
+	return 1;
+}
+
+bool GTA5::m_FindWantedLevelOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WantedLevelPattern;
+	pi.Mask = Patterns::WantedLevelMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWantedLevelOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWantedLevelOffset Disassemble");
+
+	Offsets::WantedLevel = Instruction.operands[0].mem.disp.value;
+
+	std::println("[+] Offsets::WantedLevel {0:X}", Offsets::WantedLevel);
 
 	return 1;
 }

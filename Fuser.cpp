@@ -43,6 +43,9 @@ bool Fuser::OnFrame()
 	if (InfiniteAmmo::m_InfiniteAmmo)
 		InfoStrings.push_back("Infinite Ammo");
 
+	if (NeverWanted::m_NeverWanted)
+		InfoStrings.push_back("Never Wanted");
+
 	std::sort(InfoStrings.begin(), InfoStrings.end(), [](std::string a, std::string b) {return a.size() > b.size(); });
 
 	auto TextHeight = ImGui::CalcTextSize("a").y;

@@ -245,6 +245,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="NeverWanted.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +267,7 @@
     <ClInclude Include="InfiniteAmmo.h" />
     <ClInclude Include="MultiScan.h" />
     <ClInclude Include="MyImGui.h" />
+    <ClInclude Include="NeverWanted.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="pch.h" />

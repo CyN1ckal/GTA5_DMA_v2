@@ -18,4 +18,7 @@ public:
 
 	static inline const std::string PlayerInfoPattern = "\x48\x83\xB8?????\x75?\x80\x3D";
 	static inline const std::string PlayerInfoMask = "xxx?????x?xx";
+
+	static inline const std::string WantedLevelPattern = "\x83\xB8?????\x0F\x8E????\x8B\x05";
+	static inline const std::string WantedLevelMask = "xx?????xx????xx";
 };

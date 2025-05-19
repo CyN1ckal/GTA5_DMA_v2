@@ -20,6 +20,7 @@ public:
 	static inline float m_LocalPED_MaxHealth = 0.0f;
 	static inline uint32_t m_LocalPED_GodModeBits = 0x0;
 	static inline uint32_t m_LocalPED_AmmoModifierBits = 0x0;
+	static inline int32_t m_LocalPED_WantedLevel = 0x0;
 
 public:
 	static bool FindOffsets(DMA* dma);
@@ -35,4 +36,5 @@ private:
 	static bool m_FindWeaponInventoryOffset(DMA* dma);
 	static bool m_FindAmmoModifierOffset(DMA* dma);
 	static bool m_FindPlayerInfoOffset(DMA* dma);
+	static bool m_FindWantedLevelOffset(DMA* dma);
 };

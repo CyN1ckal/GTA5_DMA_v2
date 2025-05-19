@@ -43,6 +43,18 @@
     <Filter Include="Core\GUI\Fonts">
       <UniqueIdentifier>{839f74de-5b05-4e2d-a04a-0947de8be704}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Fuser">
+      <UniqueIdentifier>{629eedb0-2d4a-472c-a9c1-f7e3dff15938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\God Mode">
+      <UniqueIdentifier>{fc79e3ad-de4f-429f-b3ee-2f2fa78ccb06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\Infinite Ammo">
+      <UniqueIdentifier>{dd04f1af-8c64-4cf3-9928-fca64eeed7c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Features\Never Wanted">
+      <UniqueIdentifier>{d6cede5a-7daf-4862-9da2-5383619a7b6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,14 +63,8 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GodMode.cpp">
-      <Filter>Features</Filter>
-    </ClCompile>
     <ClCompile Include="MultiScan.cpp">
       <Filter>Utils\Pattern Scan</Filter>
-    </ClCompile>
-    <ClCompile Include="InfiniteAmmo.cpp">
-      <Filter>Features</Filter>
     </ClCompile>
     <ClCompile Include="MyImGui.cpp">
       <Filter>Core\GUI</Filter>
@@ -91,7 +97,16 @@
       <Filter>Dependencies\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Fuser.cpp">
-      <Filter>Features</Filter>
+      <Filter>Features\Fuser</Filter>
+    </ClCompile>
+    <ClCompile Include="GodMode.cpp">
+      <Filter>Features\God Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="InfiniteAmmo.cpp">
+      <Filter>Features\Infinite Ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="NeverWanted.cpp">
+      <Filter>Features\Never Wanted</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +116,6 @@
     <ClInclude Include="Patterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GodMode.h">
-      <Filter>Features</Filter>
-    </ClInclude>
     <ClInclude Include="Features.h">
       <Filter>Features</Filter>
     </ClInclude>
@@ -112,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="MultiScan.h">
       <Filter>Utils\Pattern Scan</Filter>
-    </ClInclude>
-    <ClInclude Include="InfiniteAmmo.h">
-      <Filter>Features</Filter>
     </ClInclude>
     <ClInclude Include="MyImGui.h">
       <Filter>Core\GUI</Filter>
@@ -149,14 +158,23 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Dependencies\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Fuser.h">
-      <Filter>Features</Filter>
-    </ClInclude>
     <ClInclude Include="IBMPlexMono-Bold.h">
       <Filter>Core\GUI\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="Fonts.h">
       <Filter>Core\GUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Fuser.h">
+      <Filter>Features\Fuser</Filter>
+    </ClInclude>
+    <ClInclude Include="GodMode.h">
+      <Filter>Features\God Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="InfiniteAmmo.h">
+      <Filter>Features\Infinite Ammo</Filter>
+    </ClInclude>
+    <ClInclude Include="NeverWanted.h">
+      <Filter>Features\Never Wanted</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

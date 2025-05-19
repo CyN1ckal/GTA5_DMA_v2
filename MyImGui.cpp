@@ -43,6 +43,9 @@ bool MyImGui::FeaturesWindow()
 		ImGui::InputInt("Height	", &Fuser::m_Height);
 	}
 
+	if (ImGui::Button("Request Teleport"))
+		Teleport::m_RequestedTeleport = true;
+
 	ImGui::End();
 
 	return 1;

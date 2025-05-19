@@ -30,4 +30,13 @@ public:
 
 	static inline const std::string PlayerPositionPattern = "\xF2\x0F\x10\x40?\xF2\x0F\x11\x44\x24?\xF3\x0F\x10\x40?\xF3\x0F\x11\x44\x24?\x48\x89\xF1";
 	static inline const std::string PlayerPositionMask = "xxxx?xxxxx?xxxx?xxxxx?xxx";
+
+	static inline const std::string BlipPattern = "\x4C\x8D\x3D????\x49\x8B\x34\xC7";
+	static inline const std::string BlipMask = "xxx????xxxx";
+
+	static inline const std::string BlipPositionPattern = "\x0F\x29\x78?\xEB?\x0F\x13\x78";
+	static inline const std::string BlipPositionMask = "xxx?x?xxx";
+
+	static inline const std::string BlipIDPattern = "\x41\x0F\x28\x44\x24?\x41\x0F\x28\x4C\x24?\x41\x0F\x29\x4E";
+	static inline const std::string BlipIDMask = "xxxxx?xxxxx?xxxx";
 };

@@ -58,6 +58,9 @@
     <Filter Include="Features\Vehicle God Mode">
       <UniqueIdentifier>{e9044955-7931-4f79-85f7-65715bb9027a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Teleport">
+      <UniqueIdentifier>{c91d8220-1a0b-4f07-b53d-3ab536502fb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="VehicleGodMode.cpp">
       <Filter>Features\Vehicle God Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="Teleport.cpp">
+      <Filter>Features\Teleport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="VehicleGodMode.h">
       <Filter>Features\Vehicle God Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleport.h">
+      <Filter>Features\Teleport</Filter>
+    </ClInclude>
+    <ClInclude Include="MyVector.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

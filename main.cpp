@@ -19,6 +19,8 @@ int main() {
 	{
 		dma.Start("GTA5_Enhanced.exe");
 		GTA5::FindOffsets(&dma);
+		GTA5::UpdateWorldAddress(&dma);
+		GTA5::UpdateLocalPlayerAddr(&dma);
 	}
 	catch (const std::exception& e)
 	{
@@ -33,10 +35,8 @@ int main() {
 		unsigned int max_n_threads = 1;
 		Bosma::Scheduler s(max_n_threads);
 
-		GTA5::UpdateWorldAddress(&dma);
-		GTA5::UpdateLocalPlayerAddr(&dma);
-
 		s.every(std::chrono::seconds(10), GTA5::UpdateLocalPlayerAddr, &dma);
+		//s.every(std::chrono::seconds(2), GTA5::UpdateBlips, &dma);
 		s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, &dma);
 		s.every(std::chrono::milliseconds(7), GTA5::FeatureLoop, &dma);
 

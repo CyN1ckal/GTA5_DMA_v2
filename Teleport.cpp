@@ -1,0 +1,66 @@
+#include "pch.h"
+
+#include <thread>
+
+#include "MyVector.h"
+
+#include "DMA.h"
+
+#include "Teleport.h"
+
+bool Teleport::OnFrame(DMA* dma)
+{
+	if (m_RequestedTeleport)
+	{
+		GTA5::UpdateBlips(dma);
+
+		Vector3 Position = GTA5::GetWaypointLocation();
+
+		if (Position.z != 0.0f)
+		{
+			if (Position.z == 20)
+				Position.x = -255;
+
+			SetPlayerLocation(dma, Position);
+		}
+
+		m_RequestedTeleport = false;
+	}
+
+	return 1;
+}
+
+bool Teleport::SetPlayerLocation(DMA* dma, Vector3& Location)
+{
+	m_StartingLocation = GTA5::m_LocalPED_Location;
+
+	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	uintptr_t PlayerPositionAddress = GTA5::m_LocalPED_NavigationAddr + Offsets::PlayerPosition;
+
+	VMMDLL_Scatter_PrepareWrite(vmsh, PlayerPositionAddress, (BYTE*)&Location, sizeof(Vector3));
+
+	for (int i = 0; i < 250; i++)
+	{
+		VMMDLL_Scatter_Execute(vmsh);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(7));
+
+		GTA5::UpdateLocalPlayerInfo(dma);
+
+		float DistanceFromStart = GTA5::m_LocalPED_Location.Distance(m_StartingLocation);
+		float DistanceFromTarget = GTA5::m_LocalPED_Location.Distance(Location);
+
+		if (DistanceFromStart > 25.0f && (DistanceFromTarget < 25.0f && DistanceFromTarget > 0.01f))
+		{
+			std::println("[+] Teleport Successful");
+			break;
+		}
+		if (i == 249)
+			std::println("[+] Teleport Failed");
+	}
+
+	VMMDLL_Scatter_CloseHandle(vmsh);
+
+	return 1;
+}

@@ -20,19 +20,48 @@ bool GTA5::m_FindWorldPtr(DMA* dma)
 	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
 	auto RuntimeAddress = m_Scan.Scan(pi);
 
-	if (!SectionOffset || !RuntimeAddress) return 0;
+	if (!SectionOffset || !RuntimeAddress)
+		throw std::exception("m_FindWorldPtr Offset");
 
 	ZydisDisassembledInstruction Instruction;
 
 	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
 	{
-		std::println("Failed to disassemble instruction!");
+		std::println("m_FindWorldPtr Disassemble");
 		return 0;
 	}
 
 	m_WorldPtr = Instruction.operands[1].mem.disp.value + RuntimeAddress + Instruction.info.length;
 
-	std::println("[+] m_WorldPtr {0:X}", m_WorldPtr);
+	std::println("[+] GTA5::m_WorldPtr {0:X}", m_WorldPtr);
+
+	return 1;
+}
+
+bool GTA5::m_FindBlipPtr(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::BlipPattern;
+	pi.Mask = Patterns::BlipMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress)
+		throw std::exception("m_FindBlipPtr Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+	{
+		std::println("m_FindBlipPtr Disassemble");
+		return 0;
+	}
+
+	m_BlipPtr = Instruction.operands[1].mem.disp.value + RuntimeAddress + Instruction.info.length;
+
+	std::println("[+] GTA5::m_BlipPtr {0:X}", m_BlipPtr);
 
 	return 1;
 }
@@ -41,17 +70,21 @@ bool GTA5::FindOffsets(DMA* dma)
 {
 	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
 
-	m_FindWorldPtr(dma);
-
-	m_FindGodBitsOffset(dma);
-	m_FindHealthOffset(dma);
-	m_FindAmmoModifierOffset(dma);
 	m_FindWeaponInventoryOffset(dma);
 	m_FindPlayerInfoOffset(dma);
 	m_FindWantedLevelOffset(dma);
+	m_FindHealthOffset(dma);
+	m_FindGodBitsOffset(dma);
 	m_FindVehicleGodBitsOffset(dma);
-	m_FindNavigationOffset(dma);
+	m_FindAmmoModifierOffset(dma);
 	m_FindPlayerPositionOffset(dma);
+	m_FindNavigationOffset(dma);
+
+	m_FindBlipPositionOffset(dma);
+	m_FindBlipIDOffset(dma);
+
+	m_FindWorldPtr(dma);
+	m_FindBlipPtr(dma);
 
 	m_Scan.Close();
 
@@ -105,7 +138,12 @@ bool GTA5::UpdateWorldAddress(DMA* dma)
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
-	std::println("[+] m_WorldAddr {0:X}", m_WorldAddr);
+	static uintptr_t PreviousWorldAddr = 0x0;
+	if (PreviousWorldAddr != m_WorldAddr)
+	{
+		std::println("[+] m_WorldAddr {0:X}", m_WorldAddr);
+		PreviousWorldAddr = m_WorldAddr;
+	}
 
 	return 1;
 }
@@ -236,9 +274,9 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	if (PositionBytes == sizeof(Vector3))
 	{
-		m_LocalPED_Position.x = PlayerPosition.x;
-		m_LocalPED_Position.y = PlayerPosition.y;
-		m_LocalPED_Position.z = PlayerPosition.z;
+		m_LocalPED_Location.x = PlayerPosition.x;
+		m_LocalPED_Location.y = PlayerPosition.y;
+		m_LocalPED_Location.z = PlayerPosition.z;
 	}
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
@@ -252,6 +290,7 @@ bool GTA5::FeatureLoop(DMA* dma)
 	InfiniteAmmo::OnFrame(dma);
 	NeverWanted::OnFrame(dma);
 	VehicleGodMode::OnFrame(dma);
+	Teleport::OnFrame(dma);
 
 	return 1;
 }
@@ -300,7 +339,7 @@ bool GTA5::m_FindHealthOffset(DMA* dma)
 	Offsets::CurrentHealth = Instruction.operands[0].mem.disp.value;
 	Offsets::MaxHealth = Offsets::CurrentHealth + sizeof(float);
 
-	std::println("[+] Offsets::CurrentHealth {0:X}\n[+] Offsets::MaxHealth {1:X}", Offsets::CurrentHealth, Offsets::MaxHealth);
+	std::println("[+] Offsets::MaxHealth {0:X}\n[+] Offsets::CurrentHealth {1:X}", Offsets::MaxHealth, Offsets::CurrentHealth);
 
 	return 1;
 }
@@ -471,4 +510,123 @@ bool GTA5::m_FindPlayerPositionOffset(DMA* dma)
 	std::println("[+] Offsets::PlayerPosition {0:X}", Offsets::PlayerPosition);
 
 	return 1;
+}
+
+bool GTA5::m_FindBlipPositionOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::BlipPositionPattern;
+	pi.Mask = Patterns::BlipPositionMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindBlipPositionOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindBlipPositionOffset Disassemble");
+
+	Offsets::BlipPosition = Instruction.operands[0].mem.disp.value;
+
+	std::println("[+] Offsets::BlipPosition {0:X}", Offsets::BlipPosition);
+
+	return 1;
+}
+
+bool GTA5::m_FindBlipIDOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::BlipIDPattern;
+	pi.Mask = Patterns::BlipIDMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindBlipIDOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindBlipIDOffset Disassemble");
+
+	Offsets::BlipID = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::BlipID {0:X}", Offsets::BlipID);
+
+	return 1;
+}
+
+static const int MaxBlips = 500;
+std::array<DWORD, MaxBlips> BlipPositionBytes{ 0 };
+std::array<DWORD, MaxBlips> BlipIDBytes{ 0 };
+
+bool Func(BlipInfo b)
+{
+
+
+	return 1;
+}
+
+bool GTA5::UpdateBlips(DMA* dma)
+{
+	if (!m_BlipPtr)
+		return 0;
+
+	std::vector<uintptr_t>BlipAddresses;
+	BlipAddresses.resize(MaxBlips);
+	BlipAddresses.reserve(MaxBlips);
+
+	DWORD BytesRead = 0x0;
+
+	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	VMMDLL_Scatter_PrepareEx(vmsh, m_BlipPtr, sizeof(uintptr_t) * MaxBlips, (BYTE*)&BlipAddresses[0], &BytesRead);
+
+	VMMDLL_Scatter_Execute(vmsh);
+
+	if (BytesRead != sizeof(uintptr_t) * MaxBlips)
+		throw std::exception(std::format("UpdateBlips BytesRead {0:X}/{1:X}", BytesRead, sizeof(uintptr_t) * MaxBlips).c_str());
+
+	BlipAddresses.erase(std::remove(BlipAddresses.begin(), BlipAddresses.end(), 0x0), BlipAddresses.end());
+
+	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	std::vector<BlipInfo> Blips;
+	Blips.resize(BlipAddresses.size());
+	Blips.reserve(BlipAddresses.size());
+
+	for (int i = 0; i < BlipAddresses.size(); i++)
+	{
+		uintptr_t BlipAddress = BlipAddresses[i];
+
+		uintptr_t BlipPositonAddress = BlipAddress + Offsets::BlipPosition;
+		uintptr_t BlipIDAddress = BlipAddress + Offsets::BlipID;
+
+		VMMDLL_Scatter_PrepareEx(vmsh, BlipPositonAddress, sizeof(Vector3), (BYTE*)&Blips[i].WorldPosition, &BlipPositionBytes[i]);
+		VMMDLL_Scatter_PrepareEx(vmsh, BlipIDAddress, sizeof(int32_t), (BYTE*)&Blips[i].ID, &BlipIDBytes[i]);
+	}
+
+	VMMDLL_Scatter_ExecuteRead(vmsh);
+
+	VMMDLL_Scatter_CloseHandle(vmsh);
+
+	m_Blips.assign(Blips.begin(), Blips.end());
+
+	return 1;
+}
+
+Vector3 GTA5::GetWaypointLocation()
+{
+	for (auto Blip : m_Blips)
+	{
+		if (Blip.ID == 8)
+			return Blip.WorldPosition;
+	}
+
+	Vector3 Return = { 0.0f,0.0f,0.0f };
+	return Return;
 }

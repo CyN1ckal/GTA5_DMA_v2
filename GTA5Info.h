@@ -2,12 +2,14 @@
 
 #include "MultiScan.h"
 #include "Patterns.h"
+#include "MyVector.h"
 
 class DMA;
 
-struct Vector3
+struct BlipInfo
 {
-	float x, y, z;
+	Vector3 WorldPosition;
+	int32_t ID;
 };
 
 class GTA5
@@ -15,6 +17,7 @@ class GTA5
 public:
 	static inline MultiScan m_Scan;
 	static inline uintptr_t m_WorldPtr = 0x0;
+	static inline uintptr_t m_BlipPtr = 0x0;
 
 	static inline uintptr_t m_WorldAddr = 0x0;
 	static inline uintptr_t m_LocalPEDAddr = 0x0;
@@ -29,17 +32,23 @@ public:
 	static inline uint32_t m_LocalPED_VehicleGodModeBits = 0x0;
 	static inline uint32_t m_LocalPED_AmmoModifierBits = 0x0;
 	static inline int32_t m_LocalPED_WantedLevel = 0x0;
-	static inline Vector3 m_LocalPED_Position = { 0.0f, 0.0f, 0.0f };
+	static inline Vector3 m_LocalPED_Location = { 0.0f, 0.0f, 0.0f };
+
+	static inline std::vector<BlipInfo> m_Blips;
 
 public:
 	static bool FindOffsets(DMA* dma);
 	static bool UpdateWorldAddress(DMA* dma);
 	static bool UpdateLocalPlayerAddr(DMA* dma);
 	static bool UpdateLocalPlayerInfo(DMA* dma);
+	static bool UpdateBlips(DMA* dma);
 	static bool FeatureLoop(DMA* dma);
+
+	static Vector3 GetWaypointLocation();
 
 private:
 	static bool m_FindWorldPtr(DMA* dma);
+	static bool m_FindBlipPtr(DMA* dma);
 	static bool m_FindGodBitsOffset(DMA* dma);
 	static bool m_FindHealthOffset(DMA* dma);
 	static bool m_FindWeaponInventoryOffset(DMA* dma);
@@ -49,4 +58,6 @@ private:
 	static bool m_FindVehicleGodBitsOffset(DMA* dma);
 	static bool m_FindNavigationOffset(DMA* dma);
 	static bool m_FindPlayerPositionOffset(DMA* dma);
+	static bool m_FindBlipPositionOffset(DMA* dma);
+	static bool m_FindBlipIDOffset(DMA* dma);
 };

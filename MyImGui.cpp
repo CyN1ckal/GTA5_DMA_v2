@@ -24,6 +24,7 @@ bool MyImGui::FeaturesWindow()
 	ImGui::Begin("Features");
 
 	ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
+
 	ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
 
 	ImGui::End();
@@ -55,6 +56,8 @@ bool MyImGui::Initialize()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 
 	ImGui::StyleColorsDark();
 
@@ -111,10 +114,14 @@ bool MyImGui::OnFrameEnd()
 	g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
 	g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color_with_alpha);
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	
+	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+	}
 
-	// Present
 	HRESULT hr = g_pSwapChain->Present(1, 0);   // Present with vsync
-	//HRESULT hr = g_pSwapChain->Present(0, 0); // Present without vsync
 	g_SwapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
 
 	return 1;

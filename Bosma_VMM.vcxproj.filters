@@ -31,6 +31,15 @@
     <Filter Include="Utils\Pattern Scan">
       <UniqueIdentifier>{4caca461-773c-4cbd-8fb1-6348b3960f12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\GUI">
+      <UniqueIdentifier>{0240ffec-26ee-49e2-b637-b20fda9f1d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\DMA">
+      <UniqueIdentifier>{1d4b9d4d-01de-4197-9e2b-703f2c02a615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\GTA5">
+      <UniqueIdentifier>{d9de8806-b027-453d-8451-b3c7e0975ea3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,14 +48,23 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5Info.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="DMA.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="GodMode.cpp">
       <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiScan.cpp">
+      <Filter>Utils\Pattern Scan</Filter>
+    </ClCompile>
+    <ClCompile Include="InfiniteAmmo.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="MyImGui.cpp">
+      <Filter>Core\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="DMA.cpp">
+      <Filter>Core\DMA</Filter>
+    </ClCompile>
+    <ClCompile Include="GTA5Info.cpp">
+      <Filter>Core\GTA5</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Dependencies\ImGui</Filter>
@@ -69,15 +87,6 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Dependencies\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="MyImGui.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiScan.cpp">
-      <Filter>Utils\Pattern Scan</Filter>
-    </ClCompile>
-    <ClCompile Include="InfiniteAmmo.cpp">
-      <Filter>Features</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -86,17 +95,29 @@
     <ClInclude Include="Patterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5Info.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="DMA.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="GodMode.h">
       <Filter>Features</Filter>
     </ClInclude>
     <ClInclude Include="Features.h">
       <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Offsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiScan.h">
+      <Filter>Utils\Pattern Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="InfiniteAmmo.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="MyImGui.h">
+      <Filter>Core\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="DMA.h">
+      <Filter>Core\DMA</Filter>
+    </ClInclude>
+    <ClInclude Include="GTA5Info.h">
+      <Filter>Core\GTA5</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Dependencies\ImGui</Filter>
@@ -121,18 +142,6 @@
     </ClInclude>
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Dependencies\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="MyImGui.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Offsets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MultiScan.h">
-      <Filter>Utils\Pattern Scan</Filter>
-    </ClInclude>
-    <ClInclude Include="InfiniteAmmo.h">
-      <Filter>Features</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,16 +15,16 @@ bool g_Alive = true;
 int main() {
 	DMA dma;
 
-	dma.Start("GTA5_Enhanced.exe");
-
 	try
 	{
+		dma.Start("GTA5_Enhanced.exe");
 		GTA5::FindOffsets(&dma);
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error: " << e.what() << std::endl;
-		dma.Close();
+		if (dma.m_vmh)
+			dma.Close();
 		system("pause");
 		return 0;
 	}

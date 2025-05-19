@@ -16,4 +16,6 @@ public: /* Dynamically Resolved */
 	static inline uint32_t PlayerInfo = 0x0;
 	static inline uint32_t WantedLevel = 0x0;
 	static inline uint32_t VehicleGodBits = 0x0;
+	static inline uint32_t Navigation = 0x0;
+	static inline uint32_t PlayerPosition = 0x0;
 };

@@ -5,6 +5,11 @@
 
 class DMA;
 
+struct Vector3
+{
+	float x, y, z;
+};
+
 class GTA5
 {
 public:
@@ -16,6 +21,7 @@ public:
 	static inline uintptr_t m_LocalPED_WeaponInventoryAddr = 0x0;
 	static inline uintptr_t m_LocalPED_PlayerInfoAddr = 0x0;
 	static inline uintptr_t m_LocalPED_VehicleAddr = 0x0;
+	static inline uintptr_t m_LocalPED_NavigationAddr = 0x0;
 
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
@@ -23,6 +29,7 @@ public:
 	static inline uint32_t m_LocalPED_VehicleGodModeBits = 0x0;
 	static inline uint32_t m_LocalPED_AmmoModifierBits = 0x0;
 	static inline int32_t m_LocalPED_WantedLevel = 0x0;
+	static inline Vector3 m_LocalPED_Position = { 0.0f, 0.0f, 0.0f };
 
 public:
 	static bool FindOffsets(DMA* dma);
@@ -40,4 +47,6 @@ private:
 	static bool m_FindPlayerInfoOffset(DMA* dma);
 	static bool m_FindWantedLevelOffset(DMA* dma);
 	static bool m_FindVehicleGodBitsOffset(DMA* dma);
+	static bool m_FindNavigationOffset(DMA* dma);
+	static bool m_FindPlayerPositionOffset(DMA* dma);
 };

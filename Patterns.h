@@ -24,4 +24,10 @@ public:
 
 	static inline const std::string VehicleGodBitsPattern = "\xF6\x80?????\x74?\x8B\x05????\x89\x86????\x48\x8D\x0D";
 	static inline const std::string VehicleGodBitsMask = "xx?????x?xx????xx????xxx";
+
+	static inline const std::string NavigationPattern = "\x48\x8B\x48?\x48\x85\xC9\x0F\x84????\x0F\xB7\x71";
+	static inline const std::string NavigationMask = "xxx?xxxxx????xxx";
+
+	static inline const std::string PlayerPositionPattern = "\xF2\x0F\x10\x40?\xF2\x0F\x11\x44\x24?\xF3\x0F\x10\x40?\xF3\x0F\x11\x44\x24?\x48\x89\xF1";
+	static inline const std::string PlayerPositionMask = "xxxx?xxxxx?xxxx?xxxxx?xxx";
 };

@@ -29,7 +29,7 @@ bool Fuser::OnFrame()
 
 	ImGui::PushFont(MyImGui::m_pIBMPlexMono_24);
 
-	ImGuiWindowFlags wnd = ImGuiWindowFlags_NoDecoration;
+	ImGuiWindowFlags wnd = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs;
 
 	ImGui::SetNextWindowSize({ static_cast<float>(m_Width), static_cast<float>(m_Height) });
 

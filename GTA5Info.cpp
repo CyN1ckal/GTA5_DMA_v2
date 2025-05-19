@@ -45,6 +45,7 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindHealthOffset(dma);
 	m_FindAmmoModifierOffset(dma);
 	m_FindWeaponInventoryOffset(dma);
+	m_FindPlayerInfoOffset(dma);
 
 	m_Scan.Close();
 
@@ -273,6 +274,30 @@ bool GTA5::m_FindAmmoModifierOffset(DMA* dma)
 	Offsets::AmmoModifier = Instruction.operands[0].mem.disp.value;
 
 	std::println("[+] Offsets::AmmoModifier {0:X}", Offsets::AmmoModifier);
+
+	return 1;
+}
+
+bool GTA5::m_FindPlayerInfoOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::PlayerInfoPattern;
+	pi.Mask = Patterns::PlayerInfoMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindAmmoModifierOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindAmmoModifierOffset Disassemble");
+
+	Offsets::PlayerInfo = Instruction.operands[0].mem.disp.value;
+
+	std::println("[+] Offsets::PlayerInfo {0:X}", Offsets::PlayerInfo);
 
 	return 1;
 }

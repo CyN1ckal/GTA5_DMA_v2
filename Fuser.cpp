@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include "MyImGui.h"
+
 bool Fuser::OnFrame()
 {
 	if (!m_Fuser)
@@ -25,6 +27,8 @@ bool Fuser::OnFrame()
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.0f,0.0f,0.0f,1.0f });
 	ImGui::PushStyleColor(ImGuiCol_Border, { 0.0f,0.0f,0.0f,0.0f });
 
+	ImGui::PushFont(MyImGui::m_pIBMPlexMono_24);
+
 	ImGuiWindowFlags wnd = ImGuiWindowFlags_NoDecoration;
 
 	ImGui::SetNextWindowSize({ static_cast<float>(m_Width), static_cast<float>(m_Height) });
@@ -32,8 +36,6 @@ bool Fuser::OnFrame()
 	ImGui::Begin("Fuser", &m_Fuser, wnd);
 
 	std::vector<std::string> InfoStrings;
-
-	InfoStrings.push_back("Made with love by CyNickal");
 
 	if (GodMode::m_GodMode)
 		InfoStrings.push_back("God Mode");
@@ -45,19 +47,26 @@ bool Fuser::OnFrame()
 
 	auto TextHeight = ImGui::CalcTextSize("a").y;
 
-	ImVec2 CursorPos = { 0,0 };
+	ImVec2 CursorPos = { 5,5 };
 	ImGui::SetCursorPos(CursorPos);
 
+	ImGui::Text("Made with love by CyNickal");
+	CursorPos.y += TextHeight;
+
+	ImGui::PushStyleColor(ImGuiCol_Text, { 0.8f,0.05f,0.9f,1.0f });
 	for (auto& Str : InfoStrings)
 	{
 		ImGui::SetCursorPos(CursorPos);
 		ImGui::Text(Str.c_str());
 		CursorPos.y += TextHeight;
 	}
+	ImGui::PopStyleColor(1);
 
 	ImGui::End();
 
 	ImGui::PopStyleColor(2);
+
+	ImGui::PopFont();
 
 	return 1;
 }

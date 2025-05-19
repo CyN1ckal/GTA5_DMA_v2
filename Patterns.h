@@ -15,4 +15,7 @@ public:
 
 	static inline const std::string WeaponInventoryPattern = "\x4C\x8B\xB2????\x4D\x85\xF6\x0F\x84????\x45\x8B\x7C\x24";
 	static inline const std::string WeaponInventoryMask = "xxx????xxxxx????xxxx";
+
+	static inline const std::string PlayerInfoPattern = "\x48\x83\xB8?????\x75?\x80\x3D";
+	static inline const std::string PlayerInfoMask = "xxx?????x?xx";
 };

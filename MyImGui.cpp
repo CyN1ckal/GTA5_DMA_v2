@@ -65,14 +65,16 @@ bool MyImGui::Initialize()
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 
-	m_pIBMPlexMono_16 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 16);
-	m_pIBMPlexMono_24 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 24);
+	ImFontConfig cfg;
+	cfg.FontDataOwnedByAtlas = false;
+	m_pIBMPlexMono_16 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 16, &cfg);
+	m_pIBMPlexMono_24 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 24, &cfg);
 
 	ImGui::StyleColorsDark();
 
@@ -129,7 +131,7 @@ bool MyImGui::OnFrameEnd()
 	g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
 	g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color_with_alpha);
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-	
+
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		ImGui::UpdatePlatformWindows();

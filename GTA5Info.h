@@ -14,6 +14,7 @@ public:
 	static inline uintptr_t m_WorldAddr = 0x0;
 	static inline uintptr_t m_LocalPEDAddr = 0x0;
 	static inline uintptr_t m_LocalPED_WeaponInventoryAddr = 0x0;
+	static inline uintptr_t m_LocalPED_PlayerInfoAddr = 0x0;
 
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
@@ -33,4 +34,5 @@ private:
 	static bool m_FindHealthOffset(DMA* dma);
 	static bool m_FindWeaponInventoryOffset(DMA* dma);
 	static bool m_FindAmmoModifierOffset(DMA* dma);
+	static bool m_FindPlayerInfoOffset(DMA* dma);
 };

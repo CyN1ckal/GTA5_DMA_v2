@@ -20,4 +20,9 @@ public: /* Dynamically Resolved */
 	static inline uint32_t PlayerPosition = 0x0;
 	static inline int32_t BlipID = 0x0;
 	static inline int32_t BlipPosition = 0x0;
+	static inline int32_t WeaponManager = 0x0;
+	static inline int32_t WeaponInfo = 0x0;
+	static inline int32_t WeaponName = 0x0;
+	static inline int32_t ImpactType = 0x0;
+	static inline int32_t ImpactExplosion = 0x0;
 };

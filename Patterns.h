@@ -39,4 +39,16 @@ public:
 
 	static inline const std::string BlipIDPattern = "\x41\x0F\x28\x44\x24?\x41\x0F\x28\x4C\x24?\x41\x0F\x29\x4E";
 	static inline const std::string BlipIDMask = "xxxxx?xxxxx?xxxx";
+
+	static inline const std::string WeaponManagerPattern = "\x49\x83\xBD?????\x74?\x48\x89\xC5";
+	static inline const std::string WeaponManagerMask = "xxx?????x?xxx";
+
+	static inline const std::string WeaponInfoPattern = "\x48\x3B\x4F?\x48\x0F\x44\xC1";
+	static inline const std::string WeaponInfoMask = "xxx?xxxx";
+
+	static inline const std::string WeaponNamePattern = "\x81\x78?????\x0F\x85????\x4C\x8B\x35";
+	static inline const std::string WeaponNameMask = "xx?????xx????xxx";
+
+	static inline const std::string WeaponImpactTypePattern = "\x83\x7D??\x74?\x8B\x05????\x39\x45";
+	static inline const std::string WeaponImpactTypeMask = "xx??x?xx????xx";
 };

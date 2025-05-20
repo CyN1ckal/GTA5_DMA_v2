@@ -25,6 +25,8 @@ public:
 	static inline uintptr_t m_LocalPED_PlayerInfoAddr = 0x0;
 	static inline uintptr_t m_LocalPED_VehicleAddr = 0x0;
 	static inline uintptr_t m_LocalPED_NavigationAddr = 0x0;
+	static inline uintptr_t m_LocalPED_WeaponManagerAddr = 0x0;
+	static inline uintptr_t m_LocalPED_WeaponInfoAddr = 0x0;
 
 	static inline float m_LocalPED_CurrentHealth = 0.0f;
 	static inline float m_LocalPED_MaxHealth = 0.0f;
@@ -34,6 +36,10 @@ public:
 	static inline int32_t m_LocalPED_WantedLevel = 0x0;
 	static inline Vector3 m_LocalPED_Location = { 0.0f, 0.0f, 0.0f };
 
+	static inline uint32_t m_LocalPed_WeaponName = 0x0;
+	static inline int32_t m_LocalPed_ImpactType = 0x0;
+	static inline int32_t m_LocalPed_ImpactExplosion = 0x0;
+
 	static inline std::vector<BlipInfo> m_Blips;
 
 public:
@@ -41,6 +47,7 @@ public:
 	static bool UpdateWorldAddress(DMA* dma);
 	static bool UpdateLocalPlayerAddr(DMA* dma);
 	static bool UpdateLocalPlayerInfo(DMA* dma);
+	static bool UpdateWeaponInfo(DMA* dma);
 	static bool UpdateBlips(DMA* dma);
 	static bool FeatureLoop(DMA* dma);
 
@@ -60,4 +67,8 @@ private:
 	static bool m_FindPlayerPositionOffset(DMA* dma);
 	static bool m_FindBlipPositionOffset(DMA* dma);
 	static bool m_FindBlipIDOffset(DMA* dma);
+	static bool m_FindWeaponManagerOffset(DMA* dma);
+	static bool m_FindWeaponInfoOffset(DMA* dma);
+	static bool m_FindWeaponNameOffset(DMA* dma);
+	static bool m_FindWeaponImpactOffsets(DMA* dma);
 };

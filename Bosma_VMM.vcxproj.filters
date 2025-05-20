@@ -120,6 +120,9 @@
     <ClCompile Include="Teleport.cpp">
       <Filter>Features\Teleport</Filter>
     </ClCompile>
+    <ClCompile Include="Tracy\TracyClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

@@ -93,6 +93,8 @@ bool GTA5::FindOffsets(DMA* dma)
 
 bool GTA5::UpdateLocalPlayerAddr(DMA* dma)
 {
+	ZoneScoped;
+
 	if (!m_WorldAddr)
 		return 0;
 
@@ -122,6 +124,8 @@ bool GTA5::UpdateLocalPlayerAddr(DMA* dma)
 
 bool GTA5::UpdateWorldAddress(DMA* dma)
 {
+	ZoneScoped;
+
 	if (!m_WorldPtr)
 		return 0;
 
@@ -150,6 +154,8 @@ bool GTA5::UpdateWorldAddress(DMA* dma)
 
 bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 {
+	ZoneScoped;
+
 	if (!m_LocalPEDAddr)
 	{
 		UpdateLocalPlayerAddr(dma);
@@ -286,6 +292,8 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 bool GTA5::FeatureLoop(DMA* dma)
 {
+	ZoneScoped;
+
 	GodMode::OnFrame(dma);
 	InfiniteAmmo::OnFrame(dma);
 	NeverWanted::OnFrame(dma);
@@ -566,6 +574,8 @@ std::array<DWORD, MaxBlips> BlipIDBytes{ 0 };
 
 bool GTA5::UpdateBlips(DMA* dma)
 {
+	ZoneScoped;
+
 	if (!m_BlipPtr)
 		return 0;
 

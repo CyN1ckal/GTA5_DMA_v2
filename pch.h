@@ -8,6 +8,10 @@
 
 #include <Windows.h>
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 #include "d3d11.h"
 
 #include "ImGui/imgui.h"

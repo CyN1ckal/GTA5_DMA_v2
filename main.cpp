@@ -44,6 +44,8 @@ int main() {
 
 		while (g_Alive)
 		{
+			ZoneScopedN("Render Loop");
+
 			if (GetAsyncKeyState(VK_END) & 1) g_Alive = false;
 
 			MyImGui::OnFrame();

@@ -5,3 +5,4 @@
 #include "NeverWanted.h"
 #include "VehicleGodMode.h"
 #include "Teleport.h"
+#include "WeaponInspector.h"

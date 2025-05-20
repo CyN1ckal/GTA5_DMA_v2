@@ -86,6 +86,11 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindWeaponInfoOffset(dma);
 	m_FindWeaponNameOffset(dma);
 	m_FindWeaponImpactOffsets(dma);
+	m_FindWeaponDamageOffset(dma);
+	m_FindWeaponPenetrationOffset(dma);
+	m_FindWeaponReloadMultiplierOffset(dma);
+	m_FindWeaponFireRateOffset(dma);
+	m_FindWeaponRecoilAmplitudeOffset(dma);
 
 	m_FindWorldPtr(dma);
 	m_FindBlipPtr(dma);
@@ -324,6 +329,11 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 
 	uintptr_t WeaponNameAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponName;
 	uintptr_t ImpactAddr = m_LocalPED_WeaponInfoAddr + Offsets::ImpactType;
+	uintptr_t DamageAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponDamage;
+	uintptr_t PenetrationAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponPenetration;
+	uintptr_t ReloadMultiplierAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponReloadMultiplier;
+	uintptr_t FireRateAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponFireRate;
+	uintptr_t RecoilAmplitudeAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponRecoilAmplitude;
 
 	struct Impact
 	{
@@ -334,21 +344,57 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 
 	DWORD BytesRead = 0x0;
 	DWORD ImpactBytesRead = 0x0;
+	DWORD DamageBytes = 0x0;
+	DWORD PenetrationBytes = 0x0;
+	DWORD ReloadBytes = 0x0;
+	DWORD FireRateBytes = 0x0;
+	DWORD RecoilBytes = 0x0;
 
 	uint32_t WeaponName = 0x0;
+	float WeaponDamage = 0x0;
+	float WeaponPenetration = 0x0;
+	float ReloadMultiplier = 0x0;
+	float FireRate = 0x0;
+	float RecoilAmplitude = 0x0;
 
 	VMMDLL_Scatter_PrepareEx(vmsh, WeaponNameAddr, sizeof(uint32_t), (BYTE*)&WeaponName, &BytesRead);
 	VMMDLL_Scatter_PrepareEx(vmsh, ImpactAddr, sizeof(Impact), (BYTE*)&impact, &ImpactBytesRead);
+	VMMDLL_Scatter_PrepareEx(vmsh, DamageAddr, sizeof(float), (BYTE*)&WeaponDamage, &DamageBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, PenetrationAddr, sizeof(float), (BYTE*)&WeaponPenetration, &PenetrationBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, ReloadMultiplierAddr, sizeof(float), (BYTE*)&ReloadMultiplier, &ReloadBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, FireRateAddr, sizeof(float), (BYTE*)&FireRate, &FireRateBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, RecoilAmplitudeAddr, sizeof(float), (BYTE*)&RecoilAmplitude, &RecoilBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
 	if (BytesRead == sizeof(uint32_t))
-		m_LocalPed_WeaponName = WeaponName;
+		m_LocalPed_WeaponInfo.m_WeaponName = WeaponName;
 
 	if (ImpactBytesRead == sizeof(Impact))
 	{
-		m_LocalPed_ImpactType = impact.Type;
-		m_LocalPed_ImpactExplosion = impact.Explosion;
+		m_LocalPed_WeaponInfo.m_ImpactType = impact.Type;
+		m_LocalPed_WeaponInfo.m_ImpactExplosion = impact.Explosion;
+	}
+
+	if (DamageBytes == sizeof(float))
+		m_LocalPed_WeaponInfo.m_WeaponDamage = WeaponDamage;
+
+	if (PenetrationBytes == sizeof(float))
+		m_LocalPed_WeaponInfo.m_WeaponPenetration = WeaponPenetration;
+
+	if (ReloadBytes == sizeof(float))
+		m_LocalPed_WeaponInfo.m_WeaponReloadMultiplier = ReloadMultiplier;
+
+	if (FireRateBytes == sizeof(float))
+		m_LocalPed_WeaponInfo.m_WeaponFireRate = FireRate;
+
+	if (RecoilBytes == sizeof(float))
+		m_LocalPed_WeaponInfo.m_WeaponRecoilAmplitude = RecoilAmplitude;
+
+
+	{ /* Transfer data to weapon inspector with a mutex */
+		std::scoped_lock WeaponInspectorLock(WeaponInspector::m_WeaponInspectorMutex);
+		WeaponInspector::m_CurrentWeaponInfo = m_LocalPed_WeaponInfo;
 	}
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
@@ -728,6 +774,126 @@ bool GTA5::m_FindWeaponImpactOffsets(DMA* dma)
 
 	std::println("[+] Offsets::ImpactType {0:X}", Offsets::ImpactType);
 	std::println("[+] Offsets::ImpactExplosion {0:X}", Offsets::ImpactExplosion);
+
+	return 1;
+}
+
+bool GTA5::m_FindWeaponDamageOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponDamagePattern;
+	pi.Mask = Patterns::WeaponDamageMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponDamageOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWeaponDamageOffset Disassemble");
+
+	Offsets::WeaponDamage = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::WeaponDamage {0:X}", Offsets::WeaponDamage);
+
+	return 1;
+}
+
+bool GTA5::m_FindWeaponPenetrationOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponPenetrationPattern;
+	pi.Mask = Patterns::WeaponPenetrationMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponPenetrationOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWeaponPenetrationOffset Disassemble");
+
+	Offsets::WeaponPenetration = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::WeaponPenetration {0:X}", Offsets::WeaponPenetration);
+
+	return 1;
+}
+
+bool GTA5::m_FindWeaponReloadMultiplierOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponReloadMultiplerPattern;
+	pi.Mask = Patterns::WeaponReloadMultiplerMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponReloadMultiplierOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWeaponReloadMultiplierOffset Disassemble");
+
+	Offsets::WeaponPenetration = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::WeaponPenetration {0:X}", Offsets::WeaponPenetration);
+
+	return 1;
+}
+
+bool GTA5::m_FindWeaponFireRateOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponFireRatePattern;
+	pi.Mask = Patterns::WeaponFireRateMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponFireRateOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWeaponFireRateOffset Disassemble");
+
+	Offsets::WeaponFireRate = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::WeaponFireRate {0:X}", Offsets::WeaponFireRate);
+
+	return 1;
+}
+
+bool GTA5::m_FindWeaponRecoilAmplitudeOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponRecoilAmplitudePattern;
+	pi.Mask = Patterns::WeaponRecoilAmplitudeMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponRecoilAmplitudeOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWeaponRecoilAmplitudeOffset Disassemble");
+
+	Offsets::WeaponRecoilAmplitude = Instruction.operands[1].imm.value.u;
+
+	std::println("[+] Offsets::WeaponRecoilAmplitude {0:X}", Offsets::WeaponRecoilAmplitude);
 
 	return 1;
 }

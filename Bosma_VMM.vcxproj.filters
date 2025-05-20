@@ -61,6 +61,15 @@
     <Filter Include="Features\Teleport">
       <UniqueIdentifier>{c91d8220-1a0b-4f07-b53d-3ab536502fb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\GUI\Main">
+      <UniqueIdentifier>{549e2e76-1510-4650-b8ec-451c877f633d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\GUI\Weapon Inspector">
+      <UniqueIdentifier>{fe466d98-cab5-4448-9263-f88f557be40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structs">
+      <UniqueIdentifier>{1a87bc9d-ee01-49ae-805e-22ca1d2b31d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="MultiScan.cpp">
       <Filter>Utils\Pattern Scan</Filter>
-    </ClCompile>
-    <ClCompile Include="MyImGui.cpp">
-      <Filter>Core\GUI</Filter>
     </ClCompile>
     <ClCompile Include="DMA.cpp">
       <Filter>Core\DMA</Filter>
@@ -123,6 +129,12 @@
     <ClCompile Include="Tracy\TracyClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyImGui.cpp">
+      <Filter>Core\GUI\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponInspector.cpp">
+      <Filter>Core\GUI\Weapon Inspector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -139,9 +151,6 @@
     </ClInclude>
     <ClInclude Include="MultiScan.h">
       <Filter>Utils\Pattern Scan</Filter>
-    </ClInclude>
-    <ClInclude Include="MyImGui.h">
-      <Filter>Core\GUI</Filter>
     </ClInclude>
     <ClInclude Include="DMA.h">
       <Filter>Core\DMA</Filter>
@@ -197,8 +206,17 @@
     <ClInclude Include="Teleport.h">
       <Filter>Features\Teleport</Filter>
     </ClInclude>
+    <ClInclude Include="MyImGui.h">
+      <Filter>Core\GUI\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponInspector.h">
+      <Filter>Core\GUI\Weapon Inspector</Filter>
+    </ClInclude>
     <ClInclude Include="MyVector.h">
-      <Filter>Header Files</Filter>
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponInfo.h">
+      <Filter>Structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

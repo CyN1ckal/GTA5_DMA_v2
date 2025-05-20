@@ -3,6 +3,7 @@
 #include "MultiScan.h"
 #include "Patterns.h"
 #include "MyVector.h"
+#include "WeaponInfo.h"
 
 class DMA;
 
@@ -36,9 +37,7 @@ public:
 	static inline int32_t m_LocalPED_WantedLevel = 0x0;
 	static inline Vector3 m_LocalPED_Location = { 0.0f, 0.0f, 0.0f };
 
-	static inline uint32_t m_LocalPed_WeaponName = 0x0;
-	static inline int32_t m_LocalPed_ImpactType = 0x0;
-	static inline int32_t m_LocalPed_ImpactExplosion = 0x0;
+	static inline WeaponInfo m_LocalPed_WeaponInfo;
 
 	static inline std::vector<BlipInfo> m_Blips;
 
@@ -71,4 +70,9 @@ private:
 	static bool m_FindWeaponInfoOffset(DMA* dma);
 	static bool m_FindWeaponNameOffset(DMA* dma);
 	static bool m_FindWeaponImpactOffsets(DMA* dma);
+	static bool m_FindWeaponDamageOffset(DMA* dma);
+	static bool m_FindWeaponPenetrationOffset(DMA* dma);
+	static bool m_FindWeaponReloadMultiplierOffset(DMA* dma);
+	static bool m_FindWeaponFireRateOffset(DMA* dma);
+	static bool m_FindWeaponRecoilAmplitudeOffset(DMA* dma);
 };

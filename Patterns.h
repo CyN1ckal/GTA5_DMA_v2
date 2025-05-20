@@ -51,4 +51,19 @@ public:
 
 	static inline const std::string WeaponImpactTypePattern = "\x83\x7D??\x74?\x8B\x05????\x39\x45";
 	static inline const std::string WeaponImpactTypeMask = "xx??x?xx????xx";
+
+	static inline const std::string WeaponDamagePattern = "\xF3\x0F\x10\x89????\x0F\x57\xC0\x3D";
+	static inline const std::string WeaponDamageMask = "xxxx????xxxx";
+
+	static inline const std::string WeaponPenetrationPattern = "\xF3\x41\x0F\x10\x86????\xF3\x0F\x11\x43";
+	static inline const std::string WeaponPenetrationMask = "xxxxx????xxxx";
+
+	static inline const std::string WeaponReloadMultiplerPattern = "\xF3\x0F\x10\x80????\x48\x81\xC6";
+	static inline const std::string WeaponReloadMultiplerMask = "xxxx????xxx";
+
+	static inline const std::string WeaponFireRatePattern = "\xF3\x0F\x10\x87????\xEB?\x81\x7F";
+	static inline const std::string WeaponFireRateMask = "xxxx????x?xx";
+
+	static inline const std::string WeaponRecoilAmplitudePattern = "\xBD????\x49\x03\x6C\x24";
+	static inline const std::string WeaponRecoilAmplitudeMask = "x????xxxx";
 };

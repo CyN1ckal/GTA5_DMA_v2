@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <vector>
 #include <array>
+#include <mutex>
+#include <format>
 
 #include <Windows.h>
 

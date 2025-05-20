@@ -18,6 +18,8 @@ bool MyImGui::OnFrame()
 
 	Fuser::OnFrame();
 
+	WeaponInspector::OnFrame();
+
 	OnFrameEnd();
 
 	return 1;

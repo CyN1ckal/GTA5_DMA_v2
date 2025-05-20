@@ -25,4 +25,9 @@ public: /* Dynamically Resolved */
 	static inline int32_t WeaponName = 0x0;
 	static inline int32_t ImpactType = 0x0;
 	static inline int32_t ImpactExplosion = 0x0;
+	static inline int32_t WeaponDamage = 0x0;
+	static inline int32_t WeaponPenetration = 0x0;
+	static inline int32_t WeaponReloadMultiplier = 0x0;
+	static inline int32_t WeaponFireRate = 0x0;
+	static inline int32_t WeaponRecoilAmplitude = 0x0;
 };

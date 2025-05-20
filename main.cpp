@@ -36,6 +36,7 @@ int main() {
 		Bosma::Scheduler s(max_n_threads);
 
 		s.every(std::chrono::seconds(10), GTA5::UpdateLocalPlayerAddr, &dma);
+		s.every(std::chrono::seconds(10), GTA5::UpdateWorldAddress, &dma);
 		//s.every(std::chrono::seconds(2), GTA5::UpdateBlips, &dma);
 		s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, &dma);
 		s.every(std::chrono::milliseconds(7), GTA5::FeatureLoop, &dma);

@@ -1,0 +1,11 @@
+#pragma once
+#include <cstdint>
+#include "MyVector.h"
+
+struct VehicleInfo
+{
+	uint32_t m_GodBits;
+	float m_Health;
+	float m_MaxHealth;
+	Vector3 m_Position;
+};

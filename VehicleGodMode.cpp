@@ -11,7 +11,7 @@ bool VehicleGodMode::OnFrame(DMA* dma)
 	if(!GTA5::m_LocalPED_VehicleAddr)
 		return 0;
 
-	std::bitset<32> CurrentGodBits(GTA5::m_LocalPED_VehicleGodModeBits);
+	std::bitset<32> CurrentGodBits(GTA5::m_LocalPED_VehicleInfo.m_GodBits);
 
 	if (m_VehicleGodMode && CurrentGodBits.test(4) && CurrentGodBits.test(8))
 		return 0;
@@ -51,6 +51,8 @@ bool VehicleGodMode::OnFrame(DMA* dma)
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
 	std::println("[+] Vehicle GodMode updated {0:d}", m_VehicleGodMode);
+
+	GTA5::m_LocalPED_VehicleInfo.m_GodBits = NewBits;
 
 	return 1;
 }

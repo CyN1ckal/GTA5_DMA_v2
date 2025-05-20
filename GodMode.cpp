@@ -11,7 +11,7 @@ bool GodMode::OnFrame(DMA* dma)
 	if (!GTA5::m_LocalPEDAddr)
 		return 0;
 
-	std::bitset<32> CurrentGodBits(GTA5::m_LocalPED_GodModeBits);
+	std::bitset<32> CurrentGodBits(GTA5::m_LocalPED_PlayerInfo.m_GodModeBits);
 	
 	if (m_GodMode && CurrentGodBits.test(4) && CurrentGodBits.test(8))
 		return 0;

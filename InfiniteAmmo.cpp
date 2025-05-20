@@ -10,7 +10,7 @@ bool InfiniteAmmo::OnFrame(DMA* dma)
 	if (!GTA5::m_LocalPED_WeaponInventoryAddr)
 		return 0;
 
-	std::bitset<32> CurrentAmmoBits(GTA5::m_LocalPED_AmmoModifierBits);
+	std::bitset<32> CurrentAmmoBits(GTA5::m_LocalPED_PlayerInfo.m_AmmoModifierBits);
 
 	if (m_InfiniteAmmo && CurrentAmmoBits.test(1))
 		return 0;

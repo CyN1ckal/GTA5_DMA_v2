@@ -22,6 +22,8 @@ bool MyImGui::OnFrame()
 
 	WeaponEditor::OnFrame();
 
+	VehicleInspector::OnFrame();
+
 	OnFrameEnd();
 
 	return 1;

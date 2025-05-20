@@ -4,6 +4,8 @@
 
 bool WeaponInspector::OnFrame()
 {
+	std::scoped_lock WeaponInspectorLock(WeaponInspector::m_WeaponInspectorMutex);
+
 	ImGui::Begin("Weapon Inspector");
 
 	ImGui::Text("%s", std::format("Weapon Name: {0:X}",m_CurrentWeaponInfo.m_WeaponName).c_str());

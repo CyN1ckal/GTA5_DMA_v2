@@ -9,6 +9,7 @@
 #include "Features.h"
 
 #include "Offsets.h"
+#include "VehicleInfo.h"
 
 bool GTA5::m_FindWorldPtr(DMA* dma)
 {
@@ -91,6 +92,9 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindWeaponReloadMultiplierOffset(dma);
 	m_FindWeaponFireRateOffset(dma);
 	m_FindWeaponRecoilAmplitudeOffset(dma);
+	m_FindVehicleNavigationOffset(dma);
+	m_FindVehiclePositionOffset(dma);
+	m_FindVehicleHealthOffsets(dma);
 
 	m_FindWorldPtr(dma);
 	m_FindBlipPtr(dma);
@@ -178,6 +182,7 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	DWORD VehicleBytes = 0x0;
 	DWORD NavigationBytes = 0x0;
 	DWORD WeaponManagerBytes = 0x0;
+	DWORD InVehicleBytes = 0x0;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
@@ -188,6 +193,7 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	uintptr_t VehiclePtr = m_LocalPEDAddr + Offsets::VehicleOffset;
 	uintptr_t NavigationPtr = m_LocalPEDAddr + Offsets::Navigation;
 	uintptr_t WeaponManagerPtr = m_LocalPEDAddr + Offsets::WeaponManager;
+	uintptr_t InVehicleBitsAddr = m_LocalPEDAddr + Offsets::InVehicleBits;
 
 	struct Health
 	{
@@ -202,6 +208,7 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	uintptr_t VehicleAddr = 0x0;
 	uintptr_t NavigationAdd = 0x0;
 	uintptr_t WeaponManagerAddr = 0x0;
+	uint32_t InVehicleBits = 0x0;
 
 	VMMDLL_Scatter_PrepareEx(vmsh, CurrentHealthAddress, sizeof(float) * 2, (BYTE*)&health, &HealthBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, GodModeBitsAddress, sizeof(uint32_t), (BYTE*)&GodModeBits, &GodBytes);
@@ -210,18 +217,19 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	VMMDLL_Scatter_PrepareEx(vmsh, VehiclePtr, sizeof(uintptr_t), (BYTE*)&VehicleAddr, &VehicleBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, NavigationPtr, sizeof(uintptr_t), (BYTE*)&NavigationAdd, &NavigationBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, WeaponManagerPtr, sizeof(uintptr_t), (BYTE*)&WeaponManagerAddr, &WeaponManagerBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, InVehicleBitsAddr, sizeof(uint32_t), (BYTE*)&InVehicleBits, &InVehicleBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
 	if (HealthBytes == sizeof(float) * 2)
 	{
-		m_LocalPED_CurrentHealth = health.CurrentHealth;
-		m_LocalPED_MaxHealth = health.MaxHealth;
+		m_LocalPED_PlayerInfo.m_CurrentHealth = health.CurrentHealth;
+		m_LocalPED_PlayerInfo.m_MaxHealth = health.MaxHealth;
 	}
 
 	if (GodBytes == sizeof(uint32_t))
 	{
-		m_LocalPED_GodModeBits = GodModeBits;
+		m_LocalPED_PlayerInfo.m_GodModeBits = GodModeBits;
 	}
 
 	if (WeaponInventoryBytes == sizeof(uintptr_t))
@@ -249,23 +257,25 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 		m_LocalPED_WeaponManagerAddr = WeaponManagerAddr;
 	}
 
+	if (InVehicleBytes == sizeof(uint32_t))
+	{
+		m_LocalPED_PlayerInfo.m_InVehicleBits = InVehicleBits;
+	}
+
 	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
 	DWORD AmmoModifierBytes = 0x0;
-	DWORD VehicleGodBytes = 0x0;
 	DWORD WantedLevelBytes = 0x0;
 	DWORD PositionBytes = 0x0;
 	DWORD WeaponAddrBytes = 0x0;
 
 	uint32_t AmmoModifierBits = 0x0;
-	uint32_t VehicleGodBits = 0x0;
 	int32_t WantedLevel = 0x0;
 	Vector3 PlayerPosition = { 0.0f,0.0f,0.0f };
 	uintptr_t WeaponInfoAddr = 0x0;
 
 	uintptr_t AmmoModifierAddress = m_LocalPED_WeaponInventoryAddr + Offsets::AmmoModifier;
 	uintptr_t WantedLevelAddress = m_LocalPED_PlayerInfoAddr + Offsets::WantedLevel;
-	uintptr_t VehicleGodBitsAddress = m_LocalPED_VehicleAddr + Offsets::VehicleGodBits;
 	uintptr_t PlayerPositonAddress = m_LocalPED_NavigationAddr + Offsets::PlayerPosition;
 	uintptr_t WeaponInfoAddress = m_LocalPED_WeaponManagerAddr + Offsets::WeaponInfo;
 
@@ -274,9 +284,6 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	if (m_LocalPED_PlayerInfoAddr)
 		VMMDLL_Scatter_PrepareEx(vmsh, WantedLevelAddress, sizeof(int32_t), (BYTE*)&WantedLevel, &WantedLevelBytes);
-
-	if (m_LocalPED_VehicleAddr)
-		VMMDLL_Scatter_PrepareEx(vmsh, VehicleGodBitsAddress, sizeof(uint32_t), (BYTE*)&VehicleGodBits, &VehicleGodBytes);
 
 	if (m_LocalPED_NavigationAddr)
 		VMMDLL_Scatter_PrepareEx(vmsh, PlayerPositonAddress, sizeof(Vector3), (BYTE*)&PlayerPosition, &PositionBytes);
@@ -289,23 +296,18 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 
 	if (AmmoModifierBytes == sizeof(uint32_t))
 	{
-		m_LocalPED_AmmoModifierBits = AmmoModifierBits;
-	}
-
-	if (VehicleGodBytes == sizeof(uint32_t))
-	{
-		m_LocalPED_VehicleGodModeBits = VehicleGodBits;
+		m_LocalPED_PlayerInfo.m_AmmoModifierBits = AmmoModifierBits;
 	}
 
 	if (WantedLevelBytes == sizeof(int32_t))
 	{
-		m_LocalPED_WantedLevel = WantedLevel;
+		m_LocalPED_PlayerInfo.m_WantedLevel = WantedLevel;
 	}
 	if (PositionBytes == sizeof(Vector3))
 	{
-		m_LocalPED_Location.x = PlayerPosition.x;
-		m_LocalPED_Location.y = PlayerPosition.y;
-		m_LocalPED_Location.z = PlayerPosition.z;
+		m_LocalPED_PlayerInfo.m_Location.x = PlayerPosition.x;
+		m_LocalPED_PlayerInfo.m_Location.y = PlayerPosition.y;
+		m_LocalPED_PlayerInfo.m_Location.z = PlayerPosition.z;
 	}
 
 	if (WeaponAddrBytes == sizeof(uintptr_t))
@@ -368,36 +370,111 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 	VMMDLL_Scatter_Execute(vmsh);
 
 	if (BytesRead == sizeof(uint32_t))
-		m_LocalPed_WeaponInfo.m_WeaponName = WeaponName;
+		m_LocalPED_WeaponInfo.m_WeaponName = WeaponName;
 
 	if (ImpactBytesRead == sizeof(Impact))
 	{
-		m_LocalPed_WeaponInfo.m_ImpactType = impact.Type;
-		m_LocalPed_WeaponInfo.m_ImpactExplosion = impact.Explosion;
+		m_LocalPED_WeaponInfo.m_ImpactType = impact.Type;
+		m_LocalPED_WeaponInfo.m_ImpactExplosion = impact.Explosion;
 	}
 
 	if (DamageBytes == sizeof(float))
-		m_LocalPed_WeaponInfo.m_WeaponDamage = WeaponDamage;
+		m_LocalPED_WeaponInfo.m_WeaponDamage = WeaponDamage;
 
 	if (PenetrationBytes == sizeof(float))
-		m_LocalPed_WeaponInfo.m_WeaponPenetration = WeaponPenetration;
+		m_LocalPED_WeaponInfo.m_WeaponPenetration = WeaponPenetration;
 
 	if (ReloadBytes == sizeof(float))
-		m_LocalPed_WeaponInfo.m_WeaponReloadMultiplier = ReloadMultiplier;
+		m_LocalPED_WeaponInfo.m_WeaponReloadMultiplier = ReloadMultiplier;
 
 	if (FireRateBytes == sizeof(float))
-		m_LocalPed_WeaponInfo.m_WeaponFireRate = FireRate;
+		m_LocalPED_WeaponInfo.m_WeaponFireRate = FireRate;
 
 	if (RecoilBytes == sizeof(float))
-		m_LocalPed_WeaponInfo.m_WeaponRecoilAmplitude = RecoilAmplitude;
+		m_LocalPED_WeaponInfo.m_WeaponRecoilAmplitude = RecoilAmplitude;
 
 
 	{ /* Transfer data to weapon inspector with a mutex */
 		std::scoped_lock WeaponInspectorLock(WeaponInspector::m_WeaponInspectorMutex);
-		WeaponInspector::m_CurrentWeaponInfo = m_LocalPed_WeaponInfo;
+		WeaponInspector::m_CurrentWeaponInfo = m_LocalPED_WeaponInfo;
 	}
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
+
+	return 1;
+}
+
+bool GTA5::UpdateVehicleInfo(DMA* dma)
+{
+	ZoneScoped;
+
+	if (!m_LocalPED_VehicleAddr)
+		return 0;
+
+	DWORD BytesRead = 0x0;
+
+	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	DWORD NavigationBytes = 0x0;
+	DWORD GodBytes = 0x0;
+	DWORD HealthBytes = 0x0;
+
+	uintptr_t NavigationPtr = m_LocalPED_VehicleAddr + Offsets::VehicleNavigation;
+	uintptr_t GodBitsAddr = m_LocalPED_VehicleAddr + Offsets::VehicleGodBits;
+	uintptr_t HealthAddr = m_LocalPED_VehicleAddr + Offsets::VehicleHealth;
+
+	uintptr_t NavigationAddr = 0x0;
+	uint32_t GodBits = 0x0;
+	struct Health
+	{
+		float Current;
+		float Max;
+	};
+	Health health;
+
+	VMMDLL_Scatter_PrepareEx(vmsh, NavigationPtr, sizeof(uintptr_t), (BYTE*)&NavigationAddr, &NavigationBytes);
+
+	VMMDLL_Scatter_PrepareEx(vmsh, GodBitsAddr, sizeof(uint32_t), (BYTE*)&GodBits, &GodBytes);
+
+	VMMDLL_Scatter_PrepareEx(vmsh, HealthAddr, sizeof(Health), (BYTE*)&health, &HealthBytes);
+
+	VMMDLL_Scatter_Execute(vmsh);
+
+	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	if (NavigationBytes == sizeof(uintptr_t))
+	{
+		m_LocalPED_VehicleNavigationAddr = NavigationAddr;
+
+		uintptr_t PositionAddress = NavigationAddr + Offsets::VehiclePosition;
+
+		Vector3 Position;
+
+		DWORD PositionBytes = 0x0;
+
+		VMMDLL_Scatter_PrepareEx(vmsh, PositionAddress, sizeof(Vector3), (BYTE*)&Position, &PositionBytes);
+
+		VMMDLL_Scatter_Execute(vmsh);
+
+		if (PositionBytes == sizeof(Vector3))
+			m_LocalPED_VehicleInfo.m_Position = Position;
+	}
+
+	if (GodBytes == sizeof(uint32_t))
+		m_LocalPED_VehicleInfo.m_GodBits = GodBits;
+
+	if (HealthBytes == sizeof(Health))
+	{
+		m_LocalPED_VehicleInfo.m_Health = health.Current;
+		m_LocalPED_VehicleInfo.m_MaxHealth = health.Max;
+	}
+
+	VMMDLL_Scatter_CloseHandle(vmsh);
+
+	{
+		std::scoped_lock VehicleInfoLock(VehicleInspector::m_VehicleInfoMutex);
+		VehicleInspector::m_VehicleInfo = m_LocalPED_VehicleInfo;
+	}
 
 	return 1;
 }
@@ -895,6 +972,90 @@ bool GTA5::m_FindWeaponRecoilAmplitudeOffset(DMA* dma)
 	Offsets::WeaponRecoilAmplitude = Instruction.operands[1].imm.value.u;
 
 	std::println("[+] Offsets::WeaponRecoilAmplitude {0:X}", Offsets::WeaponRecoilAmplitude);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleNavigationOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleNavigationPattern;
+	pi.Mask = Patterns::VehicleNavigationMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleNavigationOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleNavigationOffset Disassemble");
+
+	Offsets::VehicleNavigation = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehicleNavigation {0:X}", Offsets::VehicleNavigation);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehiclePositionOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehiclePositionPattern;
+	pi.Mask = Patterns::VehiclePositionMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehiclePositionOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehiclePositionOffset Disassemble");
+
+	Offsets::VehiclePosition = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehiclePosition {0:X}", Offsets::VehiclePosition);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleHealthOffsets(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleHealthPattern;
+	pi.Mask = Patterns::VehicleHealthMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleHealthOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	ZyanUSize Offset = 0;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleHealthOffset Disassemble");
+
+	Offsets::VehicleHealth = Instruction.operands[1].mem.disp.value;
+	
+	Offset += Instruction.info.length;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress + Offset, m_Scan.GetBuffer() + SectionOffset + Offset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleHealthOffset Disassemble");
+
+	Offsets::VehicleMaxHealth = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehicleHealth {0:X}", Offsets::VehicleHealth);
+	std::println("[+] Offsets::VehicleMaxHealth {0:X}", Offsets::VehicleMaxHealth);
+
+
 
 	return 1;
 }

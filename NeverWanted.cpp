@@ -12,7 +12,7 @@ bool NeverWanted::OnFrame(DMA* dma)
 	if (!GTA5::m_LocalPED_PlayerInfoAddr)
 		return 0;
 
-	if (!GTA5::m_LocalPED_WantedLevel)
+	if (!GTA5::m_LocalPED_PlayerInfo.m_WantedLevel)
 		return 0;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);

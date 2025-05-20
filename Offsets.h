@@ -5,6 +5,7 @@ class Offsets
 {
 public: /* Manual */
 	static inline uint32_t VehicleOffset = 0xD10;
+	static inline uint32_t InVehicleBits = 0xE32;
 
 
 public: /* Dynamically Resolved */
@@ -30,4 +31,8 @@ public: /* Dynamically Resolved */
 	static inline int32_t WeaponReloadMultiplier = 0x0;
 	static inline int32_t WeaponFireRate = 0x0;
 	static inline int32_t WeaponRecoilAmplitude = 0x0;
+	static inline int32_t VehicleNavigation = 0x0;
+	static inline int32_t VehiclePosition = 0x0;
+	static inline int32_t VehicleHealth = 0x0;
+	static inline int32_t VehicleMaxHealth = 0x0;
 };

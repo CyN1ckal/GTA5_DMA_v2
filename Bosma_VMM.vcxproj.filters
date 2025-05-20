@@ -73,6 +73,9 @@
     <Filter Include="Core\GUI\Weapon Editor">
       <UniqueIdentifier>{03069c2a-7a6c-4616-9cf6-17c46698c7f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\GUI\Vehicle Inspector">
+      <UniqueIdentifier>{3885d609-c734-4a92-bffc-c6eee5bd39fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="WeaponEditor.cpp">
       <Filter>Core\GUI\Weapon Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleInspector.cpp">
+      <Filter>Core\GUI\Vehicle Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +232,15 @@
     </ClInclude>
     <ClInclude Include="WeaponEditor.h">
       <Filter>Core\GUI\Weapon Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleInfo.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleInspector.h">
+      <Filter>Core\GUI\Vehicle Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInfo.h">
+      <Filter>Structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

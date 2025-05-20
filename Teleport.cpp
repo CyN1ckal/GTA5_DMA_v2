@@ -38,13 +38,17 @@ bool Teleport::OnFrame(DMA* dma)
 
 bool Teleport::SetPlayerLocation(DMA* dma, Vector3& Location)
 {
-	m_StartingLocation = GTA5::m_LocalPED_Location;
+	m_StartingLocation = GTA5::m_LocalPED_PlayerInfo.m_Location;
 
 	auto vmsh = VMMDLL_Scatter_Initialize(dma->m_vmh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
 
 	uintptr_t PlayerPositionAddress = GTA5::m_LocalPED_NavigationAddr + Offsets::PlayerPosition;
+	uintptr_t VehiclePositionAddress = GTA5::m_LocalPED_VehicleNavigationAddr + Offsets::VehiclePosition;
 
 	VMMDLL_Scatter_PrepareWrite(vmsh, PlayerPositionAddress, (BYTE*)&Location, sizeof(Vector3));
+
+	if (GTA5::m_LocalPED_PlayerInfo.m_InVehicleBits & 0x1)
+		VMMDLL_Scatter_PrepareWrite(vmsh, VehiclePositionAddress, (BYTE*)&Location, sizeof(Vector3));
 
 	for (int i = 0; i < 250; i++)
 	{
@@ -54,8 +58,8 @@ bool Teleport::SetPlayerLocation(DMA* dma, Vector3& Location)
 
 		GTA5::UpdateLocalPlayerInfo(dma);
 
-		float DistanceFromStart = GTA5::m_LocalPED_Location.Distance(m_StartingLocation);
-		float DistanceFromTarget = GTA5::m_LocalPED_Location.Distance(Location);
+		float DistanceFromStart = GTA5::m_LocalPED_PlayerInfo.m_Location.Distance(m_StartingLocation);
+		float DistanceFromTarget = GTA5::m_LocalPED_PlayerInfo.m_Location.Distance(Location);
 
 		if (DistanceFromStart > 25.0f && (DistanceFromTarget < 25.0f && DistanceFromTarget > 0.01f))
 		{

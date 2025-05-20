@@ -7,3 +7,4 @@
 #include "Teleport.h"
 #include "WeaponInspector.h"
 #include "WeaponEditor.h"
+#include "VehicleInspector.h"

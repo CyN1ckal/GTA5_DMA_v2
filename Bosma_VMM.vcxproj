@@ -382,6 +382,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="VehicleInspector.cpp" />
     <ClCompile Include="WeaponEditor.cpp" />
     <ClCompile Include="WeaponInspector.cpp" />
   </ItemGroup>
@@ -409,8 +410,11 @@
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="Teleport.h" />
     <ClInclude Include="VehicleGodMode.h" />
+    <ClInclude Include="VehicleInfo.h" />
+    <ClInclude Include="VehicleInspector.h" />
     <ClInclude Include="WeaponEditor.h" />
     <ClInclude Include="WeaponInfo.h" />
     <ClInclude Include="WeaponInspector.h" />

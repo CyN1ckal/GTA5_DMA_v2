@@ -66,4 +66,13 @@ public:
 
 	static inline const std::string WeaponRecoilAmplitudePattern = "\xBD????\x49\x03\x6C\x24";
 	static inline const std::string WeaponRecoilAmplitudeMask = "x????xxxx";
+
+	static inline const std::string VehicleNavigationPattern = "\x48\x8B\x4E?\x40\xB5?\x40\xB7";
+	static inline const std::string VehicleNavigationMask = "xxx?xx?xx";
+
+	static inline const std::string VehiclePositionPattern = "\x41\x0F\x58\x4F?\x0F\xC6\xC6";
+	static inline const std::string VehiclePositionMask = "xxxx?xxx";
+
+	static inline const std::string VehicleHealthPattern = "\xF3\x0F\x10\x8A????\xF3\x0F\x5E\x8A";
+	static inline const std::string VehicleHealthMask = "xxxx????xxxx";
 };

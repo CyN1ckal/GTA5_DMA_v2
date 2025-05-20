@@ -4,6 +4,8 @@
 #include "Patterns.h"
 #include "MyVector.h"
 #include "WeaponInfo.h"
+#include "VehicleInfo.h"
+#include "PlayerInfo.h"
 
 class DMA;
 
@@ -25,19 +27,14 @@ public:
 	static inline uintptr_t m_LocalPED_WeaponInventoryAddr = 0x0;
 	static inline uintptr_t m_LocalPED_PlayerInfoAddr = 0x0;
 	static inline uintptr_t m_LocalPED_VehicleAddr = 0x0;
+	static inline uintptr_t m_LocalPED_VehicleNavigationAddr = 0x0;
 	static inline uintptr_t m_LocalPED_NavigationAddr = 0x0;
 	static inline uintptr_t m_LocalPED_WeaponManagerAddr = 0x0;
 	static inline uintptr_t m_LocalPED_WeaponInfoAddr = 0x0;
 
-	static inline float m_LocalPED_CurrentHealth = 0.0f;
-	static inline float m_LocalPED_MaxHealth = 0.0f;
-	static inline uint32_t m_LocalPED_GodModeBits = 0x0;
-	static inline uint32_t m_LocalPED_VehicleGodModeBits = 0x0;
-	static inline uint32_t m_LocalPED_AmmoModifierBits = 0x0;
-	static inline int32_t m_LocalPED_WantedLevel = 0x0;
-	static inline Vector3 m_LocalPED_Location = { 0.0f, 0.0f, 0.0f };
-
-	static inline WeaponInfo m_LocalPed_WeaponInfo;
+	static inline PlayerInfo m_LocalPED_PlayerInfo;
+	static inline WeaponInfo m_LocalPED_WeaponInfo;
+	static inline VehicleInfo m_LocalPED_VehicleInfo;
 
 	static inline std::vector<BlipInfo> m_Blips;
 
@@ -47,6 +44,7 @@ public:
 	static bool UpdateLocalPlayerAddr(DMA* dma);
 	static bool UpdateLocalPlayerInfo(DMA* dma);
 	static bool UpdateWeaponInfo(DMA* dma);
+	static bool UpdateVehicleInfo(DMA* dma);
 	static bool UpdateBlips(DMA* dma);
 	static bool FeatureLoop(DMA* dma);
 
@@ -75,4 +73,7 @@ private:
 	static bool m_FindWeaponReloadMultiplierOffset(DMA* dma);
 	static bool m_FindWeaponFireRateOffset(DMA* dma);
 	static bool m_FindWeaponRecoilAmplitudeOffset(DMA* dma);
+	static bool m_FindVehicleNavigationOffset(DMA* dma);
+	static bool m_FindVehiclePositionOffset(DMA* dma);
+	static bool m_FindVehicleHealthOffsets(DMA* dma);
 };

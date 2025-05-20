@@ -8,6 +8,8 @@
 
 bool WeaponEditor::OnFrame()
 {
+	
+
 	ImGui::Begin("Weapon Editor");
 
 	ImGui::InputInt("Impact Type", &m_DesiredWeaponInfo.m_ImpactType);

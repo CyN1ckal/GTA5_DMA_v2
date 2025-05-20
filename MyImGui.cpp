@@ -20,6 +20,8 @@ bool MyImGui::OnFrame()
 
 	WeaponInspector::OnFrame();
 
+	WeaponEditor::OnFrame();
+
 	OnFrameEnd();
 
 	return 1;

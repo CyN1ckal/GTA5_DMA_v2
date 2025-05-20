@@ -6,3 +6,4 @@
 #include "VehicleGodMode.h"
 #include "Teleport.h"
 #include "WeaponInspector.h"
+#include "WeaponEditor.h"

@@ -411,6 +411,7 @@ bool GTA5::FeatureLoop(DMA* dma)
 	NeverWanted::OnFrame(dma);
 	VehicleGodMode::OnFrame(dma);
 	Teleport::OnFrame(dma);
+	WeaponEditor::OnDMAFrame(dma);
 
 	return 1;
 }
@@ -843,9 +844,9 @@ bool GTA5::m_FindWeaponReloadMultiplierOffset(DMA* dma)
 	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
 		throw std::exception("m_FindWeaponReloadMultiplierOffset Disassemble");
 
-	Offsets::WeaponPenetration = Instruction.operands[1].mem.disp.value;
+	Offsets::WeaponReloadMultiplier = Instruction.operands[1].mem.disp.value;
 
-	std::println("[+] Offsets::WeaponPenetration {0:X}", Offsets::WeaponPenetration);
+	std::println("[+] Offsets::WeaponReloadMultiplier {0:X}", Offsets::WeaponReloadMultiplier);
 
 	return 1;
 }

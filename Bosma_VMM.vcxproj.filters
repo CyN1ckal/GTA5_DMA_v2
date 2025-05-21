@@ -85,6 +85,9 @@
     <Filter Include="Core\GUI\Blip Inspector">
       <UniqueIdentifier>{37d08329-6dc3-47e4-9eed-777258eabc4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\GUI\Vehicle Editor">
+      <UniqueIdentifier>{b71931a3-be1c-4887-b39f-2100456ab6d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="BlipInspector.cpp">
       <Filter>Core\GUI\Blip Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleEditor.cpp">
+      <Filter>Core\GUI\Vehicle Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Offsets.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleEditor.h">
+      <Filter>Core\GUI\Vehicle Editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

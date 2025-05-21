@@ -87,4 +87,10 @@ public:
 
 	static inline const std::string VehicleMassPattern = "\xF3\x0F\x10\x50?\x48\x89\xF1";
 	static inline const std::string VehicleMassMask = "xxxx?xxx";
+
+	static inline const std::string VehicleBrakeForcePattern = "\xF3\x0F\x59\x40?\x48\x83\xC4";
+	static inline const std::string VehicleBrakeForceMask = "xxxx?xxx";
+
+	static inline const std::string VehicleDeformPattern = "\xF3\x0F\x10\xB9????\xF3\x0F\x5E\xF8";
+	static inline const std::string VehicleDeformMask = "xxxx????xxxx";
 };

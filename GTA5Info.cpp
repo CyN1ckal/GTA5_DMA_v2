@@ -99,6 +99,8 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindVehicleHandlingDataOffset(dma);
 	m_FindVehicleAccelerationOffset(dma);
 	m_FindVehicleMassOffset(dma);
+	m_FindVehicleBrakeForceOffset(dma);
+	m_FindVehicleDeformOffset(dma);
 
 	m_FindWorldPtr(dma);
 	m_FindBlipPtr(dma);
@@ -485,12 +487,20 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 	float Acceleration = 0.0f;
 	DWORD MassBytes = 0x0;
 	float Mass = 0.0f;
+	DWORD BrakeForceBytes = 0x0;
+	float BrakeForce = 0.0f;
+	DWORD DeformBytes = 0x0;
+	float Deform = 0.0f;
 	if (m_LocalPED_VehicleHandlingAddr)
 	{
 		uintptr_t AccelerationAddress = m_LocalPED_VehicleHandlingAddr + Offsets::VehicleAcceleration;
 		uintptr_t MassAddr = m_LocalPED_VehicleHandlingAddr + Offsets::VehicleMass;
+		uintptr_t BrakeForceAddr = m_LocalPED_VehicleHandlingAddr + Offsets::BrakeForce;
+		uintptr_t DeformAddr = m_LocalPED_VehicleHandlingAddr + Offsets::VehicleDeformMult;
 		VMMDLL_Scatter_PrepareEx(vmsh, AccelerationAddress, sizeof(float), (BYTE*)&Acceleration, &AccelerationBytes);
 		VMMDLL_Scatter_PrepareEx(vmsh, MassAddr, sizeof(float), (BYTE*)&Mass, &MassBytes);
+		VMMDLL_Scatter_PrepareEx(vmsh, BrakeForceAddr, sizeof(float), (BYTE*)&BrakeForce, &BrakeForceBytes);
+		VMMDLL_Scatter_PrepareEx(vmsh, DeformAddr, sizeof(float), (BYTE*)&Deform, &DeformBytes);
 	}
 
 	VMMDLL_Scatter_Execute(vmsh);
@@ -503,6 +513,12 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 
 	if (MassBytes == sizeof(float))
 		m_LocalPED_VehicleInfo.m_Mass = Mass;
+
+	if (BrakeForceBytes == sizeof(float))
+		m_LocalPED_VehicleInfo.m_BrakeForce = BrakeForce;
+
+	if (DeformBytes == sizeof(float))
+		m_LocalPED_VehicleInfo.m_DeformMultiplier = Deform;
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
@@ -525,6 +541,7 @@ bool GTA5::FeatureLoop(DMA* dma)
 	Teleport::OnFrame(dma);
 	WeaponEditor::OnDMAFrame(dma);
 	RefreshHealth::OnFrame(dma);
+	VehicleEditor::OnDMAFrame(dma);
 
 	return 1;
 }
@@ -1128,6 +1145,54 @@ bool GTA5::m_FindVehicleMassOffset(DMA* dma)
 	Offsets::VehicleMass = Instruction.operands[1].mem.disp.value;
 
 	std::println("[+] Offsets::VehicleMass {0:X}", Offsets::VehicleMass);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleBrakeForceOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleBrakeForcePattern;
+	pi.Mask = Patterns::VehicleBrakeForceMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleBrakeForceOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleBrakeForceOffset Disassemble");
+
+	Offsets::BrakeForce = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::BrakeForce {0:X}", Offsets::BrakeForce);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleDeformOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleDeformPattern;
+	pi.Mask = Patterns::VehicleDeformMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleDeformOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleDeformOffset Disassemble");
+
+	Offsets::VehicleDeformMult = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehicleDeformMult {0:X}", Offsets::VehicleDeformMult);
 
 	return 1;
 }

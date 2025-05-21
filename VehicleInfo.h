@@ -10,4 +10,6 @@ struct VehicleInfo
 	Vector3 m_Position;
 	float m_Mass;
 	float m_Acceleration;
+	float m_BrakeForce;
+	float m_DeformMultiplier;
 };

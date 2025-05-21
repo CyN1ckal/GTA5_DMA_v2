@@ -76,4 +76,6 @@ private:
 	static bool m_FindVehicleHandlingDataOffset(DMA* dma);
 	static bool m_FindVehicleAccelerationOffset(DMA* dma);
 	static bool m_FindVehicleMassOffset(DMA* dma);
+	static bool m_FindVehicleBrakeForceOffset(DMA* dma);
+	static bool m_FindVehicleDeformOffset(DMA* dma);
 };

@@ -15,6 +15,8 @@ bool VehicleInspector::OnFrame()
 	ImGui::Text(std::format("Health: {0:.2f}/{1:.2f}", m_VehicleInfo.m_Health, m_VehicleInfo.m_MaxHealth).c_str());
 	ImGui::Text(std::format("Acceleration: {0:.2f}", m_VehicleInfo.m_Acceleration).c_str());
 	ImGui::Text(std::format("Mass: {0:.2f}", m_VehicleInfo.m_Mass).c_str());
+	ImGui::Text(std::format("Brake Force: {0:.2f}", m_VehicleInfo.m_BrakeForce).c_str());
+	ImGui::Text(std::format("Deform Multiplier: {0:.2f}", m_VehicleInfo.m_DeformMultiplier).c_str());
 	ImGui::Text(std::format("God Bits: {0:X}", m_VehicleInfo.m_GodBits).c_str());
 	ImGui::Text(std::format("Position: {0:.2f} {1:.2f} {2:.2f}", m_VehicleInfo.m_Position.x, m_VehicleInfo.m_Position.y, m_VehicleInfo.m_Position.z).c_str());
 

@@ -18,10 +18,10 @@ bool MyImGui::OnFrame()
 	Fuser::OnFrame();
 
 	WeaponInspector::OnFrame();
-
 	WeaponEditor::OnFrame();
 
 	VehicleInspector::OnFrame();
+	VehicleEditor::OnFrame();
 
 	MainMenu::Render();
 
@@ -274,6 +274,8 @@ bool MainMenu::Render()
 		ImGui::Indent();
 
 		ImGui::Checkbox("Weapon Editor", &WeaponEditor::m_WeaponEditor);
+
+		ImGui::Checkbox("Vehicle Editor", &VehicleEditor::m_VehicleEditor);
 
 		ImGui::Unindent();
 	}

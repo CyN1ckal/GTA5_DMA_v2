@@ -39,4 +39,6 @@ public: /* Dynamically Resolved */
 	static inline int32_t VehicleHandling = 0x0;
 	static inline int32_t VehicleAcceleration = 0x0;
 	static inline int32_t VehicleMass = 0x0;
+	static inline int32_t BrakeForce = 0x0;
+	static inline int32_t VehicleDeformMult = 0x0;
 };

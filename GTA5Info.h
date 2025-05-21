@@ -6,14 +6,9 @@
 #include "WeaponInfo.h"
 #include "VehicleInfo.h"
 #include "PlayerInfo.h"
+#include "BlipInfo.h"
 
 class DMA;
-
-struct BlipInfo
-{
-	Vector3 WorldPosition;
-	int32_t ID;
-};
 
 class GTA5
 {

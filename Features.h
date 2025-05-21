@@ -9,3 +9,4 @@
 #include "WeaponEditor.h"
 #include "VehicleInspector.h"
 #include "RefreshHealth.h"
+#include "BlipInspector.h"

@@ -82,6 +82,9 @@
     <Filter Include="Features\Refresh Health">
       <UniqueIdentifier>{9e9d0717-8d1d-4739-b59c-06c796805f9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\GUI\Blip Inspector">
+      <UniqueIdentifier>{37d08329-6dc3-47e4-9eed-777258eabc4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="RefreshHealth.cpp">
       <Filter>Features\Refresh Health</Filter>
+    </ClCompile>
+    <ClCompile Include="BlipInspector.cpp">
+      <Filter>Core\GUI\Blip Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +262,12 @@
     </ClInclude>
     <ClInclude Include="RefreshHealth.h">
       <Filter>Features\Refresh Health</Filter>
+    </ClInclude>
+    <ClInclude Include="BlipInspector.h">
+      <Filter>Core\GUI\Blip Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="BlipInfo.h">
+      <Filter>Structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

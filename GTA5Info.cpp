@@ -71,6 +71,9 @@ bool GTA5::FindOffsets(DMA* dma)
 {
 	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
 
+	m_FindWorldPtr(dma);
+	m_FindBlipPtr(dma);
+
 	m_FindWeaponInventoryOffset(dma);
 	m_FindPlayerInfoOffset(dma);
 	m_FindWantedLevelOffset(dma);
@@ -96,9 +99,6 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindVehiclePositionOffset(dma);
 	m_FindVehicleHealthOffsets(dma);
 	m_FindWeaponRangeOffset(dma);
-
-	m_FindWorldPtr(dma);
-	m_FindBlipPtr(dma);
 
 	m_Scan.Close();
 
@@ -1091,7 +1091,7 @@ bool GTA5::m_FindVehicleHealthOffsets(DMA* dma)
 	return 1;
 }
 
-static const int MaxBlips = 2000;
+static const int MaxBlips = 1700;
 std::array<DWORD, MaxBlips> BlipPositionBytes{ 0 };
 std::array<DWORD, MaxBlips> BlipIDBytes{ 0 };
 
@@ -1140,7 +1140,21 @@ bool GTA5::UpdateBlips(DMA* dma)
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
-	m_Blips.assign(Blips.begin(), Blips.end());
+	std::vector<BlipInfo> CompleteBlips;
+	for (int i = 0; i < BlipAddresses.size(); i++)
+	{
+		if (BlipIDBytes[i] == sizeof(int32_t) && BlipPositionBytes[i] == sizeof(Vector3))
+			CompleteBlips.push_back(Blips[i]);
+	}
+
+	m_Blips.assign(CompleteBlips.begin(), CompleteBlips.end());
+
+	{
+		std::println("Blip Size: {0:d}", m_Blips.size());
+		std::scoped_lock BlipInspectorLock(BlipInspector::m_BlipInspectorMutex);
+		BlipInspector::m_Blips.assign(CompleteBlips.begin(), CompleteBlips.end());
+		BlipInspector::m_LastPlayerPosition = m_LocalPED_PlayerInfo.m_Location;
+	}
 
 	return 1;
 }

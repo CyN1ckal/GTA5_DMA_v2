@@ -25,6 +25,8 @@ bool MyImGui::OnFrame()
 
 	MainMenu::Render();
 
+	BlipInspector::OnFrame();
+
 	OnFrameEnd();
 
 	return 1;
@@ -262,6 +264,8 @@ bool MainMenu::Render()
 
 		ImGui::Checkbox("Vehicle Inspector", &VehicleInspector::m_VehicleInspector);
 
+		ImGui::Checkbox("Blip Inspector", &BlipInspector::m_BlipInspector);
+
 		ImGui::Unindent();
 	}
 
@@ -293,6 +297,11 @@ bool MainMenu::Render()
 			ImGui::SameLine();
 			ImGui::SetNextItemWidth(-FLT_MIN);
 			ImGui::SliderFloat("##Heal Threshold", &RefreshHealth::m_HealthThreshold, 0.1f, 0.99f);
+		}
+		
+		if (ImGui::Button("Teleport To Waypoint"))
+		{
+			Teleport::m_RequestedTeleport = true;
 		}
 
 		ImGui::Unindent();

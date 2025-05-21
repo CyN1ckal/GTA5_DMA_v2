@@ -229,6 +229,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlipInspector.cpp" />
     <ClCompile Include="DMA.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -388,6 +389,8 @@
     <ClCompile Include="WeaponInspector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlipInfo.h" />
+    <ClInclude Include="BlipInspector.h" />
     <ClInclude Include="DMA.h" />
     <ClInclude Include="Features.h" />
     <ClInclude Include="Fonts.h" />

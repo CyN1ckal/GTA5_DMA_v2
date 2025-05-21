@@ -418,6 +418,7 @@
     <ClInclude Include="WeaponEditor.h" />
     <ClInclude Include="WeaponInfo.h" />
     <ClInclude Include="WeaponInspector.h" />
+    <ClInclude Include="WeaponNameMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

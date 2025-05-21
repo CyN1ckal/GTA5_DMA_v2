@@ -2,13 +2,15 @@
 
 #include "WeaponInspector.h"
 
+#include "WeaponNameMap.h"
+
 bool WeaponInspector::OnFrame()
 {
 	std::scoped_lock WeaponInspectorLock(WeaponInspector::m_WeaponInspectorMutex);
 
 	ImGui::Begin("Weapon Inspector");
 
-	ImGui::Text("%s", std::format("Weapon Name: {0:X}",m_CurrentWeaponInfo.m_WeaponName).c_str());
+	ImGui::Text("%s", std::format("Weapon Name: {0:s}", WeaponNameMap[m_CurrentWeaponInfo.m_WeaponName]).c_str());
 	ImGui::Text("%s", std::format("Impact Type: {0:X}",m_CurrentWeaponInfo.m_ImpactType).c_str());
 	ImGui::Text("%s", std::format("Impact Explosion: {0:X}",m_CurrentWeaponInfo.m_ImpactExplosion).c_str());
 	ImGui::Text("%s", std::format("Damage: {0:.2f}",m_CurrentWeaponInfo.m_WeaponDamage).c_str());

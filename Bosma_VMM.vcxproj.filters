@@ -76,6 +76,9 @@
     <Filter Include="Core\GUI\Vehicle Inspector">
       <UniqueIdentifier>{3885d609-c734-4a92-bffc-c6eee5bd39fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Static">
+      <UniqueIdentifier>{2e1de9af-7a00-4bca-bec1-059f9dc39edd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="PlayerInfo.h">
       <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponNameMap.h">
+      <Filter>Static</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

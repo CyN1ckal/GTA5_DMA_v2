@@ -35,4 +35,5 @@ public: /* Dynamically Resolved */
 	static inline int32_t VehiclePosition = 0x0;
 	static inline int32_t VehicleHealth = 0x0;
 	static inline int32_t VehicleMaxHealth = 0x0;
+	static inline int32_t WeaponRange = 0x0;
 };

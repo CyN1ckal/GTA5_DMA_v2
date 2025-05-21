@@ -95,6 +95,7 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindVehicleNavigationOffset(dma);
 	m_FindVehiclePositionOffset(dma);
 	m_FindVehicleHealthOffsets(dma);
+	m_FindWeaponRangeOffset(dma);
 
 	m_FindWorldPtr(dma);
 	m_FindBlipPtr(dma);
@@ -336,6 +337,7 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 	uintptr_t ReloadMultiplierAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponReloadMultiplier;
 	uintptr_t FireRateAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponFireRate;
 	uintptr_t RecoilAmplitudeAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponRecoilAmplitude;
+	uintptr_t RangeAddr = m_LocalPED_WeaponInfoAddr + Offsets::WeaponRange;
 
 	struct Impact
 	{
@@ -351,6 +353,7 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 	DWORD ReloadBytes = 0x0;
 	DWORD FireRateBytes = 0x0;
 	DWORD RecoilBytes = 0x0;
+	DWORD RangeBytes = 0x0;
 
 	uint32_t WeaponName = 0x0;
 	float WeaponDamage = 0x0;
@@ -358,6 +361,7 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 	float ReloadMultiplier = 0x0;
 	float FireRate = 0x0;
 	float RecoilAmplitude = 0x0;
+	float Range = 0x0;
 
 	VMMDLL_Scatter_PrepareEx(vmsh, WeaponNameAddr, sizeof(uint32_t), (BYTE*)&WeaponName, &BytesRead);
 	VMMDLL_Scatter_PrepareEx(vmsh, ImpactAddr, sizeof(Impact), (BYTE*)&impact, &ImpactBytesRead);
@@ -366,6 +370,7 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 	VMMDLL_Scatter_PrepareEx(vmsh, ReloadMultiplierAddr, sizeof(float), (BYTE*)&ReloadMultiplier, &ReloadBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, FireRateAddr, sizeof(float), (BYTE*)&FireRate, &FireRateBytes);
 	VMMDLL_Scatter_PrepareEx(vmsh, RecoilAmplitudeAddr, sizeof(float), (BYTE*)&RecoilAmplitude, &RecoilBytes);
+	VMMDLL_Scatter_PrepareEx(vmsh, RangeAddr, sizeof(float), (BYTE*)&Range, &RangeBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
@@ -392,6 +397,9 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 
 	if (RecoilBytes == sizeof(float))
 		m_LocalPED_WeaponInfo.m_WeaponRecoilAmplitude = RecoilAmplitude;
+
+	if (RangeBytes == sizeof(float))
+		m_LocalPED_WeaponInfo.m_WeaponRange = Range;
 
 
 	{ /* Transfer data to weapon inspector with a mutex */
@@ -952,6 +960,30 @@ bool GTA5::m_FindWeaponFireRateOffset(DMA* dma)
 	return 1;
 }
 
+bool GTA5::m_FindWeaponRangeOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::WeaponRangePattern;
+	pi.Mask = Patterns::WeaponRangeMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponRangeOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindWeaponRangeOffset Disassemble");
+
+	Offsets::WeaponRange = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::WeaponRange {0:X}", Offsets::WeaponRange);
+
+	return 1;
+}
+
 bool GTA5::m_FindWeaponRecoilAmplitudeOffset(DMA* dma)
 {
 	PatternInfo pi;
@@ -1054,8 +1086,6 @@ bool GTA5::m_FindVehicleHealthOffsets(DMA* dma)
 
 	std::println("[+] Offsets::VehicleHealth {0:X}", Offsets::VehicleHealth);
 	std::println("[+] Offsets::VehicleMaxHealth {0:X}", Offsets::VehicleMaxHealth);
-
-
 
 	return 1;
 }

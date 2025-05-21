@@ -19,6 +19,7 @@ bool WeaponEditor::OnFrame()
 	ImGui::InputFloat("Reload Mult", &m_DesiredWeaponInfo.m_WeaponReloadMultiplier);
 	ImGui::InputFloat("Fire Rate", &m_DesiredWeaponInfo.m_WeaponFireRate);
 	ImGui::InputFloat("Recoil", &m_DesiredWeaponInfo.m_WeaponRecoilAmplitude);
+	ImGui::InputFloat("Range", &m_DesiredWeaponInfo.m_WeaponRange);
 
 	if (ImGui::Button("Override"))
 	{
@@ -50,6 +51,7 @@ bool WeaponEditor::OnDMAFrame(DMA* dma)
 	uintptr_t ReloadMultiplierAddr = GTA5::m_LocalPED_WeaponInfoAddr + Offsets::WeaponReloadMultiplier;
 	uintptr_t FireRateAddr = GTA5::m_LocalPED_WeaponInfoAddr + Offsets::WeaponFireRate;
 	uintptr_t RecoilAmplitudeAddr = GTA5::m_LocalPED_WeaponInfoAddr + Offsets::WeaponRecoilAmplitude;
+	uintptr_t RangeAddr = GTA5::m_LocalPED_WeaponInfoAddr + Offsets::WeaponRange;
 
 	VMMDLL_Scatter_PrepareWrite(vmsh, ImpactAddr, (BYTE*)&m_DesiredWeaponInfo.m_ImpactType, sizeof(m_DesiredWeaponInfo.m_ImpactType) * 2);
 	VMMDLL_Scatter_PrepareWrite(vmsh, DamageAddr, (BYTE*)&m_DesiredWeaponInfo.m_WeaponDamage, sizeof(m_DesiredWeaponInfo.m_WeaponDamage));
@@ -57,6 +59,7 @@ bool WeaponEditor::OnDMAFrame(DMA* dma)
 	VMMDLL_Scatter_PrepareWrite(vmsh, ReloadMultiplierAddr, (BYTE*)&m_DesiredWeaponInfo.m_WeaponReloadMultiplier, sizeof(m_DesiredWeaponInfo.m_WeaponReloadMultiplier));
 	VMMDLL_Scatter_PrepareWrite(vmsh, FireRateAddr, (BYTE*)&m_DesiredWeaponInfo.m_WeaponFireRate, sizeof(m_DesiredWeaponInfo.m_WeaponFireRate));
 	VMMDLL_Scatter_PrepareWrite(vmsh, RecoilAmplitudeAddr, (BYTE*)&m_DesiredWeaponInfo.m_WeaponRecoilAmplitude, sizeof(m_DesiredWeaponInfo.m_WeaponRecoilAmplitude));
+	VMMDLL_Scatter_PrepareWrite(vmsh, RangeAddr, (BYTE*)&m_DesiredWeaponInfo.m_WeaponRange, sizeof(m_DesiredWeaponInfo.m_WeaponRange));
 
 	VMMDLL_Scatter_Execute(vmsh);
 

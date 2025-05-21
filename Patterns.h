@@ -75,4 +75,7 @@ public:
 
 	static inline const std::string VehicleHealthPattern = "\xF3\x0F\x10\x8A????\xF3\x0F\x5E\x8A";
 	static inline const std::string VehicleHealthMask = "xxxx????xxxx";
+
+	static inline const std::string WeaponRangePattern = "\xF3\x0F\x10\xB8????\x4D\x85\xF6";
+	static inline const std::string WeaponRangeMask = "xxxx????xxx";
 };

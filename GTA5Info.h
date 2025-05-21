@@ -76,4 +76,5 @@ private:
 	static bool m_FindVehicleNavigationOffset(DMA* dma);
 	static bool m_FindVehiclePositionOffset(DMA* dma);
 	static bool m_FindVehicleHealthOffsets(DMA* dma);
+	static bool m_FindWeaponRangeOffset(DMA* dma);
 };

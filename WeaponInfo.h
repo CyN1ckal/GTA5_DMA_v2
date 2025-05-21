@@ -11,4 +11,5 @@ struct WeaponInfo
 	float m_WeaponReloadMultiplier;
 	float m_WeaponFireRate;
 	float m_WeaponRecoilAmplitude;
+	float m_WeaponRange;
 };

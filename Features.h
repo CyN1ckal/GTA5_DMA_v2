@@ -8,3 +8,4 @@
 #include "WeaponInspector.h"
 #include "WeaponEditor.h"
 #include "VehicleInspector.h"
+#include "RefreshHealth.h"

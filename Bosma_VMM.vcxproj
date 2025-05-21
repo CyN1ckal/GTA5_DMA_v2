@@ -358,6 +358,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RefreshHealth.cpp" />
     <ClCompile Include="Teleport.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -411,6 +412,7 @@
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="RefreshHealth.h" />
     <ClInclude Include="Teleport.h" />
     <ClInclude Include="VehicleGodMode.h" />
     <ClInclude Include="VehicleInfo.h" />

@@ -79,6 +79,9 @@
     <Filter Include="Static">
       <UniqueIdentifier>{2e1de9af-7a00-4bca-bec1-059f9dc39edd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features\Refresh Health">
+      <UniqueIdentifier>{9e9d0717-8d1d-4739-b59c-06c796805f9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -149,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="VehicleInspector.cpp">
       <Filter>Core\GUI\Vehicle Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="RefreshHealth.cpp">
+      <Filter>Features\Refresh Health</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="WeaponNameMap.h">
       <Filter>Static</Filter>
+    </ClInclude>
+    <ClInclude Include="RefreshHealth.h">
+      <Filter>Features\Refresh Health</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

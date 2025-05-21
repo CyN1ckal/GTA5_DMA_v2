@@ -497,6 +497,7 @@ bool GTA5::FeatureLoop(DMA* dma)
 	VehicleGodMode::OnFrame(dma);
 	Teleport::OnFrame(dma);
 	WeaponEditor::OnDMAFrame(dma);
+	RefreshHealth::OnFrame(dma);
 
 	return 1;
 }

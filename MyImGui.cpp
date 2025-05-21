@@ -41,6 +41,15 @@ bool MyImGui::FeaturesWindow()
 
 	ImGui::Checkbox("Never Wanted", &NeverWanted::m_NeverWanted);
 
+	ImGui::Checkbox("Refresh Health", &RefreshHealth::m_RefreshHealth);
+
+	if (RefreshHealth::m_RefreshHealth)
+	{
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(-FLT_MIN);
+		ImGui::SliderFloat("##Heal Threshold", &RefreshHealth::m_HealthThreshold, 0.1f, 0.99f);
+	}
+
 	ImGui::Checkbox("Fuser", &Fuser::m_Fuser);
 	if (Fuser::m_Fuser)
 	{

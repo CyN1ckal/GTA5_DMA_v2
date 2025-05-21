@@ -1150,7 +1150,6 @@ bool GTA5::UpdateBlips(DMA* dma)
 	m_Blips.assign(CompleteBlips.begin(), CompleteBlips.end());
 
 	{
-		std::println("Blip Size: {0:d}", m_Blips.size());
 		std::scoped_lock BlipInspectorLock(BlipInspector::m_BlipInspectorMutex);
 		BlipInspector::m_Blips.assign(CompleteBlips.begin(), CompleteBlips.end());
 		BlipInspector::m_LastPlayerPosition = m_LocalPED_PlayerInfo.m_Location;

@@ -53,6 +53,8 @@ int main() {
 
 			if (GetAsyncKeyState(VK_END) & 1) g_Alive = false;
 
+			if (GetAsyncKeyState(VK_INSERT) & 1) Fuser::m_Fuser = !Fuser::m_Fuser;
+
 			MyImGui::OnFrame();
 		}
 	}

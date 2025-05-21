@@ -71,9 +71,6 @@ bool GTA5::FindOffsets(DMA* dma)
 {
 	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
 
-	m_FindWorldPtr(dma);
-	m_FindBlipPtr(dma);
-
 	m_FindWeaponInventoryOffset(dma);
 	m_FindPlayerInfoOffset(dma);
 	m_FindWantedLevelOffset(dma);
@@ -99,6 +96,12 @@ bool GTA5::FindOffsets(DMA* dma)
 	m_FindVehiclePositionOffset(dma);
 	m_FindVehicleHealthOffsets(dma);
 	m_FindWeaponRangeOffset(dma);
+	m_FindVehicleHandlingDataOffset(dma);
+	m_FindVehicleAccelerationOffset(dma);
+	m_FindVehicleMassOffset(dma);
+
+	m_FindWorldPtr(dma);
+	m_FindBlipPtr(dma);
 
 	m_Scan.Close();
 
@@ -426,12 +429,15 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 	DWORD NavigationBytes = 0x0;
 	DWORD GodBytes = 0x0;
 	DWORD HealthBytes = 0x0;
+	DWORD HandlingBytes = 0x0;
 
 	uintptr_t NavigationPtr = m_LocalPED_VehicleAddr + Offsets::VehicleNavigation;
 	uintptr_t GodBitsAddr = m_LocalPED_VehicleAddr + Offsets::VehicleGodBits;
 	uintptr_t HealthAddr = m_LocalPED_VehicleAddr + Offsets::VehicleHealth;
+	uintptr_t HandlingPtr = m_LocalPED_VehicleAddr + Offsets::VehicleHandling;
 
 	uintptr_t NavigationAddr = 0x0;
+	uintptr_t HandlingAddr = 0x0;
 	uint32_t GodBits = 0x0;
 	struct Health
 	{
@@ -442,31 +448,16 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 
 	VMMDLL_Scatter_PrepareEx(vmsh, NavigationPtr, sizeof(uintptr_t), (BYTE*)&NavigationAddr, &NavigationBytes);
 
+	VMMDLL_Scatter_PrepareEx(vmsh, HandlingPtr, sizeof(uintptr_t), (BYTE*)&HandlingAddr, &HandlingBytes);
+
 	VMMDLL_Scatter_PrepareEx(vmsh, GodBitsAddr, sizeof(uint32_t), (BYTE*)&GodBits, &GodBytes);
 
 	VMMDLL_Scatter_PrepareEx(vmsh, HealthAddr, sizeof(Health), (BYTE*)&health, &HealthBytes);
 
 	VMMDLL_Scatter_Execute(vmsh);
 
-	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
-
 	if (NavigationBytes == sizeof(uintptr_t))
-	{
 		m_LocalPED_VehicleNavigationAddr = NavigationAddr;
-
-		uintptr_t PositionAddress = NavigationAddr + Offsets::VehiclePosition;
-
-		Vector3 Position;
-
-		DWORD PositionBytes = 0x0;
-
-		VMMDLL_Scatter_PrepareEx(vmsh, PositionAddress, sizeof(Vector3), (BYTE*)&Position, &PositionBytes);
-
-		VMMDLL_Scatter_Execute(vmsh);
-
-		if (PositionBytes == sizeof(Vector3))
-			m_LocalPED_VehicleInfo.m_Position = Position;
-	}
 
 	if (GodBytes == sizeof(uint32_t))
 		m_LocalPED_VehicleInfo.m_GodBits = GodBits;
@@ -476,6 +467,42 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 		m_LocalPED_VehicleInfo.m_Health = health.Current;
 		m_LocalPED_VehicleInfo.m_MaxHealth = health.Max;
 	}
+
+	if (HandlingBytes == sizeof(uintptr_t))
+		m_LocalPED_VehicleHandlingAddr = HandlingAddr;
+
+	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	DWORD PositionBytes = 0x0;
+	Vector3 Position = { 0.0f,0.0f,0.0f };
+	if (m_LocalPED_VehicleNavigationAddr)
+	{
+		uintptr_t PositionAddress = m_LocalPED_VehicleNavigationAddr + Offsets::VehiclePosition;
+		VMMDLL_Scatter_PrepareEx(vmsh, PositionAddress, sizeof(Vector3), (BYTE*)&Position, &PositionBytes);
+	}
+
+	DWORD AccelerationBytes = 0x0;
+	float Acceleration = 0.0f;
+	DWORD MassBytes = 0x0;
+	float Mass = 0.0f;
+	if (m_LocalPED_VehicleHandlingAddr)
+	{
+		uintptr_t AccelerationAddress = m_LocalPED_VehicleHandlingAddr + Offsets::VehicleAcceleration;
+		uintptr_t MassAddr = m_LocalPED_VehicleHandlingAddr + Offsets::VehicleMass;
+		VMMDLL_Scatter_PrepareEx(vmsh, AccelerationAddress, sizeof(float), (BYTE*)&Acceleration, &AccelerationBytes);
+		VMMDLL_Scatter_PrepareEx(vmsh, MassAddr, sizeof(float), (BYTE*)&Mass, &MassBytes);
+	}
+
+	VMMDLL_Scatter_Execute(vmsh);
+
+	if (PositionBytes == sizeof(Vector3))
+		m_LocalPED_VehicleInfo.m_Position = Position;
+
+	if (AccelerationBytes == sizeof(float))
+		m_LocalPED_VehicleInfo.m_Acceleration = Acceleration;
+
+	if (MassBytes == sizeof(float))
+		m_LocalPED_VehicleInfo.m_Mass = Mass;
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
@@ -1033,6 +1060,78 @@ bool GTA5::m_FindVehicleNavigationOffset(DMA* dma)
 	return 1;
 }
 
+bool GTA5::m_FindVehicleHandlingDataOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleHandlingPattern;
+	pi.Mask = Patterns::VehicleHandlingMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleHandlingDataOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleHandlingDataOffset Disassemble");
+
+	Offsets::VehicleHandling = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehicleHandling {0:X}", Offsets::VehicleHandling);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleAccelerationOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleAccelerationPattern;
+	pi.Mask = Patterns::VehicleAccelerationMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleAccelerationOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleAccelerationOffset Disassemble");
+
+	Offsets::VehicleAcceleration = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehicleAcceleration {0:X}", Offsets::VehicleAcceleration);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleMassOffset(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleMassPattern;
+	pi.Mask = Patterns::VehicleMassMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleMassOffset Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleMassOffset Disassemble");
+
+	Offsets::VehicleMass = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::VehicleMass {0:X}", Offsets::VehicleMass);
+
+	return 1;
+}
+
 bool GTA5::m_FindVehiclePositionOffset(DMA* dma)
 {
 	PatternInfo pi;
@@ -1100,8 +1199,11 @@ bool GTA5::UpdateBlips(DMA* dma)
 	ZoneScoped;
 
 	if (!m_BlipPtr)
+	{
+		std::println("m_BlipPtr is null!");
 		return 0;
-
+	}
+	
 	std::vector<uintptr_t>BlipAddresses;
 	BlipAddresses.resize(MaxBlips);
 	BlipAddresses.reserve(MaxBlips);

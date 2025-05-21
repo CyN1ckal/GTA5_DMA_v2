@@ -78,4 +78,13 @@ public:
 
 	static inline const std::string WeaponRangePattern = "\xF3\x0F\x10\xB8????\x4D\x85\xF6";
 	static inline const std::string WeaponRangeMask = "xxxx????xxx";
+
+	static inline const std::string VehicleHandlingPattern = "\x48\x8B\x80????\x8B\x88????\x48\x8D\x05";
+	static inline const std::string VehicleHandlingMask = "xxx????xx????xxx";
+
+	static inline const std::string VehicleAccelerationPattern = "\xF3\x0F\x10\x45?\x0F\x2E\xC7\x77";
+	static inline const std::string VehicleAccelerationMask = "xxxx?xxxx";
+
+	static inline const std::string VehicleMassPattern = "\xF3\x0F\x10\x50?\x48\x89\xF1";
+	static inline const std::string VehicleMassMask = "xxxx?xxx";
 };

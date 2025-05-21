@@ -8,4 +8,6 @@ struct VehicleInfo
 	float m_Health;
 	float m_MaxHealth;
 	Vector3 m_Position;
+	float m_Mass;
+	float m_Acceleration;
 };

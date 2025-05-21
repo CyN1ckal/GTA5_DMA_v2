@@ -12,13 +12,15 @@ bool Teleport::OnFrame(DMA* dma)
 {
 	if (m_RequestedTeleport)
 	{
+		std::println("[+] Teleport Requested!");
+
 		GTA5::UpdateBlips(dma);
 
 		Vector3 Position = GTA5::GetWaypointLocation();
 
 		if (Position.x == 0.0f)
 		{
-			std::println("[+] No Waypoint Found");
+			std::println("  [-] No Waypoint Found");
 			m_RequestedTeleport = false;
 			return 0;
 		}
@@ -63,11 +65,11 @@ bool Teleport::SetPlayerLocation(DMA* dma, Vector3& Location)
 
 		if (DistanceFromStart > 25.0f && (DistanceFromTarget < 25.0f && DistanceFromTarget > 0.01f))
 		{
-			std::println("[+] Teleport Successful");
+			std::println("  [-] Teleport Successful");
 			break;
 		}
 		if (i == 249)
-			std::println("[+] Teleport Failed");
+			std::println("  [-] Teleport Failed");
 	}
 
 	VMMDLL_Scatter_CloseHandle(vmsh);

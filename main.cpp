@@ -21,13 +21,17 @@ int main() {
 		GTA5::FindOffsets(&dma);
 		GTA5::UpdateWorldAddress(&dma);
 		GTA5::UpdateLocalPlayerAddr(&dma);
+		MyImGui::Initialize();
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Error: " << e.what() << std::endl;
+
 		if (dma.m_vmh)
 			dma.Close();
+
 		system("pause");
+
 		return 0;
 	}
 
@@ -41,8 +45,6 @@ int main() {
 		s.every(std::chrono::milliseconds(500), GTA5::UpdateVehicleInfo, &dma);
 		s.every(std::chrono::seconds(10), GTA5::UpdateLocalPlayerAddr, &dma);
 		s.every(std::chrono::seconds(10), GTA5::UpdateWorldAddress, &dma);
-
-		MyImGui::Initialize();
 
 		while (g_Alive)
 		{

@@ -10,4 +10,5 @@ public:
 public:
 	static inline std::mutex m_WeaponInspectorMutex;
 	static inline WeaponInfo m_CurrentWeaponInfo;
+	static inline bool m_WeaponInspector = false;
 };

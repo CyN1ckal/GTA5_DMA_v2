@@ -10,6 +10,6 @@ public:
 	
 public:
 	static inline WeaponInfo m_DesiredWeaponInfo;
-
 	static inline bool m_RequestedOverride = false;
+	static inline bool m_WeaponEditor = false;
 };

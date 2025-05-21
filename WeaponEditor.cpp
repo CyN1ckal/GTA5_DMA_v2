@@ -8,9 +8,11 @@
 
 bool WeaponEditor::OnFrame()
 {
-	
+	if (!m_WeaponEditor) return 1;
 
-	ImGui::Begin("Weapon Editor");
+	ImGuiWindowFlags wnd = ImGuiWindowFlags_AlwaysAutoResize;
+
+	ImGui::Begin("Weapon Editor", &m_WeaponEditor, wnd);
 
 	ImGui::InputInt("Impact Type", &m_DesiredWeaponInfo.m_ImpactType);
 	ImGui::InputInt("Impact Explosion", &m_DesiredWeaponInfo.m_ImpactExplosion);

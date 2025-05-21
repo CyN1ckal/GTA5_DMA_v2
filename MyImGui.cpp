@@ -12,9 +12,8 @@ extern bool g_Alive;
 
 bool MyImGui::OnFrame()
 {
-	OnFrameStart();
-
-	FeaturesWindow();
+	if (!OnFrameStart())
+		return 1;
 
 	Fuser::OnFrame();
 
@@ -24,44 +23,9 @@ bool MyImGui::OnFrame()
 
 	VehicleInspector::OnFrame();
 
+	MainMenu::Render();
+
 	OnFrameEnd();
-
-	return 1;
-}
-
-bool MyImGui::FeaturesWindow()
-{
-	ImGui::Begin("Features");
-
-	ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
-
-	ImGui::Checkbox("Vehicle God Mode", &VehicleGodMode::m_VehicleGodMode);
-
-	ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
-
-	ImGui::Checkbox("Never Wanted", &NeverWanted::m_NeverWanted);
-
-	ImGui::Checkbox("Refresh Health", &RefreshHealth::m_RefreshHealth);
-
-	if (RefreshHealth::m_RefreshHealth)
-	{
-		ImGui::SameLine();
-		ImGui::SetNextItemWidth(-FLT_MIN);
-		ImGui::SliderFloat("##Heal Threshold", &RefreshHealth::m_HealthThreshold, 0.1f, 0.99f);
-	}
-
-	ImGui::Checkbox("Fuser", &Fuser::m_Fuser);
-	if (Fuser::m_Fuser)
-	{
-		ImGui::InputInt("Monitor", &Fuser::m_MonitorIndex);
-		ImGui::InputInt("Width", &Fuser::m_Width);
-		ImGui::InputInt("Height	", &Fuser::m_Height);
-	}
-
-	if (ImGui::Button("Teleport to Waypoint"))
-		Teleport::m_RequestedTeleport = true;
-
-	ImGui::End();
 
 	return 1;
 }
@@ -76,7 +40,7 @@ bool MyImGui::Initialize()
 	{
 		CleanupDeviceD3D();
 		::UnregisterClassW(wc.lpszClassName, wc.hInstance);
-		return 1;
+		throw std::runtime_error("CreateDeviceD3D Failed!");
 	}
 
 	// Show the window
@@ -96,6 +60,7 @@ bool MyImGui::Initialize()
 	cfg.FontDataOwnedByAtlas = false;
 	m_pIBMPlexMono_16 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 16, &cfg);
 	m_pIBMPlexMono_24 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 24, &cfg);
+	m_pIBMPlexMono_32 = io.Fonts->AddFontFromMemoryTTF(IBMPlexMono_Bold_Data, sizeof(IBMPlexMono_Bold_Data), 32, &cfg);
 
 	ImGui::StyleColorsDark();
 
@@ -122,7 +87,7 @@ bool MyImGui::OnFrameStart()
 	if (g_SwapChainOccluded && g_pSwapChain->Present(0, DXGI_PRESENT_TEST) == DXGI_STATUS_OCCLUDED)
 	{
 		::Sleep(10);
-		return 1;
+		return 0;
 	}
 	g_SwapChainOccluded = false;
 
@@ -257,4 +222,101 @@ LRESULT WINAPI MyImGui::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 		return 0;
 	}
 	return ::DefWindowProcW(hWnd, msg, wParam, lParam);
+}
+
+bool MainMenu::Render()
+{
+	ImGui::PushFont(MyImGui::m_pIBMPlexMono_32);
+
+	std::string MenuTitle = "CyNickal GTA";
+
+
+	auto TextSize = ImGui::CalcTextSize(MenuTitle.data(), MenuTitle.data() + MenuTitle.size());
+	const auto& Style = ImGui::GetStyle();
+
+	ImGui::SetNextWindowSizeConstraints({ TextSize.x + ((Style.FramePadding.x + Style.WindowPadding.x) * 2.0f), 200.0f }, { 1000.0f,1000.0f });
+
+	ImGuiWindowFlags wnd = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize;
+
+	ImGui::Begin("Main Menu", &m_MainMenu, wnd);
+
+	auto WindowWidth = ImGui::GetContentRegionAvail().x;
+
+	unsigned int Offset = (WindowWidth - TextSize.x) / 2;
+	Offset -= Style.FramePadding.x;
+
+	auto CursorPos = ImGui::GetCursorPos();
+	CursorPos.x += Offset;
+
+	ImGui::SetCursorPos(CursorPos);
+
+	ImGui::Text(MenuTitle.c_str());
+
+	ImGui::PopFont();
+
+	if (ImGui::CollapsingHeader("Inspectors"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("Weapon Inspector", &WeaponInspector::m_WeaponInspector);
+
+		ImGui::Checkbox("Vehicle Inspector", &VehicleInspector::m_VehicleInspector);
+
+		ImGui::Unindent();
+	}
+
+	if (ImGui::CollapsingHeader("Editors"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("Weapon Editor", &WeaponEditor::m_WeaponEditor);
+
+		ImGui::Unindent();
+	}
+
+
+	if (ImGui::CollapsingHeader("Self"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
+
+		ImGui::Checkbox("Vehicle God Mode", &VehicleGodMode::m_VehicleGodMode);
+
+		ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
+
+		ImGui::Checkbox("Never Wanted", &NeverWanted::m_NeverWanted);
+
+		ImGui::Checkbox("Refresh Health", &RefreshHealth::m_RefreshHealth);
+		if (RefreshHealth::m_RefreshHealth)
+		{
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(-FLT_MIN);
+			ImGui::SliderFloat("##Heal Threshold", &RefreshHealth::m_HealthThreshold, 0.1f, 0.99f);
+		}
+
+		ImGui::Unindent();
+	}
+
+	if (ImGui::CollapsingHeader("Fuser"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("Toggle", &Fuser::m_Fuser);
+
+		ImGui::SetNextItemWidth(120.0f);
+		ImGui::InputInt("Monitor", &Fuser::m_MonitorIndex);
+
+		ImGui::SetNextItemWidth(120.0f);
+		ImGui::InputInt("Width", &Fuser::m_Width);
+
+		ImGui::SetNextItemWidth(120.0f);
+		ImGui::InputInt("Height	", &Fuser::m_Height);
+
+		ImGui::Unindent();
+	}
+
+	ImGui::End();
+
+	return 1;
 }

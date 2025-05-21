@@ -29,8 +29,12 @@ public: /* Interface */
 public: /* Fonts */
 	static inline ImFont* m_pIBMPlexMono_16 = nullptr;
 	static inline ImFont* m_pIBMPlexMono_24 = nullptr;
+	static inline ImFont* m_pIBMPlexMono_32 = nullptr;
+};
 
-private: /* ImGui Windows */
-	static bool FeaturesWindow();
-
+class MainMenu
+{
+public:
+	static inline bool m_MainMenu = false;
+	static bool Render();
 };

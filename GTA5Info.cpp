@@ -804,8 +804,6 @@ bool GTA5::UpdateBlips(DMA* dma)
 		BlipInspector::m_LastPlayerPosition = m_LocalPED_PlayerInfo.m_Location;
 	}
 
-	std::println("Done Updating Blips");
-
 	return 1;
 }
 

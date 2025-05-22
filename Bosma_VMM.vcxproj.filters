@@ -93,19 +93,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="GTA5_DMA\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="GTA5_DMA\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MultiScan.cpp">
+    <ClCompile Include="GTA5_DMA\Core\DMA\MultiScan.cpp">
       <Filter>Utils\Pattern Scan</Filter>
     </ClCompile>
-    <ClCompile Include="DMA.cpp">
+    <ClCompile Include="GTA5_DMA\Core\DMA\DMA.cpp">
       <Filter>Core\DMA</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5Info.cpp">
+    <ClCompile Include="GTA5_DMA\Core\GTA5\GTA5Info.cpp">
       <Filter>Core\GTA5</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -129,66 +129,66 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Dependencies\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Fuser.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\Fuser\Fuser.cpp">
       <Filter>Features\Fuser</Filter>
     </ClCompile>
-    <ClCompile Include="GodMode.cpp">
+    <ClCompile Include="GTA5_DMA\Features\GodMode\GodMode.cpp">
       <Filter>Features\Player God Mode</Filter>
     </ClCompile>
-    <ClCompile Include="InfiniteAmmo.cpp">
+    <ClCompile Include="GTA5_DMA\Features\InfiniteAmmo\InfiniteAmmo.cpp">
       <Filter>Features\Infinite Ammo</Filter>
     </ClCompile>
-    <ClCompile Include="NeverWanted.cpp">
+    <ClCompile Include="GTA5_DMA\Features\NeverWanted\NeverWanted.cpp">
       <Filter>Features\Never Wanted</Filter>
     </ClCompile>
-    <ClCompile Include="VehicleGodMode.cpp">
+    <ClCompile Include="GTA5_DMA\Features\VehicleGodMode\VehicleGodMode.cpp">
       <Filter>Features\Vehicle God Mode</Filter>
     </ClCompile>
-    <ClCompile Include="Teleport.cpp">
+    <ClCompile Include="GTA5_DMA\Features\Teleport\Teleport.cpp">
       <Filter>Features\Teleport</Filter>
     </ClCompile>
     <ClCompile Include="Tracy\TracyClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyImGui.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\MyImGui.cpp">
       <Filter>Core\GUI\Main</Filter>
     </ClCompile>
-    <ClCompile Include="WeaponInspector.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\WeaponInspector\WeaponInspector.cpp">
       <Filter>Core\GUI\Weapon Inspector</Filter>
     </ClCompile>
-    <ClCompile Include="WeaponEditor.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\WeaponEditor\WeaponEditor.cpp">
       <Filter>Core\GUI\Weapon Editor</Filter>
     </ClCompile>
-    <ClCompile Include="VehicleInspector.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\VehicleInspector\VehicleInspector.cpp">
       <Filter>Core\GUI\Vehicle Inspector</Filter>
     </ClCompile>
-    <ClCompile Include="RefreshHealth.cpp">
+    <ClCompile Include="GTA5_DMA\Features\RefreshHealth\RefreshHealth.cpp">
       <Filter>Features\Refresh Health</Filter>
     </ClCompile>
-    <ClCompile Include="BlipInspector.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\BlipInspector\BlipInspector.cpp">
       <Filter>Core\GUI\Blip Inspector</Filter>
     </ClCompile>
-    <ClCompile Include="VehicleEditor.cpp">
+    <ClCompile Include="GTA5_DMA\GUI\VehicleEditor\VehicleEditor.cpp">
       <Filter>Core\GUI\Vehicle Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Config.cpp">
+    <ClCompile Include="GTA5_DMA\Core\Config\Config.cpp">
       <Filter>Core\Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="GTA5_DMA\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Features.h">
+    <ClInclude Include="GTA5_DMA\Features\Features.h">
       <Filter>Features</Filter>
     </ClInclude>
-    <ClInclude Include="MultiScan.h">
+    <ClInclude Include="GTA5_DMA\Core\DMA\MultiScan.h">
       <Filter>Utils\Pattern Scan</Filter>
     </ClInclude>
-    <ClInclude Include="DMA.h">
+    <ClInclude Include="GTA5_DMA\Core\DMA\DMA.h">
       <Filter>Core\DMA</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5Info.h">
+    <ClInclude Include="GTA5_DMA\Core\GTA5\GTA5Info.h">
       <Filter>Core\GTA5</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
@@ -215,76 +215,76 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Dependencies\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="IBMPlexMono-Bold.h">
+    <ClInclude Include="GTA5_DMA\GUI\Fonts\IBMPlexMono-Bold.h">
       <Filter>Core\GUI\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="Fonts.h">
+    <ClInclude Include="GTA5_DMA\GUI\Fonts\Fonts.h">
       <Filter>Core\GUI\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="Fuser.h">
+    <ClInclude Include="GTA5_DMA\GUI\Fuser\Fuser.h">
       <Filter>Features\Fuser</Filter>
     </ClInclude>
-    <ClInclude Include="GodMode.h">
+    <ClInclude Include="GTA5_DMA\Features\GodMode\GodMode.h">
       <Filter>Features\Player God Mode</Filter>
     </ClInclude>
-    <ClInclude Include="InfiniteAmmo.h">
+    <ClInclude Include="GTA5_DMA\Features\InfiniteAmmo\InfiniteAmmo.h">
       <Filter>Features\Infinite Ammo</Filter>
     </ClInclude>
-    <ClInclude Include="NeverWanted.h">
+    <ClInclude Include="GTA5_DMA\Features\NeverWanted\NeverWanted.h">
       <Filter>Features\Never Wanted</Filter>
     </ClInclude>
-    <ClInclude Include="VehicleGodMode.h">
+    <ClInclude Include="GTA5_DMA\Features\VehicleGodMode\VehicleGodMode.h">
       <Filter>Features\Vehicle God Mode</Filter>
     </ClInclude>
-    <ClInclude Include="Teleport.h">
+    <ClInclude Include="GTA5_DMA\Features\Teleport\Teleport.h">
       <Filter>Features\Teleport</Filter>
     </ClInclude>
-    <ClInclude Include="MyImGui.h">
+    <ClInclude Include="GTA5_DMA\GUI\MyImGui.h">
       <Filter>Core\GUI\Main</Filter>
     </ClInclude>
-    <ClInclude Include="WeaponInspector.h">
+    <ClInclude Include="GTA5_DMA\GUI\WeaponInspector\WeaponInspector.h">
       <Filter>Core\GUI\Weapon Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="MyVector.h">
+    <ClInclude Include="GTA5_DMA\Structs\MyVector.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="WeaponInfo.h">
+    <ClInclude Include="GTA5_DMA\Structs\WeaponInfo.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="WeaponEditor.h">
+    <ClInclude Include="GTA5_DMA\GUI\WeaponEditor\WeaponEditor.h">
       <Filter>Core\GUI\Weapon Editor</Filter>
     </ClInclude>
-    <ClInclude Include="VehicleInfo.h">
+    <ClInclude Include="GTA5_DMA\Structs\VehicleInfo.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="VehicleInspector.h">
+    <ClInclude Include="GTA5_DMA\GUI\VehicleInspector\VehicleInspector.h">
       <Filter>Core\GUI\Vehicle Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInfo.h">
+    <ClInclude Include="GTA5_DMA\Structs\PlayerInfo.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="WeaponNameMap.h">
+    <ClInclude Include="GTA5_DMA\Structs\WeaponNameMap.h">
       <Filter>Static</Filter>
     </ClInclude>
-    <ClInclude Include="RefreshHealth.h">
+    <ClInclude Include="GTA5_DMA\Features\RefreshHealth\RefreshHealth.h">
       <Filter>Features\Refresh Health</Filter>
     </ClInclude>
-    <ClInclude Include="BlipInspector.h">
+    <ClInclude Include="GTA5_DMA\GUI\BlipInspector\BlipInspector.h">
       <Filter>Core\GUI\Blip Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="BlipInfo.h">
+    <ClInclude Include="GTA5_DMA\Structs\BlipInfo.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="Patterns.h">
+    <ClInclude Include="GTA5_DMA\Structs\Patterns.h">
       <Filter>Static</Filter>
     </ClInclude>
-    <ClInclude Include="Offsets.h">
+    <ClInclude Include="GTA5_DMA\Structs\Offsets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VehicleEditor.h">
+    <ClInclude Include="GTA5_DMA\GUI\VehicleEditor\VehicleEditor.h">
       <Filter>Core\GUI\Vehicle Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h">
+    <ClInclude Include="GTA5_DMA\Core\Config\Config.h">
       <Filter>Core\Config</Filter>
     </ClInclude>
   </ItemGroup>

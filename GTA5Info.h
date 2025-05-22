@@ -49,30 +49,11 @@ public:
 private:
 	static bool m_FindWorldPtr(DMA* dma);
 	static bool m_FindBlipPtr(DMA* dma);
+
 	static bool m_FindHealthOffset(DMA* dma);
-	static bool m_FindAmmoModifierOffset(DMA* dma);
-	static bool m_FindNavigationOffset(DMA* dma);
-	static bool m_FindPlayerPositionOffset(DMA* dma);
-	static bool m_FindBlipPositionOffset(DMA* dma);
-	static bool m_FindBlipIDOffset(DMA* dma);
-	static bool m_FindWeaponManagerOffset(DMA* dma);
-	static bool m_FindWeaponInfoOffset(DMA* dma);
-	static bool m_FindWeaponNameOffset(DMA* dma);
 	static bool m_FindWeaponImpactOffsets(DMA* dma);
-	static bool m_FindWeaponDamageOffset(DMA* dma);
-	static bool m_FindWeaponPenetrationOffset(DMA* dma);
-	static bool m_FindWeaponReloadMultiplierOffset(DMA* dma);
-	static bool m_FindWeaponFireRateOffset(DMA* dma);
-	static bool m_FindWeaponRecoilAmplitudeOffset(DMA* dma);
-	static bool m_FindVehicleNavigationOffset(DMA* dma);
-	static bool m_FindVehiclePositionOffset(DMA* dma);
 	static bool m_FindVehicleHealthOffsets(DMA* dma);
-	static bool m_FindWeaponRangeOffset(DMA* dma);
-	static bool m_FindVehicleHandlingDataOffset(DMA* dma);
-	static bool m_FindVehicleAccelerationOffset(DMA* dma);
-	static bool m_FindVehicleMassOffset(DMA* dma);
-	static bool m_FindVehicleBrakeForceOffset(DMA* dma);
-	static bool m_FindVehicleDeformOffset(DMA* dma);
+	static bool m_FindWeaponRecoilAmplitudeOffset(DMA* dma);
 
 	static bool m_FindOffset_Disp1(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
 	static bool m_FindOffset_Disp0(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);

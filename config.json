@@ -1,0 +1,22 @@
+{
+  "Fuser": {
+    "m_Fuser": false,
+    "m_Height": 1077,
+    "m_Width": 1923
+  },
+  "Main Menu": {
+    "m_BlipInspector": true,
+    "m_VehicleEditor": true,
+    "m_VehicleInspector": true,
+    "m_WeaponEditor": true,
+    "m_WeaponInspector": true
+  },
+  "Self": {
+    "m_GodMode": true,
+    "m_HealthThreshold": 0.8500000238418579,
+    "m_InfiniteAmmo": true,
+    "m_NeverWanted": true,
+    "m_RefreshHealth": true,
+    "m_VehicleGodMode": true
+  }
+}

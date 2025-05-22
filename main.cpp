@@ -10,9 +10,13 @@
 
 #include "MyImGui.h"
 
+#include "Config.h"
+
 bool g_Alive = true;
 
 int main() {
+	Config::LoadConfig();
+
 	DMA dma;
 
 	try
@@ -62,6 +66,8 @@ int main() {
 	dma.Close();
 
 	MyImGui::Close();
+
+	Config::SaveConfig();
 
 	return 1;
 }

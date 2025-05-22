@@ -88,6 +88,9 @@
     <Filter Include="Core\GUI\Vehicle Editor">
       <UniqueIdentifier>{b71931a3-be1c-4887-b39f-2100456ab6d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Config">
+      <UniqueIdentifier>{a3d7314d-3f2b-4c4e-b44d-bcbcccc7462c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="VehicleEditor.cpp">
       <Filter>Core\GUI\Vehicle Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Core\Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="VehicleEditor.h">
       <Filter>Core\GUI\Vehicle Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Core\Config</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

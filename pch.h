@@ -7,6 +7,7 @@
 #include <array>
 #include <mutex>
 #include <format>
+#include <memory>
 
 #include <Windows.h>
 

@@ -71,36 +71,120 @@ bool GTA5::FindOffsets(DMA* dma)
 {
 	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
 
-	m_FindWeaponInventoryOffset(dma);
-	m_FindPlayerInfoOffset(dma);
-	m_FindWantedLevelOffset(dma);
-	m_FindHealthOffset(dma);
-	m_FindGodBitsOffset(dma);
-	m_FindVehicleGodBitsOffset(dma);
-	m_FindAmmoModifierOffset(dma);
-	m_FindPlayerPositionOffset(dma);
-	m_FindNavigationOffset(dma);
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
 
-	m_FindBlipPositionOffset(dma);
-	m_FindBlipIDOffset(dma);
-	m_FindWeaponManagerOffset(dma);
-	m_FindWeaponInfoOffset(dma);
-	m_FindWeaponNameOffset(dma);
+	pi.Pattern = Patterns::WeaponInventoryPattern;
+	pi.Mask = Patterns::WeaponInventoryMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponInventory, "WeaponInventory");
+
+	pi.Pattern = Patterns::PlayerInfoPattern;
+	pi.Mask = Patterns::PlayerInfoMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::PlayerInfo, "PlayerInfo");
+
+	pi.Pattern = Patterns::WantedLevelPattern;
+	pi.Mask = Patterns::WantedLevelMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::WantedLevel, "WantedLevel");
+
+	/* resolves 2 offsets */
+	m_FindHealthOffset(dma);
+
+	pi.Pattern = Patterns::GodBitsPattern;
+	pi.Mask = Patterns::GodBitsMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::GodBits, "GodBits");
+
+	pi.Pattern = Patterns::VehicleGodBitsPattern;
+	pi.Mask = Patterns::VehicleGodBitsMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::VehicleGodBits, "VehicleGodBits");
+
+	pi.Pattern = Patterns::AmmoModifierPattern;
+	pi.Mask = Patterns::AmmoModifierMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::AmmoModifier, "AmmoModifier");
+
+	pi.Pattern = Patterns::PlayerPositionPattern;
+	pi.Mask = Patterns::PlayerPositionMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::PlayerPosition, "PlayerPosition");
+
+	pi.Pattern = Patterns::NavigationPattern;
+	pi.Mask = Patterns::NavigationMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::Navigation, "Navigation");
+
+	pi.Pattern = Patterns::BlipPositionPattern;
+	pi.Mask = Patterns::BlipPositionMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::BlipPosition, "BlipPosition");
+
+	pi.Pattern = Patterns::BlipIDPattern;
+	pi.Mask = Patterns::BlipIDMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::BlipID, "BlipID");
+
+	pi.Pattern = Patterns::WeaponManagerPattern;
+	pi.Mask = Patterns::WeaponManagerMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::WeaponManager, "WeaponManager");
+
+	pi.Pattern = Patterns::WeaponInfoPattern;
+	pi.Mask = Patterns::WeaponInfoMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponInfo, "WeaponInfo");
+
+	pi.Pattern = Patterns::WeaponNamePattern;
+	pi.Mask = Patterns::WeaponNameMask;
+	m_FindOffset_Disp0(dma, pi, Offsets::WeaponName, "WeaponName");
+
+	/* resolves 2 offsets */
 	m_FindWeaponImpactOffsets(dma);
-	m_FindWeaponDamageOffset(dma);
-	m_FindWeaponPenetrationOffset(dma);
-	m_FindWeaponReloadMultiplierOffset(dma);
-	m_FindWeaponFireRateOffset(dma);
+
+	pi.Pattern = Patterns::WeaponDamagePattern;
+	pi.Mask = Patterns::WeaponDamageMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponDamage, "WeaponDamage");
+
+	pi.Pattern = Patterns::WeaponPenetrationPattern;
+	pi.Mask = Patterns::WeaponPenetrationMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponPenetration, "WeaponPenetration");
+
+	pi.Pattern = Patterns::WeaponReloadMultiplerPattern;
+	pi.Mask = Patterns::WeaponReloadMultiplerMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponReloadMultiplier, "WeaponReloadMultiplier");
+
+	pi.Pattern = Patterns::WeaponFireRatePattern;
+	pi.Mask = Patterns::WeaponFireRateMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponFireRate, "WeaponFireRate");
+
+	/* immediate value; not displacement */
 	m_FindWeaponRecoilAmplitudeOffset(dma);
-	m_FindVehicleNavigationOffset(dma);
-	m_FindVehiclePositionOffset(dma);
+
+	pi.Pattern = Patterns::VehicleNavigationPattern;
+	pi.Mask = Patterns::VehicleNavigationMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleNavigation, "VehicleNavigation");
+
+	pi.Pattern = Patterns::VehiclePositionPattern;
+	pi.Mask = Patterns::VehiclePositionMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehiclePosition, "VehiclePosition");
+
+	/* resolves 2 offsets */
 	m_FindVehicleHealthOffsets(dma);
-	m_FindWeaponRangeOffset(dma);
-	m_FindVehicleHandlingDataOffset(dma);
-	m_FindVehicleAccelerationOffset(dma);
-	m_FindVehicleMassOffset(dma);
-	m_FindVehicleBrakeForceOffset(dma);
-	m_FindVehicleDeformOffset(dma);
+
+	pi.Pattern = Patterns::WeaponRangePattern;
+	pi.Mask = Patterns::WeaponRangeMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::WeaponRange, "WeaponRange");
+	
+	pi.Pattern = Patterns::VehicleHandlingPattern;
+	pi.Mask = Patterns::VehicleHandlingMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleHandling, "VehicleHandling");
+	
+	pi.Pattern = Patterns::VehicleAccelerationPattern;
+	pi.Mask = Patterns::VehicleAccelerationMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleAcceleration, "VehicleAcceleration");
+
+	pi.Pattern = Patterns::VehicleMassPattern;
+	pi.Mask = Patterns::VehicleMassMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleMass, "VehicleMass");
+	
+	pi.Pattern = Patterns::VehicleBrakeForcePattern;
+	pi.Mask = Patterns::VehicleBrakeForceMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::BrakeForce, "BrakeForce");
+
+	pi.Pattern = Patterns::VehicleDeformPattern;
+	pi.Mask = Patterns::VehicleDeformMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleDeformMult, "VehicleDeformMult");
 
 	m_FindWorldPtr(dma);
 	m_FindBlipPtr(dma);
@@ -546,30 +630,6 @@ bool GTA5::FeatureLoop(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindGodBitsOffset(DMA* dma)
-{
-	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
-	pi.Pattern = Patterns::GodBitsPattern;
-	pi.Mask = Patterns::GodBitsMask;
-
-	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
-	auto RuntimeAddress = m_Scan.Scan(pi);
-
-	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindGodBitsOffset Offset");
-
-	ZydisDisassembledInstruction Instruction;
-
-	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
-		throw std::exception("m_FindGodBitsOffset Disassemble");
-
-	Offsets::GodBits = Instruction.operands[0].mem.disp.value;
-
-	std::println("[+] Offsets::GodBits {0:X}", Offsets::GodBits);
-
-	return 1;
-}
-
 bool GTA5::m_FindHealthOffset(DMA* dma)
 {
 	PatternInfo pi;
@@ -595,30 +655,6 @@ bool GTA5::m_FindHealthOffset(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindWeaponInventoryOffset(DMA* dma)
-{
-	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
-	pi.Pattern = Patterns::WeaponInventoryPattern;
-	pi.Mask = Patterns::WeaponInventoryMask;
-
-	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
-	auto RuntimeAddress = m_Scan.Scan(pi);
-
-	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWeaponInventoryOffset Offset");
-
-	ZydisDisassembledInstruction Instruction;
-
-	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
-		throw std::exception("m_FindHealthOffset Disassemble");
-
-	Offsets::WeaponInventory = Instruction.operands[1].mem.disp.value;
-
-	std::println("[+] Offsets::WeaponInventory {0:X}", Offsets::WeaponInventory);
-
-	return 1;
-}
-
 bool GTA5::m_FindAmmoModifierOffset(DMA* dma)
 {
 	PatternInfo pi;
@@ -639,78 +675,6 @@ bool GTA5::m_FindAmmoModifierOffset(DMA* dma)
 	Offsets::AmmoModifier = Instruction.operands[0].mem.disp.value;
 
 	std::println("[+] Offsets::AmmoModifier {0:X}", Offsets::AmmoModifier);
-
-	return 1;
-}
-
-bool GTA5::m_FindPlayerInfoOffset(DMA* dma)
-{
-	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
-	pi.Pattern = Patterns::PlayerInfoPattern;
-	pi.Mask = Patterns::PlayerInfoMask;
-
-	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
-	auto RuntimeAddress = m_Scan.Scan(pi);
-
-	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindAmmoModifierOffset Offset");
-
-	ZydisDisassembledInstruction Instruction;
-
-	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
-		throw std::exception("m_FindAmmoModifierOffset Disassemble");
-
-	Offsets::PlayerInfo = Instruction.operands[0].mem.disp.value;
-
-	std::println("[+] Offsets::PlayerInfo {0:X}", Offsets::PlayerInfo);
-
-	return 1;
-}
-
-bool GTA5::m_FindWantedLevelOffset(DMA* dma)
-{
-	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
-	pi.Pattern = Patterns::WantedLevelPattern;
-	pi.Mask = Patterns::WantedLevelMask;
-
-	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
-	auto RuntimeAddress = m_Scan.Scan(pi);
-
-	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindWantedLevelOffset Offset");
-
-	ZydisDisassembledInstruction Instruction;
-
-	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
-		throw std::exception("m_FindWantedLevelOffset Disassemble");
-
-	Offsets::WantedLevel = Instruction.operands[0].mem.disp.value;
-
-	std::println("[+] Offsets::WantedLevel {0:X}", Offsets::WantedLevel);
-
-	return 1;
-}
-
-bool GTA5::m_FindVehicleGodBitsOffset(DMA* dma)
-{
-	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
-	pi.Pattern = Patterns::VehicleGodBitsPattern;
-	pi.Mask = Patterns::VehicleGodBitsMask;
-
-	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
-	auto RuntimeAddress = m_Scan.Scan(pi);
-
-	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleGodBitsOffset Offset");
-
-	ZydisDisassembledInstruction Instruction;
-
-	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
-		throw std::exception("m_FindVehicleGodBitsOffset Disassemble");
-
-	Offsets::VehicleGodBits = Instruction.operands[0].mem.disp.value;
-
-	std::println("[+] Offsets::VehicleGodBits {0:X}", Offsets::VehicleGodBits);
 
 	return 1;
 }
@@ -1241,7 +1205,7 @@ bool GTA5::m_FindVehicleHealthOffsets(DMA* dma)
 		throw std::exception("m_FindVehicleHealthOffset Disassemble");
 
 	Offsets::VehicleHealth = Instruction.operands[1].mem.disp.value;
-	
+
 	Offset += Instruction.info.length;
 
 	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress + Offset, m_Scan.GetBuffer() + SectionOffset + Offset, 0x15, &Instruction)))
@@ -1268,7 +1232,7 @@ bool GTA5::UpdateBlips(DMA* dma)
 		std::println("m_BlipPtr is null!");
 		return 0;
 	}
-	
+
 	std::vector<uintptr_t>BlipAddresses;
 	BlipAddresses.resize(MaxBlips);
 	BlipAddresses.reserve(MaxBlips);
@@ -1335,4 +1299,42 @@ Vector3 GTA5::GetWaypointLocation()
 
 	Vector3 Return = { 0.0f,0.0f,0.0f };
 	return Return;
+}
+
+bool GTA5::m_FindOffset_Disp1(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name)
+{
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception(std::format("{0:s} Offset", Name.c_str()).c_str());
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception(std::format("{0:s} Disassemble", Name.c_str()).c_str());
+
+	Offset = Instruction.operands[1].mem.disp.value;
+
+	std::println("[+] Offsets::{0:s} {1:X}", Name.c_str(), Offset);
+
+	return 1;
+}
+
+bool GTA5::m_FindOffset_Disp0(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name)
+{
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception(std::format("{0:s} Offset", Name.c_str()).c_str());
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception(std::format("{0:s} Disassemble", Name.c_str()).c_str());
+
+	Offset = Instruction.operands[0].mem.disp.value;
+
+	std::println("[+] Offsets::{0:s} {1:X}", Name.c_str(), Offset);
+
+	return 1;
 }

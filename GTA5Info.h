@@ -49,13 +49,8 @@ public:
 private:
 	static bool m_FindWorldPtr(DMA* dma);
 	static bool m_FindBlipPtr(DMA* dma);
-	static bool m_FindGodBitsOffset(DMA* dma);
 	static bool m_FindHealthOffset(DMA* dma);
-	static bool m_FindWeaponInventoryOffset(DMA* dma);
 	static bool m_FindAmmoModifierOffset(DMA* dma);
-	static bool m_FindPlayerInfoOffset(DMA* dma);
-	static bool m_FindWantedLevelOffset(DMA* dma);
-	static bool m_FindVehicleGodBitsOffset(DMA* dma);
 	static bool m_FindNavigationOffset(DMA* dma);
 	static bool m_FindPlayerPositionOffset(DMA* dma);
 	static bool m_FindBlipPositionOffset(DMA* dma);
@@ -78,4 +73,7 @@ private:
 	static bool m_FindVehicleMassOffset(DMA* dma);
 	static bool m_FindVehicleBrakeForceOffset(DMA* dma);
 	static bool m_FindVehicleDeformOffset(DMA* dma);
+
+	static bool m_FindOffset_Disp1(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
+	static bool m_FindOffset_Disp0(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
 };

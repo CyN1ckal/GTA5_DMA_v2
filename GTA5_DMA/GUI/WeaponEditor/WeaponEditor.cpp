@@ -14,6 +14,7 @@ bool WeaponEditor::OnFrame()
 
 	ImGui::Begin("Weapon Editor", &m_WeaponEditor, wnd);
 
+	ImGui::PushItemWidth(150);
 	ImGui::InputInt("Impact Type", &m_DesiredWeaponInfo.m_ImpactType);
 	ImGui::InputInt("Impact Explosion", &m_DesiredWeaponInfo.m_ImpactExplosion);
 	ImGui::InputFloat("Damage", &m_DesiredWeaponInfo.m_WeaponDamage);
@@ -22,6 +23,7 @@ bool WeaponEditor::OnFrame()
 	ImGui::InputFloat("Fire Rate", &m_DesiredWeaponInfo.m_WeaponFireRate);
 	ImGui::InputFloat("Recoil", &m_DesiredWeaponInfo.m_WeaponRecoilAmplitude);
 	ImGui::InputFloat("Range", &m_DesiredWeaponInfo.m_WeaponRange);
+	ImGui::PopItemWidth();
 
 	if (ImGui::Button("Override"))
 	{

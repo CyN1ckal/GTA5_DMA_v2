@@ -11,7 +11,7 @@ bool VehicleEditor::OnFrame()
 	ImGuiWindowFlags wnd = ImGuiWindowFlags_AlwaysAutoResize;
 
 	ImGui::Begin("Vehicle Editor", &m_VehicleEditor, wnd);
-
+	ImGui::PushItemWidth(150);
 	ImGui::InputFloat("Mass", &m_VehicleInfo.m_Mass);
 
 	ImGui::InputFloat("Acceleration", &m_VehicleInfo.m_Acceleration);
@@ -25,6 +25,7 @@ bool VehicleEditor::OnFrame()
 	ImGui::ColorEdit4("Secondary Color", &m_DesiredSecondaryColor.x);
 
 	ImGui::ColorEdit4("Wheel Color", &m_DesiredWheelColor.x);
+	ImGui::PopItemWidth();
 
 	if (ImGui::Button("Override"))
 		m_RequestedOverride = true;

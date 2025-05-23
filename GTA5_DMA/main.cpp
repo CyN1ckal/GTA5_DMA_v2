@@ -14,11 +14,31 @@
 
 bool g_Alive = true;
 
+DMA* pDMA = nullptr;
+
+BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
+{
+	switch (fdwCtrlType)
+	{
+	// CTRL-CLOSE: confirm that the user wants to exit.
+	case CTRL_CLOSE_EVENT:
+		pDMA->Close();
+		Config::SaveConfig();
+		return FALSE;
+
+	default:
+		return FALSE;
+	}
+}
+
 int main() {
+	if (!SetConsoleCtrlHandler(CtrlHandler, TRUE))
+		return 0;
+
 	Config::LoadConfig();
 
 	DMA dma;
-
+	pDMA = &dma;
 	try
 	{
 		dma.Start("GTA5_Enhanced.exe");

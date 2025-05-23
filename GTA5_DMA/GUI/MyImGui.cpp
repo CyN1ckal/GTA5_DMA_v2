@@ -267,8 +267,6 @@ bool MainMenu::Render()
 
 		ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
 
-		ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
-
 		ImGui::Checkbox("Never Wanted", &NeverWanted::m_NeverWanted);
 
 		ImGui::Checkbox("Refresh Health", &RefreshHealth::m_RefreshHealth);
@@ -309,6 +307,8 @@ bool MainMenu::Render()
 		ImGui::Checkbox("Weapon Inspector", &WeaponInspector::m_WeaponInspector);
 
 		ImGui::Checkbox("Weapon Editor", &WeaponEditor::m_WeaponEditor);
+
+		ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
 
 		ImGui::Unindent();
 	}

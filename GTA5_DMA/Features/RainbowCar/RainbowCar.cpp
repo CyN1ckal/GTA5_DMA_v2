@@ -20,6 +20,7 @@ bool RainbowCar::OnDMAFrame(DMA* dma)
 	color_t NewColor = color_t::FromImVec4(LastColor);
 
 	VMMDLL_Scatter_PrepareWrite(vmsh, PrimaryColorAddr, (BYTE*)&NewColor, sizeof(color_t));
+	VMMDLL_Scatter_PrepareWrite(vmsh, SecondaryColorAddr, (BYTE*)&NewColor, sizeof(color_t));
 	
 	VMMDLL_Scatter_Execute(vmsh);
 

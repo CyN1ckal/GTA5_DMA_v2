@@ -22,22 +22,26 @@ bool Config::SaveConfig()
 
 	json Config;
 
-	Config["Main Menu"] = { {"m_VehicleEditor", VehicleEditor::m_VehicleEditor} };
-	Config["Main Menu"] += {"m_VehicleInspector", VehicleInspector::m_VehicleInspector};
-	Config["Main Menu"] += {"m_WeaponEditor", WeaponEditor::m_WeaponEditor};
-	Config["Main Menu"] += {"m_WeaponInspector", WeaponInspector::m_WeaponInspector};
-	Config["Main Menu"] += {"m_BlipInspector", BlipInspector::m_BlipInspector};
+	Config["Unsorted"] = { {"m_BlipInspector", BlipInspector::m_BlipInspector} };
+
+	Config["Weapon"] = { {"m_WeaponEditor", WeaponEditor::m_WeaponEditor} };
+	Config["Weapon"] += {"m_WeaponInspector", WeaponInspector::m_WeaponInspector};
+	Config["Weapon"] += {"m_InfiniteAmmo", InfiniteAmmo::m_InfiniteAmmo};
 
 	Config["Self"] = { {"m_GodMode",GodMode::m_GodMode} };
-	Config["Self"] += {"m_VehicleGodMode", VehicleGodMode::m_VehicleGodMode};
 	Config["Self"] += {"m_NeverWanted", NeverWanted::m_NeverWanted};
-	Config["Self"] += {"m_InfiniteAmmo", InfiniteAmmo::m_InfiniteAmmo};
 	Config["Self"] += {"m_RefreshHealth", RefreshHealth::m_RefreshHealth};
 	Config["Self"] += {"m_HealthThreshold", RefreshHealth::m_HealthThreshold};
 
+	Config["Vehicle"] = { {"m_VehicleEditor", VehicleEditor::m_VehicleEditor} };
+	Config["Vehicle"] += {"m_VehicleInspector", VehicleInspector::m_VehicleInspector};
+	Config["Vehicle"] += { "m_VehicleGodMode", VehicleGodMode::m_VehicleGodMode };
+	Config["Vehicle"] += { "m_RainbowCar", RainbowCar::m_RainbowCar };
+
 	Config["Fuser"] = { {"m_Fuser",Fuser::m_Fuser} };
-	Config["Fuser"] += {"m_Width",Fuser::m_Width };
-	Config["Fuser"] += {"m_Height",Fuser::m_Height };
+	Config["Fuser"] += {"m_Width", Fuser::m_Width };
+	Config["Fuser"] += {"m_Height", Fuser::m_Height };
+	Config["Fuser"] += {"m_MonitorIndex", Fuser::m_MonitorIndex };
 
 	ConfigFile << Config.dump(2);
 
@@ -70,32 +74,26 @@ bool Config::LoadConfig()
 	{
 		json Config = json::parse(ConfigFileBuffer.get());
 
-		if (Config["Main Menu"].count("m_VehicleEditor"))
-			VehicleEditor::m_VehicleEditor = Config["Main Menu"]["m_VehicleEditor"].get<bool>();
+		/* Unsorted */
+		if (Config["Unsorted"].count("m_BlipInspector"))
+			BlipInspector::m_BlipInspector = Config["Unsorted"]["m_BlipInspector"].get<bool>();
 
-		if (Config["Main Menu"].count("m_VehicleInspector"))
-			VehicleInspector::m_VehicleInspector = Config["Main Menu"]["m_VehicleInspector"].get<bool>();
+		/* Weapon */
+		if (Config["Weapon"].count("m_WeaponEditor"))
+			WeaponEditor::m_WeaponEditor = Config["Weapon"]["m_WeaponEditor"].get<bool>();
 
-		if (Config["Main Menu"].count("m_WeaponEditor"))
-			WeaponEditor::m_WeaponEditor = Config["Main Menu"]["m_WeaponEditor"].get<bool>();
+		if (Config["Weapon"].count("m_WeaponInspector"))
+			WeaponInspector::m_WeaponInspector = Config["Weapon"]["m_WeaponInspector"].get<bool>();
 
-		if (Config["Main Menu"].count("m_WeaponInspector"))
-			WeaponInspector::m_WeaponInspector = Config["Main Menu"]["m_WeaponInspector"].get<bool>();
+		if (Config["Weapon"].count("m_InfiniteAmmo"))
+			InfiniteAmmo::m_InfiniteAmmo = Config["Weapon"]["m_InfiniteAmmo"].get<bool>();
 
-		if (Config["Main Menu"].count("m_BlipInspector"))
-			BlipInspector::m_BlipInspector = Config["Main Menu"]["m_BlipInspector"].get<bool>();
-
+		/* Self */
 		if (Config["Self"].count("m_GodMode"))
 			GodMode::m_GodMode = Config["Self"]["m_GodMode"].get<bool>();
 
-		if (Config["Self"].count("m_VehicleGodMode"))
-			VehicleGodMode::m_VehicleGodMode = Config["Self"]["m_VehicleGodMode"].get<bool>();
-
 		if (Config["Self"].count("m_NeverWanted"))
 			NeverWanted::m_NeverWanted = Config["Self"]["m_NeverWanted"].get<bool>();
-
-		if (Config["Self"].count("m_InfiniteAmmo"))
-			InfiniteAmmo::m_InfiniteAmmo = Config["Self"]["m_InfiniteAmmo"].get<bool>();
 
 		if (Config["Self"].count("m_RefreshHealth"))
 			RefreshHealth::m_RefreshHealth = Config["Self"]["m_RefreshHealth"].get<bool>();
@@ -103,6 +101,20 @@ bool Config::LoadConfig()
 		if (Config["Self"].count("m_HealthThreshold"))
 			RefreshHealth::m_HealthThreshold = Config["Self"]["m_HealthThreshold"].get<float>();
 
+		/* Vehicle */
+		if (Config["Vehicle"].count("m_VehicleGodMode"))
+			VehicleGodMode::m_VehicleGodMode = Config["Vehicle"]["m_VehicleGodMode"].get<bool>();
+
+		if (Config["Vehicle"].count("m_RainbowCar"))
+			RainbowCar::m_RainbowCar = Config["Vehicle"]["m_RainbowCar"].get<bool>();
+
+		if (Config["Vehicle"].count("m_VehicleEditor"))
+			VehicleEditor::m_VehicleEditor = Config["Vehicle"]["m_VehicleEditor"].get<bool>();
+
+		if (Config["Vehicle"].count("m_VehicleInspector"))
+			VehicleInspector::m_VehicleInspector = Config["Vehicle"]["m_VehicleInspector"].get<bool>();
+
+		/* Fuser */
 		if (Config["Fuser"].count("m_Fuser"))
 			Fuser::m_Fuser = Config["Fuser"]["m_Fuser"].get<bool>();
 
@@ -111,6 +123,9 @@ bool Config::LoadConfig()
 
 		if (Config["Fuser"].count("m_Height"))
 			Fuser::m_Height = Config["Fuser"]["m_Height"].get<int>();
+
+		if (Config["Fuser"].count("m_MonitorIndex"))
+			Fuser::m_MonitorIndex = Config["Fuser"]["m_MonitorIndex"].get<int>();
 	}
 	catch (const json::exception& e)
 	{

@@ -237,7 +237,6 @@ bool MainMenu::Render()
 
 	std::string MenuTitle = "CyNickal GTA";
 
-
 	auto TextSize = ImGui::CalcTextSize(MenuTitle.data(), MenuTitle.data() + MenuTitle.size());
 	const auto& Style = ImGui::GetStyle();
 

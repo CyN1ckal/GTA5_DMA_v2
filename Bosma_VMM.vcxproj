@@ -588,6 +588,10 @@
     <ClInclude Include="GTA5_DMA\Structs\WeaponInfo.h" />
     <ClInclude Include="GTA5_DMA\GUI\WeaponInspector\WeaponInspector.h" />
     <ClInclude Include="GTA5_DMA\Structs\WeaponNameMap.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Bosma_VMM.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

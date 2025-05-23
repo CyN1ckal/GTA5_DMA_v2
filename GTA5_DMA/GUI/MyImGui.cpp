@@ -74,6 +74,9 @@ bool MyImGui::Initialize()
 
 bool MyImGui::OnFrameStart()
 {
+	if (!g_Alive)
+		return 0;
+
 	// Poll and handle messages (inputs, window resize, etc.)
 	// See the WndProc() function below for our to dispatch events to the Win32 backend.
 	MSG msg;
@@ -220,7 +223,9 @@ LRESULT WINAPI MyImGui::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 			return 0;
 		break;
 	case WM_DESTROY:
-		::PostQuitMessage(0);
+	case WM_CLOSE:
+		g_Alive = false;
+		//::PostQuitMessage(0);
 		return 0;
 	}
 	return ::DefWindowProcW(hWnd, msg, wParam, lParam);

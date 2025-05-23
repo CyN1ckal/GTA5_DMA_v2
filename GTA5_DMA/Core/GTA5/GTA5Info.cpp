@@ -175,6 +175,16 @@ bool GTA5::FindOffsets(DMA* dma)
 	pi.Mask = Patterns::VehicleDeformMask;
 	m_FindOffset_Disp1(dma, pi, Offsets::VehicleDeformMult, "VehicleDeformMult");
 
+	pi.Pattern = Patterns::VehicleModsPattern;
+	pi.Mask = Patterns::VehicleModsMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleMods, "VehicleMods");
+
+	pi.Pattern = Patterns::VehicleModelInfoPattern;
+	pi.Mask = Patterns::VehicleModelInfoMask;
+	m_FindOffset_Disp1(dma, pi, Offsets::VehicleModelInfo, "VehicleModelInfo");
+
+	m_FindVehicleColorOffsets(dma);
+
 	/* resolves 2 offsets */
 	m_FindWeaponImpactOffsets(dma);
 	m_FindHealthOffset(dma);
@@ -513,14 +523,17 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 	DWORD GodBytes = 0x0;
 	DWORD HealthBytes = 0x0;
 	DWORD HandlingBytes = 0x0;
+	DWORD ModsBytes = 0x0;
 
 	uintptr_t NavigationPtr = m_LocalPED_VehicleAddr + Offsets::VehicleNavigation;
 	uintptr_t GodBitsAddr = m_LocalPED_VehicleAddr + Offsets::VehicleGodBits;
 	uintptr_t HealthAddr = m_LocalPED_VehicleAddr + Offsets::VehicleHealth;
 	uintptr_t HandlingPtr = m_LocalPED_VehicleAddr + Offsets::VehicleHandling;
+	uintptr_t ModsPtr = m_LocalPED_VehicleAddr + Offsets::VehicleMods;
 
 	uintptr_t NavigationAddr = 0x0;
 	uintptr_t HandlingAddr = 0x0;
+	uintptr_t ModsAddr = 0x0;
 	uint32_t GodBits = 0x0;
 	struct Health
 	{
@@ -533,6 +546,8 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 
 	VMMDLL_Scatter_PrepareEx(vmsh, HandlingPtr, sizeof(uintptr_t), (BYTE*)&HandlingAddr, &HandlingBytes);
 
+	VMMDLL_Scatter_PrepareEx(vmsh, ModsPtr, sizeof(uintptr_t), (BYTE*)&ModsAddr, &ModsBytes);
+
 	VMMDLL_Scatter_PrepareEx(vmsh, GodBitsAddr, sizeof(uint32_t), (BYTE*)&GodBits, &GodBytes);
 
 	VMMDLL_Scatter_PrepareEx(vmsh, HealthAddr, sizeof(Health), (BYTE*)&health, &HealthBytes);
@@ -541,6 +556,9 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 
 	if (NavigationBytes == sizeof(uintptr_t))
 		m_LocalPED_VehicleNavigationAddr = NavigationAddr;
+
+	if (ModsBytes == sizeof(uintptr_t))
+		m_LocalPED_VehicleModsAddr = ModsAddr;
 
 	if (GodBytes == sizeof(uint32_t))
 		m_LocalPED_VehicleInfo.m_GodBits = GodBits;
@@ -572,6 +590,9 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 	float BrakeForce = 0.0f;
 	DWORD DeformBytes = 0x0;
 	float Deform = 0.0f;
+	uintptr_t ModelInfoAddr = 0x0;
+	DWORD ModelInfoBytes = 0x0;
+
 	if (m_LocalPED_VehicleHandlingAddr)
 	{
 		uintptr_t AccelerationAddress = m_LocalPED_VehicleHandlingAddr + Offsets::VehicleAcceleration;
@@ -584,7 +605,16 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 		VMMDLL_Scatter_PrepareEx(vmsh, DeformAddr, sizeof(float), (BYTE*)&Deform, &DeformBytes);
 	}
 
+	if (m_LocalPED_VehicleModsAddr)
+	{
+		uintptr_t ModelInfoPtr = m_LocalPED_VehicleModsAddr + Offsets::VehicleModelInfo;
+		VMMDLL_Scatter_PrepareEx(vmsh, ModelInfoPtr, sizeof(uintptr_t), (BYTE*)&ModelInfoAddr, &ModelInfoBytes);
+	}
+
 	VMMDLL_Scatter_Execute(vmsh);
+
+	if (ModelInfoBytes == sizeof(uintptr_t))
+		m_LocalPED_VehicleModelInfoAddr = ModelInfoAddr;
 
 	if (PositionBytes == sizeof(Vector3))
 		m_LocalPED_VehicleInfo.m_Position = Position;
@@ -600,6 +630,38 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 
 	if (DeformBytes == sizeof(float))
 		m_LocalPED_VehicleInfo.m_DeformMultiplier = Deform;
+
+	VMMDLL_Scatter_Clear(vmsh, dma->m_PID, VMMDLL_FLAG_NOCACHE);
+
+	DWORD PrimaryColorBytes = 0;
+	DWORD WheelColorBytes = 0;
+	struct Colors
+	{
+		color_t PrimaryColor;
+		color_t SecondaryColor;
+	};
+	Colors MainColors;
+	color_t WheelColor;
+
+	if (m_LocalPED_VehicleModelInfoAddr)
+	{
+		uintptr_t PrimaryColorAddr = m_LocalPED_VehicleModelInfoAddr + Offsets::VehiclePrimaryColor;
+		uintptr_t WheelColorAddr = m_LocalPED_VehicleModelInfoAddr + Offsets::VehicleWheelColor;
+
+		VMMDLL_Scatter_PrepareEx(vmsh, PrimaryColorAddr, sizeof(Colors), (BYTE*)&MainColors, &PrimaryColorBytes);
+		VMMDLL_Scatter_PrepareEx(vmsh, WheelColorAddr, sizeof(color_t), (BYTE*)&WheelColor, &WheelColorBytes);
+	}
+
+	VMMDLL_Scatter_Execute(vmsh);
+
+	if (PrimaryColorBytes == sizeof(Colors))
+	{
+		m_LocalPED_VehicleInfo.PrimaryColor = MainColors.PrimaryColor;
+		m_LocalPED_VehicleInfo.SecondaryColor = MainColors.SecondaryColor;
+	}
+
+	if(WheelColorBytes == sizeof(color_t))
+		m_LocalPED_VehicleInfo.WheelColor = WheelColor;
 
 	VMMDLL_Scatter_CloseHandle(vmsh);
 
@@ -623,6 +685,7 @@ bool GTA5::FeatureLoop(DMA* dma)
 	WeaponEditor::OnDMAFrame(dma);
 	RefreshHealth::OnFrame(dma);
 	VehicleEditor::OnDMAFrame(dma);
+	RainbowCar::OnDMAFrame(dma);
 
 	return 1;
 }
@@ -674,6 +737,34 @@ bool GTA5::m_FindWeaponImpactOffsets(DMA* dma)
 
 	std::println("[+] Offsets::ImpactType {0:X}", Offsets::ImpactType);
 	std::println("[+] Offsets::ImpactExplosion {0:X}", Offsets::ImpactExplosion);
+
+	return 1;
+}
+
+bool GTA5::m_FindVehicleColorOffsets(DMA* dma)
+{
+	PatternInfo pi;
+	pi.ModuleName = dma->m_ProcessName;
+	pi.Pattern = Patterns::VehicleColorPattern;
+	pi.Mask = Patterns::VehicleColorMask;
+
+	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
+	auto RuntimeAddress = m_Scan.Scan(pi);
+
+	if (!SectionOffset || !RuntimeAddress) throw std::exception("m_FindVehicleColorOffsets Offset");
+
+	ZydisDisassembledInstruction Instruction;
+
+	if (!ZYAN_SUCCESS(ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, RuntimeAddress, m_Scan.GetBuffer() + SectionOffset, 0x15, &Instruction)))
+		throw std::exception("m_FindVehicleColorOffsets Disassemble");
+
+	Offsets::VehiclePrimaryColor = Instruction.operands[0].mem.disp.value;
+	Offsets::VehicleSecondaryColor = Offsets::VehiclePrimaryColor + sizeof(color_t);
+	Offsets::VehicleWheelColor = Offsets::VehicleSecondaryColor + (sizeof(color_t) * 3);
+
+	std::println("[+] Offsets::VehiclePrimaryColor {0:X}", Offsets::VehiclePrimaryColor);
+	std::println("[+] Offsets::VehicleSecondaryColor {0:X}", Offsets::VehicleSecondaryColor);
+	std::println("[+] Offsets::VehicleWheelColor {0:X}", Offsets::VehicleWheelColor);
 
 	return 1;
 }

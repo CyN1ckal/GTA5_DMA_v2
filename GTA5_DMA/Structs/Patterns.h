@@ -93,4 +93,13 @@ public:
 
 	static inline const std::string VehicleDeformPattern = "\xF3\x0F\x10\xB9????\xF3\x0F\x5E\xF8";
 	static inline const std::string VehicleDeformMask = "xxxx????xxxx";
+
+	static inline const std::string VehicleModsPattern = "\x49\x8B\x7D?\x66\x83\xBF?????\x0F\x84";
+	static inline const std::string VehicleModsMask = "xxx?xxx?????xx";
+
+	static inline const std::string VehicleModelInfoPattern = "\x48\x8B\x48?\x80\xBE?????\x74?\x8B\x79";
+	static inline const std::string VehicleModelInfoMask = "xxx?xx?????x?xx";
+
+	static inline const std::string VehicleColorPattern = "\x41\x89\xBC\x9C";
+	static inline const std::string VehicleColorMask = "xxxx";
 };

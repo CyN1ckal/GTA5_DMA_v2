@@ -256,38 +256,11 @@ bool MainMenu::Render()
 
 	ImGui::PopFont();
 
-	if (ImGui::CollapsingHeader("Inspectors"))
-	{
-		ImGui::Indent();
-
-		ImGui::Checkbox("Weapon Inspector", &WeaponInspector::m_WeaponInspector);
-
-		ImGui::Checkbox("Vehicle Inspector", &VehicleInspector::m_VehicleInspector);
-
-		ImGui::Checkbox("Blip Inspector", &BlipInspector::m_BlipInspector);
-
-		ImGui::Unindent();
-	}
-
-	if (ImGui::CollapsingHeader("Editors"))
-	{
-		ImGui::Indent();
-
-		ImGui::Checkbox("Weapon Editor", &WeaponEditor::m_WeaponEditor);
-
-		ImGui::Checkbox("Vehicle Editor", &VehicleEditor::m_VehicleEditor);
-
-		ImGui::Unindent();
-	}
-
-
 	if (ImGui::CollapsingHeader("Self"))
 	{
 		ImGui::Indent();
 
 		ImGui::Checkbox("God Mode", &GodMode::m_GodMode);
-
-		ImGui::Checkbox("Vehicle God Mode", &VehicleGodMode::m_VehicleGodMode);
 
 		ImGui::Checkbox("Infinite Ammo", &InfiniteAmmo::m_InfiniteAmmo);
 
@@ -305,6 +278,32 @@ bool MainMenu::Render()
 		{
 			Teleport::m_RequestedTeleport = true;
 		}
+
+		ImGui::Unindent();
+	}
+
+	if (ImGui::CollapsingHeader("Vehicle"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("Vehicle God Mode", &VehicleGodMode::m_VehicleGodMode);
+
+		ImGui::Checkbox("Vehicle Inspector", &VehicleInspector::m_VehicleInspector);
+
+		ImGui::Checkbox("Vehicle Editor", &VehicleEditor::m_VehicleEditor);
+
+		ImGui::Checkbox("Rainbow Car", &RainbowCar::m_RainbowCar);
+
+		ImGui::Unindent();
+	}
+
+	if (ImGui::CollapsingHeader("Weapon"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("Weapon Inspector", &WeaponInspector::m_WeaponInspector);
+
+		ImGui::Checkbox("Weapon Editor", &WeaponEditor::m_WeaponEditor);
 
 		ImGui::Unindent();
 	}
@@ -327,6 +326,14 @@ bool MainMenu::Render()
 		ImGui::Unindent();
 	}
 
+	if (ImGui::CollapsingHeader("Unsorted"))
+	{
+		ImGui::Indent();
+
+		ImGui::Checkbox("Blip Inspector", &BlipInspector::m_BlipInspector);
+
+		ImGui::Unindent();
+	}
 	ImGui::End();
 
 	return 1;

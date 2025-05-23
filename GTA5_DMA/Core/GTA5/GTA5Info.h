@@ -24,6 +24,8 @@ public:
 	static inline uintptr_t m_LocalPED_VehicleAddr = 0x0;
 	static inline uintptr_t m_LocalPED_VehicleNavigationAddr = 0x0;
 	static inline uintptr_t m_LocalPED_VehicleHandlingAddr = 0x0;
+	static inline uintptr_t m_LocalPED_VehicleModsAddr = 0x0;
+	static inline uintptr_t m_LocalPED_VehicleModelInfoAddr = 0x0;
 	static inline uintptr_t m_LocalPED_NavigationAddr = 0x0;
 	static inline uintptr_t m_LocalPED_WeaponManagerAddr = 0x0;
 	static inline uintptr_t m_LocalPED_WeaponInfoAddr = 0x0;
@@ -52,6 +54,7 @@ private:
 
 	static bool m_FindHealthOffset(DMA* dma);
 	static bool m_FindWeaponImpactOffsets(DMA* dma);
+	static bool m_FindVehicleColorOffsets(DMA* dma);
 	static bool m_FindVehicleHealthOffsets(DMA* dma);
 	static bool m_FindWeaponRecoilAmplitudeOffset(DMA* dma);
 

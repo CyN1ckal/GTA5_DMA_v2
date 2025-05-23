@@ -5,6 +5,7 @@
 #include "NeverWanted/NeverWanted.h"
 #include "Teleport/Teleport.h"
 #include "RefreshHealth/RefreshHealth.h"
+#include "RainbowCar/RainbowCar.h"
 
 /* Gui "features" */
 #include "../GUI/WeaponEditor/WeaponEditor.h"

@@ -8,7 +8,9 @@ bool VehicleEditor::OnFrame()
 {
 	if (!m_VehicleEditor) return 1;
 
-	ImGui::Begin("Vehicle Editor", &m_VehicleEditor);
+	ImGuiWindowFlags wnd = ImGuiWindowFlags_AlwaysAutoResize;
+
+	ImGui::Begin("Vehicle Editor", &m_VehicleEditor, wnd);
 
 	ImGui::InputFloat("Mass", &m_VehicleInfo.m_Mass);
 
@@ -18,13 +20,24 @@ bool VehicleEditor::OnFrame()
 
 	ImGui::InputFloat("Deform Multiplier", &m_VehicleInfo.m_DeformMultiplier);
 
+	ImGui::ColorEdit4("Primary Color", &m_DesiredPrimaryColor.x);
+
+	ImGui::ColorEdit4("Secondary Color", &m_DesiredSecondaryColor.x);
+
+	ImGui::ColorEdit4("Wheel Color", &m_DesiredWheelColor.x);
+
 	if (ImGui::Button("Override"))
 		m_RequestedOverride = true;
 
 	ImGui::SameLine();
 
 	if (ImGui::Button("Load"))
+	{
 		m_VehicleInfo = VehicleInspector::m_VehicleInfo;
+		m_DesiredPrimaryColor = m_VehicleInfo.PrimaryColor.ToImVec4();
+		m_DesiredSecondaryColor = m_VehicleInfo.SecondaryColor.ToImVec4();
+		m_DesiredWheelColor = m_VehicleInfo.WheelColor.ToImVec4();
+	}
 
 	ImGui::End();
 
@@ -45,11 +58,21 @@ bool VehicleEditor::OnDMAFrame(DMA* dma)
 	uintptr_t AccelerationAddr = GTA5::m_LocalPED_VehicleHandlingAddr + Offsets::VehicleAcceleration;
 	uintptr_t BrakeForceAddr = GTA5::m_LocalPED_VehicleHandlingAddr + Offsets::BrakeForce;
 	uintptr_t DeformAddr = GTA5::m_LocalPED_VehicleHandlingAddr + Offsets::VehicleDeformMult;
+	uintptr_t PrimaryColorAddr = GTA5::m_LocalPED_VehicleModelInfoAddr + Offsets::VehiclePrimaryColor;
+	uintptr_t SecondaryColorAddr = GTA5::m_LocalPED_VehicleModelInfoAddr + Offsets::VehicleSecondaryColor;
+	uintptr_t WheelColorAddr = GTA5::m_LocalPED_VehicleModelInfoAddr + Offsets::VehicleWheelColor;
+
+	color_t PrimaryColor = color_t::FromImVec4(m_DesiredPrimaryColor);
+	color_t SecondaryColor = color_t::FromImVec4(m_DesiredSecondaryColor);
+	color_t WheelColor = color_t::FromImVec4(m_DesiredWheelColor);
 
 	VMMDLL_Scatter_PrepareWrite(vmsh, MassAddr, (BYTE*)&m_VehicleInfo.m_Mass, sizeof(m_VehicleInfo.m_Mass));
 	VMMDLL_Scatter_PrepareWrite(vmsh, AccelerationAddr, (BYTE*)&m_VehicleInfo.m_Acceleration, sizeof(m_VehicleInfo.m_Acceleration));
 	VMMDLL_Scatter_PrepareWrite(vmsh, BrakeForceAddr, (BYTE*)&m_VehicleInfo.m_BrakeForce, sizeof(m_VehicleInfo.m_BrakeForce));
 	VMMDLL_Scatter_PrepareWrite(vmsh, DeformAddr, (BYTE*)&m_VehicleInfo.m_DeformMultiplier, sizeof(m_VehicleInfo.m_DeformMultiplier));
+	VMMDLL_Scatter_PrepareWrite(vmsh, PrimaryColorAddr, (BYTE*)&PrimaryColor, sizeof(PrimaryColor));
+	VMMDLL_Scatter_PrepareWrite(vmsh, SecondaryColorAddr, (BYTE*)&SecondaryColor, sizeof(SecondaryColor));
+	VMMDLL_Scatter_PrepareWrite(vmsh, WheelColorAddr, (BYTE*)&WheelColor, sizeof(WheelColor));
 
 	VMMDLL_Scatter_Execute(vmsh);
 

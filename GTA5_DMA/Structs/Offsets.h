@@ -41,4 +41,9 @@ public: /* Dynamically Resolved */
 	static inline uint32_t VehicleMass = 0x0;
 	static inline uint32_t BrakeForce = 0x0;
 	static inline uint32_t VehicleDeformMult = 0x0;
+	static inline uint32_t VehicleMods = 0x0;
+	static inline uint32_t VehicleModelInfo = 0x0;
+	static inline uint32_t VehiclePrimaryColor = 0x0;
+	static inline uint32_t VehicleSecondaryColor = 0x0;
+	static inline uint32_t VehicleWheelColor = 0x0;
 };

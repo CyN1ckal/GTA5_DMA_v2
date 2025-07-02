@@ -6,7 +6,9 @@
 
 #include <bitset>
 
-bool VehicleGodMode::OnFrame(DMA* dma)
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
+bool VehicleGodMode::OnFrame(Mem* dma)
 {
 	if(!GTA5::m_LocalPED_VehicleAddr)
 		return 0;

@@ -7,5 +7,5 @@ public:
 	static inline float m_HealthThreshold = 0.85f;
 
 public:
-	static bool OnFrame(DMA* dma);
+	static bool OnFrame(Mem* dma);
 };

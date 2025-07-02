@@ -4,8 +4,9 @@
 
 #include <bitset>
 
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
 
-bool InfiniteAmmo::OnFrame(DMA* dma)
+bool InfiniteAmmo::OnFrame(Mem* dma)
 {
 	if (!GTA5::m_LocalPED_WeaponInventoryAddr)
 		return 0;

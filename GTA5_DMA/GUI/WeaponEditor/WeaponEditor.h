@@ -6,7 +6,7 @@ class WeaponEditor
 {
 public:
 	static bool OnFrame();
-	static bool OnDMAFrame(DMA* dma);
+	static bool OnDMAFrame(Mem* dma);
 	
 public:
 	static inline WeaponInfo m_DesiredWeaponInfo;

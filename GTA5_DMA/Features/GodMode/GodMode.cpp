@@ -6,7 +6,9 @@
 
 #include "../../Structs/Offsets.h"
 
-bool GodMode::OnFrame(DMA* dma)
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
+bool GodMode::OnFrame(Mem* dma)
 {
 	if (!GTA5::m_LocalPEDAddr)
 		return 0;

@@ -14,7 +14,7 @@
 
 bool g_Alive = true;
 
-DMA* pDMA = nullptr;
+Mem* pDMA = nullptr;
 
 BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
 {
@@ -37,39 +37,39 @@ int main() {
 
 	Config::LoadConfig();
 
-	DMA dma;
-	pDMA = &dma;
-	try
-	{
-		dma.Start("GTA5_Enhanced.exe");
-		GTA5::FindOffsets(&dma);
-		GTA5::UpdateWorldAddress(&dma);
-		GTA5::UpdateLocalPlayerAddr(&dma);
+	auto pMem = GTA5_::Initialize();
+	pDMA = pMem;
+
+	//try
+	//{
+	//	GTA5::FindOffsets(&dma);
+	//	GTA5::UpdateWorldAddress(&dma);
+	//	GTA5::UpdateLocalPlayerAddr(&dma);
 		MyImGui::Initialize();
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "Error: " << e.what() << std::endl;
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cerr << "Error: " << e.what() << std::endl;
 
-		if (dma.m_vmh)
-			dma.Close();
+	//	if (dma.m_vmh)
+	//		dma.Close();
 
-		system("pause");
+	//	system("pause");
 
-		return 0;
-	}
+	//	return 0;
+	//}
 
 	{ /* Bosma::Scheduler uses scope deletion */
 		unsigned int max_n_threads = 1;
 		Bosma::Scheduler s(max_n_threads);
 
-		s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, &dma);
-		s.every(std::chrono::milliseconds(7), GTA5::FeatureLoop, &dma);
-		s.every(std::chrono::milliseconds(500), GTA5::UpdateWeaponInfo, &dma);
-		s.every(std::chrono::milliseconds(500), GTA5::UpdateVehicleInfo, &dma);
-		s.every(std::chrono::seconds(1), GTA5::UpdateBlips, &dma);
-		s.every(std::chrono::seconds(10), GTA5::UpdateLocalPlayerAddr, &dma);
-		s.every(std::chrono::seconds(10), GTA5::UpdateWorldAddress, &dma);
+		s.every(std::chrono::milliseconds(7), GTA5::UpdateLocalPlayerInfo, pMem);
+		s.every(std::chrono::milliseconds(7), GTA5::FeatureLoop, pMem);
+		s.every(std::chrono::milliseconds(500), GTA5::UpdateWeaponInfo, pMem);
+		s.every(std::chrono::milliseconds(500), GTA5::UpdateVehicleInfo, pMem);
+		s.every(std::chrono::seconds(1), GTA5::UpdateBlips, pMem);
+		s.every(std::chrono::seconds(10), GTA5::UpdateLocalPlayerAddr, pMem);
+		s.every(std::chrono::seconds(10), GTA5::UpdateWorldAddress, pMem);
 
 		while (g_Alive)
 		{
@@ -83,7 +83,7 @@ int main() {
 		}
 	}
 
-	dma.Close();
+	GTA5_::Close();
 
 	MyImGui::Close();
 

@@ -4,7 +4,9 @@
 
 #include "RefreshHealth.h"
 
-bool RefreshHealth::OnFrame(DMA* dma)
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
+bool RefreshHealth::OnFrame(Mem* dma)
 {
 	if (!m_RefreshHealth) return 1;
 

@@ -6,6 +6,8 @@
 
 #include "../../GUI/WeaponInspector/WeaponInspector.h"
 
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
 bool WeaponEditor::OnFrame()
 {
 	if (!m_WeaponEditor) return 1;
@@ -42,7 +44,7 @@ bool WeaponEditor::OnFrame()
 	return 1;
 }
 
-bool WeaponEditor::OnDMAFrame(DMA* dma)
+bool WeaponEditor::OnDMAFrame(Mem* dma)
 {
 	if (!m_RequestedOverride)
 		return 1;

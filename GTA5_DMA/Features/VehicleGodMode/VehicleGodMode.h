@@ -6,5 +6,5 @@ public:
 	static inline bool m_VehicleGodMode = false;
 
 public:
-	static bool OnFrame(DMA* dma);
+	static bool OnFrame(Mem* dma);
 };

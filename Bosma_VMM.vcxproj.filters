@@ -177,6 +177,9 @@
     <ClCompile Include="GTA5_DMA\Features\RainbowCar\RainbowCar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GTA5_DMA\Core\DMA\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GTA5_DMA\pch.h">
@@ -294,6 +297,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GTA5_DMA\Core\DMA\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

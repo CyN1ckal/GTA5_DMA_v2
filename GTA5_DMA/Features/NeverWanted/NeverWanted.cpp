@@ -4,7 +4,9 @@
 
 #include "NeverWanted.h"
 
-bool NeverWanted::OnFrame(DMA* dma)
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
+bool NeverWanted::OnFrame(Mem* dma)
 {
 	if (!m_NeverWanted)
 		return 0;

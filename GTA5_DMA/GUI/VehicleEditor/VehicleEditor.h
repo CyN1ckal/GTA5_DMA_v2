@@ -14,5 +14,5 @@ public:
 	static inline ImVec4 m_DesiredWheelColor = { 0.0f,0.0f,0.0f,0.0f };
 public:
 	static bool OnFrame();
-	static bool OnDMAFrame(DMA* dma);
+	static bool OnDMAFrame(Mem* dma);
 };

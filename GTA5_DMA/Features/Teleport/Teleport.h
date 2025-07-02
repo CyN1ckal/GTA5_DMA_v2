@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GTA5_DMA/Structs/MyVector.h"
+
 class Teleport
 {
 public:
@@ -11,6 +13,6 @@ private:
 	static inline Vector3 m_StartingLocation = { 0.0f,0.0f,0.0f };
 
 public:
-	static bool OnFrame(DMA* dma);
-	static bool SetPlayerLocation(DMA* dma, Vector3& Location);
+	static bool OnFrame(Mem* dma);
+	static bool SetPlayerLocation(Mem* dma, Vector3& Location);
 };

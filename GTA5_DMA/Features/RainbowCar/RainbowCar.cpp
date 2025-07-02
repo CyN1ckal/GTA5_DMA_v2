@@ -4,7 +4,9 @@
 
 #include "RainbowCar.h"
 
-bool RainbowCar::OnDMAFrame(DMA* dma)
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
+bool RainbowCar::OnDMAFrame(Mem* dma)
 {
 	if (!m_RainbowCar) return 0;
 

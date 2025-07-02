@@ -12,10 +12,10 @@
 
 #include "../../Structs/VehicleInfo.h"
 
-bool GTA5::m_FindWorldPtr(DMA* dma)
+bool GTA5::m_FindWorldPtr(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::WorldPattern;
 	pi.Mask = Patterns::WorldMask;
 
@@ -40,10 +40,10 @@ bool GTA5::m_FindWorldPtr(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindBlipPtr(DMA* dma)
+bool GTA5::m_FindBlipPtr(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::BlipPattern;
 	pi.Mask = Patterns::BlipMask;
 
@@ -68,12 +68,12 @@ bool GTA5::m_FindBlipPtr(DMA* dma)
 	return 1;
 }
 
-bool GTA5::FindOffsets(DMA* dma)
+bool GTA5::FindOffsets(Mem* dma)
 {
-	m_Scan.Initialize(dma->m_vmh, dma->m_PID, dma->m_ProcessName);
+	m_Scan.Initialize(dma->m_vmh, dma->m_PID, GTA5_::Details::m_ProcessName);
 
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 
 	pi.Pattern = Patterns::WeaponInventoryPattern;
 	pi.Mask = Patterns::WeaponInventoryMask;
@@ -201,7 +201,7 @@ bool GTA5::FindOffsets(DMA* dma)
 	return 1;
 }
 
-bool GTA5::UpdateLocalPlayerAddr(DMA* dma)
+bool GTA5::UpdateLocalPlayerAddr(Mem* dma)
 {
 	ZoneScoped;
 
@@ -232,7 +232,7 @@ bool GTA5::UpdateLocalPlayerAddr(DMA* dma)
 	return 1;
 }
 
-bool GTA5::UpdateWorldAddress(DMA* dma)
+bool GTA5::UpdateWorldAddress(Mem* dma)
 {
 	ZoneScoped;
 
@@ -262,7 +262,7 @@ bool GTA5::UpdateWorldAddress(DMA* dma)
 	return 1;
 }
 
-bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
+bool GTA5::UpdateLocalPlayerInfo(Mem* dma)
 {
 	ZoneScoped;
 
@@ -417,7 +417,7 @@ bool GTA5::UpdateLocalPlayerInfo(DMA* dma)
 	return 1;
 }
 
-bool GTA5::UpdateWeaponInfo(DMA* dma)
+bool GTA5::UpdateWeaponInfo(Mem* dma)
 {
 	ZoneScoped;
 
@@ -508,7 +508,7 @@ bool GTA5::UpdateWeaponInfo(DMA* dma)
 	return 1;
 }
 
-bool GTA5::UpdateVehicleInfo(DMA* dma)
+bool GTA5::UpdateVehicleInfo(Mem* dma)
 {
 	ZoneScoped;
 
@@ -673,7 +673,7 @@ bool GTA5::UpdateVehicleInfo(DMA* dma)
 	return 1;
 }
 
-bool GTA5::FeatureLoop(DMA* dma)
+bool GTA5::FeatureLoop(Mem* dma)
 {
 	ZoneScoped;
 
@@ -690,10 +690,10 @@ bool GTA5::FeatureLoop(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindHealthOffset(DMA* dma)
+bool GTA5::m_FindHealthOffset(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::HealthPattern;
 	pi.Mask = Patterns::HealthMask;
 
@@ -715,10 +715,10 @@ bool GTA5::m_FindHealthOffset(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindWeaponImpactOffsets(DMA* dma)
+bool GTA5::m_FindWeaponImpactOffsets(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::WeaponImpactTypePattern;
 	pi.Mask = Patterns::WeaponImpactTypeMask;
 
@@ -741,10 +741,10 @@ bool GTA5::m_FindWeaponImpactOffsets(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindVehicleColorOffsets(DMA* dma)
+bool GTA5::m_FindVehicleColorOffsets(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::VehicleColorPattern;
 	pi.Mask = Patterns::VehicleColorMask;
 
@@ -769,10 +769,10 @@ bool GTA5::m_FindVehicleColorOffsets(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindWeaponRecoilAmplitudeOffset(DMA* dma)
+bool GTA5::m_FindWeaponRecoilAmplitudeOffset(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::WeaponRecoilAmplitudePattern;
 	pi.Mask = Patterns::WeaponRecoilAmplitudeMask;
 
@@ -793,10 +793,10 @@ bool GTA5::m_FindWeaponRecoilAmplitudeOffset(DMA* dma)
 	return 1;
 }
 
-bool GTA5::m_FindVehicleHealthOffsets(DMA* dma)
+bool GTA5::m_FindVehicleHealthOffsets(Mem* dma)
 {
 	PatternInfo pi;
-	pi.ModuleName = dma->m_ProcessName;
+	pi.ModuleName = GTA5_::Details::m_ProcessName;
 	pi.Pattern = Patterns::VehicleHealthPattern;
 	pi.Mask = Patterns::VehicleHealthMask;
 
@@ -831,14 +831,16 @@ static const int MaxBlips = 1700;
 std::array<DWORD, MaxBlips> BlipPositionBytes{ 0 };
 std::array<DWORD, MaxBlips> BlipIDBytes{ 0 };
 
-bool GTA5::UpdateBlips(DMA* dma)
+bool GTA5::UpdateBlips(Mem* dma)
 {
 	ZoneScoped;
+
+	std::println("Update Blips");
 
 	if (!m_BlipPtr)
 	{
 		std::println("m_BlipPtr is null!");
-		return 0;
+		return false;
 	}
 
 	std::vector<uintptr_t>BlipAddresses;
@@ -854,7 +856,10 @@ bool GTA5::UpdateBlips(DMA* dma)
 	VMMDLL_Scatter_Execute(vmsh);
 
 	if (BytesRead != sizeof(uintptr_t) * MaxBlips)
-		throw std::exception(std::format("UpdateBlips BytesRead {0:X}/{1:X}", BytesRead, sizeof(uintptr_t) * MaxBlips).c_str());
+	{
+		std::println("[-] UpdateBlips BytesRead {0:X}/{1:X}", BytesRead, sizeof(uintptr_t) * MaxBlips);
+		return false;
+	}
 
 	BlipAddresses.erase(std::remove(BlipAddresses.begin(), BlipAddresses.end(), 0x0), BlipAddresses.end());
 
@@ -911,7 +916,7 @@ Vector3 GTA5::GetWaypointLocation()
 	return Return;
 }
 
-bool GTA5::m_FindOffset_Disp1(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name)
+bool GTA5::m_FindOffset_Disp1(Mem* dma, PatternInfo& pi, uint32_t& Offset, std::string Name)
 {
 	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
 	auto RuntimeAddress = m_Scan.Scan(pi);
@@ -930,7 +935,7 @@ bool GTA5::m_FindOffset_Disp1(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::
 	return 1;
 }
 
-bool GTA5::m_FindOffset_Disp0(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name)
+bool GTA5::m_FindOffset_Disp0(Mem* dma, PatternInfo& pi, uint32_t& Offset, std::string Name)
 {
 	auto SectionOffset = m_Scan.ScanSectionOffset(pi);
 	auto RuntimeAddress = m_Scan.Scan(pi);
@@ -947,4 +952,23 @@ bool GTA5::m_FindOffset_Disp0(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::
 	std::println("[+] Offsets::{0:s} {1:X}", Name.c_str(), Offset);
 
 	return 1;
+}
+
+Mem* GTA5_::Initialize()
+{
+	g_mem.Initialize();
+	g_mem.SetPID(Details::m_ProcessName);
+
+	GTA5::FindOffsets(&g_mem);
+	GTA5::UpdateWorldAddress(&g_mem);
+	GTA5::UpdateLocalPlayerAddr(&g_mem);
+
+	return &GTA5_::g_mem;
+}
+
+bool GTA5_::Close()
+{
+	g_mem.Close();
+
+	return true;
 }

@@ -8,7 +8,22 @@
 #include "../../Structs/PlayerInfo.h"
 #include "../../Structs/BlipInfo.h"
 
-class DMA;
+#include "GTA5_DMA/Core/DMA/DMA.h"
+
+namespace GTA5_
+{
+	Mem* Initialize();
+	bool Close();
+
+	inline Mem g_mem;
+
+	namespace Details
+	{
+		const inline std::string m_ProcessName = "GTA5_Enhanced.exe";
+	}
+}
+
+
 
 class GTA5
 {
@@ -37,27 +52,27 @@ public:
 	static inline std::vector<BlipInfo> m_Blips;
 
 public:
-	static bool FindOffsets(DMA* dma);
-	static bool UpdateWorldAddress(DMA* dma);
-	static bool UpdateLocalPlayerAddr(DMA* dma);
-	static bool UpdateLocalPlayerInfo(DMA* dma);
-	static bool UpdateWeaponInfo(DMA* dma);
-	static bool UpdateVehicleInfo(DMA* dma);
-	static bool UpdateBlips(DMA* dma);
-	static bool FeatureLoop(DMA* dma);
+	static bool FindOffsets(Mem* dma);
+	static bool UpdateWorldAddress(Mem* dma);
+	static bool UpdateLocalPlayerAddr(Mem* dma);
+	static bool UpdateLocalPlayerInfo(Mem* dma);
+	static bool UpdateWeaponInfo(Mem* dma);
+	static bool UpdateVehicleInfo(Mem* dma);
+	static bool UpdateBlips(Mem* dma);
+	static bool FeatureLoop(Mem* dma);
 
 	static Vector3 GetWaypointLocation();
 
 private:
-	static bool m_FindWorldPtr(DMA* dma);
-	static bool m_FindBlipPtr(DMA* dma);
+	static bool m_FindWorldPtr(Mem* dma);
+	static bool m_FindBlipPtr(Mem* dma);
 
-	static bool m_FindHealthOffset(DMA* dma);
-	static bool m_FindWeaponImpactOffsets(DMA* dma);
-	static bool m_FindVehicleColorOffsets(DMA* dma);
-	static bool m_FindVehicleHealthOffsets(DMA* dma);
-	static bool m_FindWeaponRecoilAmplitudeOffset(DMA* dma);
+	static bool m_FindHealthOffset(Mem* dma);
+	static bool m_FindWeaponImpactOffsets(Mem* dma);
+	static bool m_FindVehicleColorOffsets(Mem* dma);
+	static bool m_FindVehicleHealthOffsets(Mem* dma);
+	static bool m_FindWeaponRecoilAmplitudeOffset(Mem* dma);
 
-	static bool m_FindOffset_Disp1(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
-	static bool m_FindOffset_Disp0(DMA* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
+	static bool m_FindOffset_Disp1(Mem* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
+	static bool m_FindOffset_Disp0(Mem* dma, PatternInfo& pi, uint32_t& Offset, std::string Name);
 };

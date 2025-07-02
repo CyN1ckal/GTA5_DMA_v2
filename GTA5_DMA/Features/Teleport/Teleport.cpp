@@ -8,7 +8,9 @@
 
 #include "Teleport.h"
 
-bool Teleport::OnFrame(DMA* dma)
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
+bool Teleport::OnFrame(Mem* dma)
 {
 	if (m_RequestedTeleport)
 	{
@@ -38,7 +40,7 @@ bool Teleport::OnFrame(DMA* dma)
 	return 1;
 }
 
-bool Teleport::SetPlayerLocation(DMA* dma, Vector3& Location)
+bool Teleport::SetPlayerLocation(Mem* dma, Vector3& Location)
 {
 	m_StartingLocation = GTA5::m_LocalPED_PlayerInfo.m_Location;
 

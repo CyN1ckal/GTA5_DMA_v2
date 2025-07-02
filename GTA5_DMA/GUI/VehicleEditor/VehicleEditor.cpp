@@ -4,6 +4,8 @@
 
 #include "../../GUI/VehicleInspector/VehicleInspector.h"
 
+#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+
 bool VehicleEditor::OnFrame()
 {
 	if (!m_VehicleEditor) return 1;
@@ -45,7 +47,7 @@ bool VehicleEditor::OnFrame()
 	return 1;
 }
 
-bool VehicleEditor::OnDMAFrame(DMA* dma)
+bool VehicleEditor::OnDMAFrame(Mem* dma)
 {
 	if (!m_RequestedOverride)
 		return 1;

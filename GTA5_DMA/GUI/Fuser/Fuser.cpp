@@ -8,6 +8,8 @@
 
 #include "../MyImGui.h"
 
+#include "../Fonts.h"
+
 bool Fuser::OnFrame()
 {
 	if (!m_Fuser)
@@ -27,7 +29,7 @@ bool Fuser::OnFrame()
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.0f,0.0f,0.0f,1.0f });
 	ImGui::PushStyleColor(ImGuiCol_Border, { 0.0f,0.0f,0.0f,0.0f });
 
-	ImGui::PushFont(MyImGui::m_pIBMPlexMono_24);
+	ImGui::PushFont(Fonts::IBMPlexMono, 24.0f);
 
 	ImGuiWindowFlags wnd = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs;
 

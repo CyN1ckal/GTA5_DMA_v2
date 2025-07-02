@@ -20,9 +20,11 @@ BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
 {
 	switch (fdwCtrlType)
 	{
-	// CTRL-CLOSE: confirm that the user wants to exit.
+		// CTRL-CLOSE: confirm that the user wants to exit.
 	case CTRL_CLOSE_EVENT:
-		pDMA->Close();
+		if (pDMA)
+			pDMA->Close();
+
 		Config::SaveConfig();
 		return FALSE;
 
@@ -31,33 +33,25 @@ BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
 	}
 }
 
-int main() {
+DWORD WINAPI StartingThread(HMODULE hMod)
+{
+	std::println("GTA5 DLL Starting Thread!");
+
 	if (!SetConsoleCtrlHandler(CtrlHandler, TRUE))
 		return 0;
 
 	Config::LoadConfig();
 
 	auto pMem = GTA5_::Initialize();
+	if (!pMem)
+	{
+		std::println("Failed to initialize GTA5 DMA!");
+
+		FreeLibraryAndExitThread(hMod, 0);
+
+		return true;
+	}
 	pDMA = pMem;
-
-	//try
-	//{
-	//	GTA5::FindOffsets(&dma);
-	//	GTA5::UpdateWorldAddress(&dma);
-	//	GTA5::UpdateLocalPlayerAddr(&dma);
-		MyImGui::Initialize();
-	//}
-	//catch (const std::exception& e)
-	//{
-	//	std::cerr << "Error: " << e.what() << std::endl;
-
-	//	if (dma.m_vmh)
-	//		dma.Close();
-
-	//	system("pause");
-
-	//	return 0;
-	//}
 
 	{ /* Bosma::Scheduler uses scope deletion */
 		unsigned int max_n_threads = 1;
@@ -78,16 +72,43 @@ int main() {
 			if (GetAsyncKeyState(VK_END) & 1) g_Alive = false;
 
 			if (GetAsyncKeyState(VK_INSERT) & 1) Fuser::m_Fuser = !Fuser::m_Fuser;
-
-			MyImGui::OnFrame();
 		}
 	}
 
 	GTA5_::Close();
 
-	MyImGui::Close();
-
 	Config::SaveConfig();
 
-	return 1;
+	FreeLibraryAndExitThread(hMod, 0);
+
+	return true;
+}
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+{
+	switch (ul_reason_for_call)
+	{
+	case DLL_PROCESS_ATTACH:
+		std::println("GTA5_DLL DLL_PROCESS_ATTACH");
+		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)StartingThread, hModule, 0, 0);
+		break;
+	case DLL_THREAD_ATTACH:
+		std::println("GTA5_DLL DLL_THREAD_ATTACH");
+		break;
+	case DLL_THREAD_DETACH:
+		std::println("GTA5_DLL DLL_THREAD_DETACH");
+		break;
+	case DLL_PROCESS_DETACH:
+		std::println("GTA5_DLL DLL_PROCESS_DETACH");
+		break;
+	}
+
+	return TRUE;
+}
+
+extern "C" __declspec(dllexport) void Render(ImGuiContext* ctx)
+{
+	ImGui::SetCurrentContext(ctx);
+
+	MyImGui::OnFrame();
 }

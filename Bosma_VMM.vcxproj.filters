@@ -221,12 +221,6 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Dependencies\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5_DMA\GUI\Fonts\IBMPlexMono-Bold.h">
-      <Filter>Core\GUI\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="GTA5_DMA\GUI\Fonts\Fonts.h">
-      <Filter>Core\GUI\Fonts</Filter>
-    </ClInclude>
     <ClInclude Include="GTA5_DMA\GUI\Fuser\Fuser.h">
       <Filter>Features\Fuser</Filter>
     </ClInclude>
@@ -300,6 +294,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GTA5_DMA\Core\DMA\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GTA5_DMA\GUI\Fonts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

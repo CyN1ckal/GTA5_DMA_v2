@@ -835,8 +835,6 @@ bool GTA5::UpdateBlips(Mem* dma)
 {
 	ZoneScoped;
 
-	std::println("Update Blips");
-
 	if (!m_BlipPtr)
 	{
 		std::println("m_BlipPtr is null!");
@@ -956,7 +954,10 @@ bool GTA5::m_FindOffset_Disp0(Mem* dma, PatternInfo& pi, uint32_t& Offset, std::
 
 Mem* GTA5_::Initialize()
 {
-	g_mem.Initialize();
+	if (!g_mem.Initialize()) return nullptr;
+
+	std::println("[+] GTA5_::Initialize()");
+
 	g_mem.SetPID(Details::m_ProcessName);
 
 	GTA5::FindOffsets(&g_mem);

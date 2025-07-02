@@ -55,20 +55,20 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracy|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -560,16 +560,15 @@
   <ItemGroup>
     <ClInclude Include="GTA5_DMA\Core\DMA\InputManager.h" />
     <ClInclude Include="GTA5_DMA\Features\RainbowCar\RainbowCar.h" />
+    <ClInclude Include="GTA5_DMA\GUI\Fonts.h" />
     <ClInclude Include="GTA5_DMA\Structs\BlipInfo.h" />
     <ClInclude Include="GTA5_DMA\GUI\BlipInspector\BlipInspector.h" />
     <ClInclude Include="GTA5_DMA\Core\Config\Config.h" />
     <ClInclude Include="GTA5_DMA\Core\DMA\DMA.h" />
     <ClInclude Include="GTA5_DMA\Features\Features.h" />
-    <ClInclude Include="GTA5_DMA\GUI\Fonts\Fonts.h" />
     <ClInclude Include="GTA5_DMA\GUI\Fuser\Fuser.h" />
     <ClInclude Include="GTA5_DMA\Features\GodMode\GodMode.h" />
     <ClInclude Include="GTA5_DMA\Core\GTA5\GTA5Info.h" />
-    <ClInclude Include="GTA5_DMA\GUI\Fonts\IBMPlexMono-Bold.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_dx11.h" />

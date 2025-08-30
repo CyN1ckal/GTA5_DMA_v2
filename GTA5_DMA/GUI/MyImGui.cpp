@@ -12,15 +12,17 @@ extern bool g_Alive;
 
 bool MyImGui::OnFrame()
 {
-	static bool bFirstFrame = true;
-	if (bFirstFrame)
-	{
+	if (Fonts::IBMPlexMono == nullptr)
 		Details::LoadFonts();
 
-		bFirstFrame = false;
+	if (Fonts::IBMPlexMono == nullptr)
+	{
+		std::println("Failed to load fonts!");
+
+		return false;
 	}
 
-	ImGui::PushFont(Fonts::IBMPlexMono, 16.0f);
+	ImGui::PushFont(Fonts::IBMPlexMono, 24.0f);
 
 	Fuser::OnFrame();
 
@@ -30,20 +32,19 @@ bool MyImGui::OnFrame()
 	VehicleInspector::OnFrame();
 	VehicleEditor::OnFrame();
 
-	MainMenu::Render();
-
 	BlipInspector::OnFrame();
+
+	MainMenu::Render();
 
 	ImGui::PopFont();
 
 	return 1;
 }
 
+std::string MenuTitle = "CyNickal GTA";
 bool MainMenu::Render()
 {
 	ImGui::PushFont(Fonts::IBMPlexMono, 32.0f);
-
-	std::string MenuTitle = "CyNickal GTA";
 
 	auto TextSize = ImGui::CalcTextSize(MenuTitle.data(), MenuTitle.data() + MenuTitle.size());
 	const auto& Style = ImGui::GetStyle();
@@ -64,7 +65,7 @@ bool MainMenu::Render()
 
 	ImGui::SetCursorPos(CursorPos);
 
-	ImGui::Text(MenuTitle.c_str());
+	ImGui::Text("%s", MenuTitle.c_str());
 
 	ImGui::PopFont();
 
@@ -83,7 +84,7 @@ bool MainMenu::Render()
 			ImGui::SetNextItemWidth(-FLT_MIN);
 			ImGui::SliderFloat("##Heal Threshold", &RefreshHealth::m_HealthThreshold, 0.1f, 0.99f);
 		}
-		
+
 		if (ImGui::Button("Teleport To Waypoint"))
 		{
 			Teleport::m_RequestedTeleport = true;
@@ -146,6 +147,7 @@ bool MainMenu::Render()
 
 		ImGui::Unindent();
 	}
+
 	ImGui::End();
 
 	return 1;
@@ -153,9 +155,7 @@ bool MainMenu::Render()
 
 bool MyImGui::Details::LoadFonts()
 {
-	auto io = ImGui::GetIO();
-
-	Fonts::IBMPlexMono = io.Fonts->AddFontFromMemoryTTF(FontData::IBMPlexBold, sizeof(FontData::IBMPlexBold));
+	Fonts::IBMPlexMono = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(FontData::IBMPlexBold, sizeof(FontData::IBMPlexBold));
 
 	return true;
 }

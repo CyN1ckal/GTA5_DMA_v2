@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../../Core/DMA/MultiScan.h"
-#include "../../Structs/Patterns.h"
-#include "../../Structs/MyVector.h"
-#include "../../Structs/WeaponInfo.h"
-#include "../../Structs/VehicleInfo.h"
-#include "../../Structs/PlayerInfo.h"
-#include "../../Structs/BlipInfo.h"
-
-#include "GTA5_DMA/Core/DMA/DMA.h"
+#include "DMA/DMA.h"
+#include "DMA/MultiScan.h"
+#include "Structs/Patterns.h"
+#include "Structs/MyVector.h"
+#include "Structs/WeaponInfo.h"
+#include "Structs/VehicleInfo.h"
+#include "Structs/PlayerInfo.h"
+#include "Structs/BlipInfo.h"
 
 namespace GTA5_
 {

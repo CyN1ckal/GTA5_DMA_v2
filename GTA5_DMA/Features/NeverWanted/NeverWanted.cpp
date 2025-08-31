@@ -1,10 +1,10 @@
 #include "../../pch.h"
 
-#include "../../Core/DMA/DMA.h"
+#include "DMA/DMA.h"
 
 #include "NeverWanted.h"
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool NeverWanted::OnFrame(Mem* dma)
 {

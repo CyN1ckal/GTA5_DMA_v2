@@ -1,4 +1,4 @@
-#include "../../pch.h"
+#include "../pch.h"
 #include "InputManager.h"
 
 std::vector<int> GetPidListFromName(Mem* mem, std::string name)

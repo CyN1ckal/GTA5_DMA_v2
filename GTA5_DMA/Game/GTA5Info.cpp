@@ -1,16 +1,17 @@
-#include "../../pch.h"
+#include "../pch.h"
 
 #include "GTA5Info.h"
 
-#include "../DMA/DMA.h"
+#include "DMA/DMA.h"
+#include "DMA/MultiScan.h"
 
 #include "Zydis/Zydis.h"
 
-#include "../../Features/Features.h"
+#include "Features/Features.h"
 
-#include "../../Structs/Offsets.h"
+#include "Structs/Offsets.h"
 
-#include "../../Structs/VehicleInfo.h"
+#include "Structs/VehicleInfo.h"
 
 bool GTA5::m_FindWorldPtr(Mem* dma)
 {

@@ -99,35 +99,14 @@
     <ClCompile Include="GTA5_DMA\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5_DMA\Core\DMA\MultiScan.cpp">
+    <ClCompile Include="GTA5_DMA\DMA\MultiScan.cpp">
       <Filter>Utils\Pattern Scan</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5_DMA\Core\DMA\DMA.cpp">
+    <ClCompile Include="GTA5_DMA\DMA\DMA.cpp">
       <Filter>Core\DMA</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5_DMA\Core\GTA5\GTA5Info.cpp">
+    <ClCompile Include="GTA5_DMA\Game\GTA5Info.cpp">
       <Filter>Core\GTA5</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui.cpp">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_demo.cpp">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_draw.cpp">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_tables.cpp">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_widgets.cpp">
-      <Filter>Dependencies\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="GTA5_DMA\GUI\Fuser\Fuser.cpp">
       <Filter>Features\Fuser</Filter>
@@ -146,9 +125,6 @@
     </ClCompile>
     <ClCompile Include="GTA5_DMA\Features\Teleport\Teleport.cpp">
       <Filter>Features\Teleport</Filter>
-    </ClCompile>
-    <ClCompile Include="Tracy\TracyClient.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GTA5_DMA\GUI\MyImGui.cpp">
       <Filter>Core\GUI\Main</Filter>
@@ -171,13 +147,34 @@
     <ClCompile Include="GTA5_DMA\GUI\VehicleEditor\VehicleEditor.cpp">
       <Filter>Core\GUI\Vehicle Editor</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5_DMA\Core\Config\Config.cpp">
+    <ClCompile Include="GTA5_DMA\Config\Config.cpp">
       <Filter>Core\Config</Filter>
     </ClCompile>
     <ClCompile Include="GTA5_DMA\Features\RainbowCar\RainbowCar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GTA5_DMA\Core\DMA\InputManager.cpp">
+    <ClCompile Include="GTA5_DMA\DMA\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui_impl_dx11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui_impl_win32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,28 +185,16 @@
     <ClInclude Include="GTA5_DMA\Features\Features.h">
       <Filter>Features</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5_DMA\Core\DMA\MultiScan.h">
+    <ClInclude Include="GTA5_DMA\DMA\MultiScan.h">
       <Filter>Utils\Pattern Scan</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5_DMA\Core\DMA\DMA.h">
+    <ClInclude Include="GTA5_DMA\DMA\DMA.h">
       <Filter>Core\DMA</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5_DMA\Core\GTA5\GTA5Info.h">
+    <ClInclude Include="GTA5_DMA\Game\GTA5Info.h">
       <Filter>Core\GTA5</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui.h">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_dx11.h">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_win32.h">
-      <Filter>Dependencies\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_internal.h">
       <Filter>Dependencies\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_rectpack.h">
@@ -284,19 +269,40 @@
     <ClInclude Include="GTA5_DMA\GUI\VehicleEditor\VehicleEditor.h">
       <Filter>Core\GUI\Vehicle Editor</Filter>
     </ClInclude>
-    <ClInclude Include="GTA5_DMA\Core\Config\Config.h">
+    <ClInclude Include="GTA5_DMA\Config\Config.h">
       <Filter>Core\Config</Filter>
     </ClInclude>
     <ClInclude Include="GTA5_DMA\Features\RainbowCar\RainbowCar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GTA5_DMA\Core\DMA\InputManager.h">
+    <ClInclude Include="GTA5_DMA\DMA\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GTA5_DMA\GUI\Fonts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imgui_impl_dx11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imgui_impl_win32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

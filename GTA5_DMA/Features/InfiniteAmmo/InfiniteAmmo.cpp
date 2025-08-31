@@ -4,7 +4,7 @@
 
 #include <bitset>
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool InfiniteAmmo::OnFrame(Mem* dma)
 {

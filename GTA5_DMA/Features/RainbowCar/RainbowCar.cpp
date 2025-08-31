@@ -1,10 +1,10 @@
 #include "../../pch.h"
 
-#include "../../Core/DMA/DMA.h"
+#include "DMA/DMA.h"
 
 #include "RainbowCar.h"
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool RainbowCar::OnDMAFrame(Mem* dma)
 {

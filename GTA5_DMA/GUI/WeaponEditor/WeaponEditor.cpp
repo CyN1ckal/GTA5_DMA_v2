@@ -1,12 +1,12 @@
 #include "../../pch.h"
 
-#include "../../Core/DMA/DMA.h"
+#include "DMA/DMA.h"
 
 #include "WeaponEditor.h"
 
 #include "../../GUI/WeaponInspector/WeaponInspector.h"
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool WeaponEditor::OnFrame()
 {

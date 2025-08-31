@@ -2,15 +2,15 @@
 
 #include "Scheduler.h"
 
-#include "Core/DMA/DMA.h"
+#include "DMA/DMA.h"
 
-#include "Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 #include "Features/Features.h"
 
 #include "GUI/MyImGui.h"
 
-#include "Core/Config/Config.h"
+#include "Config/Config.h"
 
 bool g_Alive = true;
 

@@ -4,7 +4,7 @@
 
 #include "../../GUI/VehicleInspector/VehicleInspector.h"
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool VehicleEditor::OnFrame()
 {

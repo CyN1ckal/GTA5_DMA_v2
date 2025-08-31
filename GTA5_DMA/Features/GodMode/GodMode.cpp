@@ -6,7 +6,7 @@
 
 #include "../../Structs/Offsets.h"
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool GodMode::OnFrame(Mem* dma)
 {

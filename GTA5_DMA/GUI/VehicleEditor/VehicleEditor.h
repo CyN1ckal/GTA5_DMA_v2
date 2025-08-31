@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Structs/VehicleInfo.h"
-#include "../../Core/DMA/DMA.h"
+#include "DMA/DMA.h"
 
 class VehicleEditor
 {

@@ -1,4 +1,4 @@
-#include "../../pch.h"
+#include "../pch.h"
 
 #include "Config.h"
 
@@ -6,7 +6,7 @@
 
 #include <fstream>
 
-#include "../../Features/Features.h"
+#include "Features/Features.h"
 
 bool Config::SaveConfig()
 {

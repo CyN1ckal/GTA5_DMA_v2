@@ -4,11 +4,11 @@
 
 #include "../../Structs/MyVector.h"
 
-#include "../../Core/DMA/DMA.h"
+#include "DMA/DMA.h"
 
 #include "Teleport.h"
 
-#include "GTA5_DMA/Core/GTA5/GTA5Info.h"
+#include "Game/GTA5Info.h"
 
 bool Teleport::OnFrame(Mem* dma)
 {
